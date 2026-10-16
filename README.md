@@ -75,13 +75,13 @@ Cutadapt에서 `Aureobasidium tremulum`으로 분류된 ASV가 특히 한 대상
 
 특정 대상자에서의 증가가 실제 피부 mycobiome 차이인지, DNA 농도/PCR 증폭 효과인지, 또는 trimming·분류 편향인지는 아직 해결되지 않았다.
 
-### 4. Malassezia가 분류되지 않는다고 해서 Malassezia라고 추정하면 안 된다
+### 4. KSY sample에서는 Malassezia 신호가 `Fungi_k`로 남았을 가능성을 의심했다
 
-피부 시료에서 고풍부한 `Fungi_k` ASV를 Malassezia일 것으로 의심했지만, 실제 ASV 서열을 BLAST하기 전에는 결론 내릴 수 없다.
+KSY 피부 sample에서는 예상했던 Malassezia가 genus/species 수준으로 충분히 분류되지 않는 대신 고풍부 `Fungi_k` ASV가 관찰되었다. 따라서 일부 Malassezia 서열이 낮은 taxonomic rank에서 멈춰 `Fungi_k`로 표시되었을 가능성을 먼저 의심했다.
 
-대표적인 281-bp ASV `5c8f111a2f4a8e9e41a1cb58ebc985f6`는 BLAST에서 281/281 bp, 100% identity로 `Raphanus sativus`를 지지했다. 즉 이 ASV는 Malassezia가 아니라 식물 유래 off-target sequence였다.
+다만 실제 서열 확인 결과, 대표적인 281-bp `Fungi_k` ASV `5c8f111a2f4a8e9e41a1cb58ebc985f6`는 BLAST에서 281/281 bp, 100% identity로 `Raphanus sativus`를 지지했다. 따라서 적어도 이 ASV는 미분류 Malassezia가 아니라 식물 유래 off-target sequence이다.
 
-이 결과는 fungi-only reference로 분류할 경우 비진균 진핵 서열이 `Fungi_k`처럼 불완전하거나 잘못된 label로 남을 수 있음을 보여준다.
+이 결과가 KSY의 모든 `Fungi_k` ASV가 Raphanus라는 뜻은 아니다. 다른 `Fungi_k` ASV 중에는 reference 또는 서열 구간의 한계로 Malassezia가 낮은 rank에 머문 경우가 있을 수 있으므로, KSY에서 풍부한 `Fungi_k` ASV를 개별적으로 BLAST하고 broad-eukaryote classifier 결과와 대조해야 한다.
 
 ### 5. maxEE 2/2와 8/8은 핵심 차이를 설명하지 못했다
 
