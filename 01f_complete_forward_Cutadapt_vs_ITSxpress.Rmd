@@ -1,0 +1,232 @@
+---
+title: "01f. Complete-forward ITS2 preprocessing comparison"
+subtitle: "QC20 / maxEE2 — Cutadapt Single vs ITSxpress Single"
+date: "2026-10-16"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.align = "center", dpi = 160, dev = "ragg_png", out.width = "100%")
+library(dplyr); library(tidyr); library(readr); library(DT); library(ggplot2); library(scales)
+set.seed(42)
+
+analysis_env <- new.env(parent = globalenv())
+sys.source("Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10_complete_forward_pair_comparison.R",
+           envir = analysis_env)
+list2env(as.list(analysis_env), envir = environment())
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(x, rownames = FALSE, filter = "none", extensions = character(0),
+                options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE))
+}
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0("<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+             font_data, ") format('opentype');font-weight:400;font-style:normal;} ",
+             "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+             ".main-container{max-width:1500px!important;} .section h1{margin-top:36px;}",
+             "</style>"))
+}
+```
+
+# 1. 분석 설계
+
+## 입력과 비교 범위
+
+- 입력은 `q20_ee22_both_full_cutadapt_forward`의 Cutadapt single 및 ITSxpress single DADA2 feature table과 UNITE v10 99% taxonomy임.
+- 두 pipeline 모두 동일한 완전한 forward read와 공통 SampleID `r length(common_samples)`개를 사용함.
+- 첨부한 `01_Preprocessing_2.Rmd`와 동일한 taxonomy 정리 및 `Kingdom == Fungi`/zero-sum 제거 규칙을 적용함.
+- abundance threshold, singleton 제거, rarefaction 및 decontam은 적용하지 않음.
+- Aitchison은 non-rarefied Species count에 pseudocount 0.5와 CLR을 적용함.
+- 색상, control/subject shape, density가 결합된 PCoA, composition palette/facet 및 theme는 `01_Preprocessing_2.Rmd`의 정의를 그대로 사용함.
+
+```{r comparison-spec}
+datatable_basic(comparison_spec, 10)
+```
+
+## Sample 구성
+
+```{r sample-summary}
+sample_summary <- metadata |>
+  dplyr::count(Sample_Type, Control_Type, Subject, PCR_Cycle_Group, name = "N") |>
+  dplyr::arrange(Sample_Type, Control_Type, Subject, PCR_Cycle_Group)
+datatable_basic(sample_summary, 15)
+```
+
+# 2. Phyloseq 생성 및 QC
+
+## 전처리 전후 audit
+
+```{r preprocessing-audit}
+datatable_basic(audit, 20) |>
+  DT::formatCurrency("Total_Reads", currency = "", digits = 0, mark = ",")
+```
+
+두 pipeline 모두 83개 sample이 유지됨. 최종 fungal ASV는 Cutadapt Single `r rank_summary$ASV[rank_summary$Method == 'Cutadapt Single']`개, ITSxpress Single `r rank_summary$ASV[rank_summary$Method == 'ITSxpress Single']`개임.
+
+```{r rank-summary}
+datatable_basic(rank_summary, 10)
+```
+
+생성한 phyloseq object:
+
+- [Cutadapt complete-forward RDS](Phyloseq/phy_ITS2_cutadapt_single_complete_q20_ee2_20261016.rds)
+- [ITSxpress complete-forward RDS](Phyloseq/phy_ITS2_itsxpress_single_complete_q20_ee2_20261016.rds)
+
+## Read depth와 observed ASV
+
+```{r depth-summary}
+datatable_basic(depth_summary, 20) |>
+  DT::formatRound(c("Q1", "Median", "Q3"), 1) |>
+  DT::formatCurrency(c("Min", "Max"), currency = "", digits = 0, mark = ",")
+```
+
+```{r paired-qc-tests}
+datatable_basic(paired_qc_tests, 20) |>
+  DT::formatRound(c("Median_Method_1", "Median_Method_2", "Median_Ratio_Method_2_to_1"), 3) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r paired-qc-plot, echo=FALSE, out.width='100%'}
+knitr::include_graphics("Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10a_paired_sample_QC.png")
+```
+
+Observed ASV는 rarefaction 통과 여부나 filtering 기준이 아니라, 각 원본 fungal count table에서 sample별 non-zero ASV 수를 그대로 집계한 QC 지표임.
+
+# 3. Aitchison beta diversity
+
+## Paired method effect
+
+```{r beta-statistics}
+datatable_basic(beta_stats, 10) |>
+  DT::formatRound(c("PERMANOVA_R2", "Procrustes_r"), 4) |>
+  DT::formatSignif(c("PERMANOVA_P", "Betadisper_P", "PROTEST_P", "PERMANOVA_P_BH", "Betadisper_P_BH"), 3)
+```
+
+- PERMANOVA permutation은 동일 SampleID 안에 제한함.
+- `betadisper`가 유의하면 centroid 이동뿐 아니라 dispersion 차이도 포함할 수 있으므로 순수한 위치 효과로 단정하지 않음.
+- Procrustes correlation은 두 pipeline에서 sample 간 배치 구조가 얼마나 보존되는지를 평가함.
+
+```{r beta-plot, echo=FALSE, out.width='78%'}
+knitr::include_graphics("Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10b_aitchison_complete_forward.png")
+```
+
+PCoA 위·오른쪽의 density, 방법 색상 및 shape는 `01_Preprocessing_2.Rmd`와 동일하다.
+
+# 4. Species-level taxa 비교
+
+## Species overlap
+
+```{r species-overlap}
+datatable_basic(taxa_overlap, 10)
+```
+
+## Paired abundance difference
+
+각 점은 sample이나 ASV가 아니라 동일 Species fallback label로 합산한 뒤 83개 sample에서 평균한 taxon임. 상위 14 taxa만 이름을 표시함.
+
+```{r taxa-scatter, echo=FALSE, out.width='82%'}
+knitr::include_graphics("Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10c_species_pairwise_abundance.png")
+```
+
+```{r taxa-tests}
+datatable_basic(taxa_tests, 20) |>
+  DT::formatPercentage(c("Mean_Method_1", "Mean_Method_2", "Mean_Difference_2_minus_1"), 2) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+BH 보정은 상위 14 Species 안에서 수행했으므로 논문용 전체 differential-abundance 검정이 아니라 preprocessing 방법에 따른 주요 조성 변화의 기술적 비교임.
+
+# 5. Sample별 Species composition
+
+- 각 막대는 개별 SampleID임.
+- 두 그림에 동일한 top Species 목록과 `RColorBrewer` Paired/Dark2 기반 색을 사용함.
+- facet은 Subject/control source와 PCR cycle 조합이며 `nrow = 1`로 가로 배치함.
+- HTML에는 축소 preview를 표시하고 원본은 42-inch wide PNG로 별도 저장함.
+
+## Cutadapt Single
+
+```{r composition-cs, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["Cutadapt Single"]]
+```
+
+[고해상도 PNG 열기](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10d1_composition_Cutadapt_Single.png)
+
+## ITSxpress Single
+
+```{r composition-is, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["ITSxpress Single"]]
+```
+
+[고해상도 PNG 열기](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10d2_composition_ITSxpress_Single.png)
+
+# 6. ASV sequence length와 frequency
+
+```{r sequence-summary}
+datatable_basic(sequence_summary, 10) |>
+  DT::formatRound(c("Median_Length", "Q1_Length", "Q3_Length"), 1) |>
+  DT::formatCurrency("Total_Reads", currency = "", digits = 0, mark = ",")
+```
+
+```{r sequence-plots, echo=FALSE, out.width='92%'}
+knitr::include_graphics("Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10e_ASV_sequence_length_frequency.png")
+```
+
+- complete-forward ASV의 최대 길이는 Cutadapt `r sequence_summary$Max_Length[sequence_summary$Method == 'Cutadapt Single']` bp, ITSxpress `r sequence_summary$Max_Length[sequence_summary$Method == 'ITSxpress Single']` bp임.
+- length density는 ASV 개수뿐 아니라 각 ASV의 fungal read 수로 가중함.
+
+## BLAST-confirmed Raphanus ASV 확인
+
+```{r raphanus-table}
+datatable_basic(raphanus_summary, 10) |>
+  DT::formatCurrency("Value", currency = "", digits = 0, mark = ",")
+```
+
+이 표만 최근 BLAST 결과를 확인하기 위해 추가했으며 기존 시각화 정의는 변경하지 않았다. `5c8f111a2f4a8e9e41a1cb58ebc985f6`와 exact containment 관계인 ITSxpress ASV가 있는지 확인한다.
+
+# 7. 종합 요약
+
+```{r conclusion, results='asis'}
+x <- beta_stats[1, ]
+cat(paste0(
+  "- **", x$Comparison, "**: paired Aitchison PERMANOVA R² = ",
+  sprintf("%.3f", x$PERMANOVA_R2), ", p = ", signif(x$PERMANOVA_P, 3),
+  "; betadisper p = ", signif(x$Betadisper_P, 3),
+  "; Procrustes r = ", sprintf("%.3f", x$Procrustes_r), ".\n"
+))
+```
+
+- 두 방법에서 동일한 83개 sample과 동일한 fungal/zero-sum 처리 규칙을 사용함.
+- ITSxpress/Cutadapt read-depth 중앙값 비율은 `r round(paired_qc_tests$Median_Ratio_Method_2_to_1[paired_qc_tests$Metric == 'Read_Depth'], 3)`임.
+- Cutadapt Single의 read와 ASV가 더 많다는 사실은 생물학적 다양성 증가를 의미하지 않으며 trimming/HMM boundary 및 denoising 차이를 포함함.
+- `betadisper`가 유의한 경우 PERMANOVA 차이의 일부가 dispersion 변화에서 유래할 수 있음.
+- 본 보고서는 preprocessing 방법 선택의 기술적 비교이며 decontam이나 biological inference를 수행하지 않음.
+
+# 8. 재현 파일
+
+- [전체 분석 R script](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10_complete_forward_pair_comparison.R)
+- [전체 중간 object RDS](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10_complete_forward_pair_objects.rds)
+- [Beta statistics CSV](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10d_beta_statistics.csv)
+- [Species paired tests CSV](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10f_species_paired_tests.csv)
+- [ASV sequence summary CSV](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10g_ASV_sequence_summary.csv)
+- [Raphanus ASV check CSV](Results/01f_complete_forward_Cutadapt_vs_ITSxpress/10i_Raphanus_ASV_check.csv)
+
+## 한계
+
+- rarefaction은 적용하지 않았으며 이 보고서의 Aitchison 분석에는 필요하지 않음.
+- Bray–Curtis/Jaccard, alpha diversity 및 decontam은 본 preprocessing 비교에서 수행하지 않음.
+- taxa 검정은 compositional dependency와 반복 PCR 구조를 완전히 모형화한 differential-abundance 분석이 아니라 paired descriptive screen임.

@@ -1,0 +1,365 @@
+---
+title: "maxEE22 Cutadapt–ITSxpress ASV alignment 및 계통수"
+subtitle: "Exact internal-containment와 대표 ASV maximum-likelihood tree"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    self_contained: true
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 160)
+
+suppressPackageStartupMessages({
+  library(Biostrings)
+  library(DECIPHER)
+  library(ape)
+  library(phangorn)
+  library(ggtree)
+  library(dplyr)
+  library(tidyr)
+  library(readr)
+  library(stringr)
+  library(ggplot2)
+  library(RColorBrewer)
+  library(DT)
+  library(scales)
+})
+
+set.seed(42)
+results_dir <- file.path("Results", "01_Cutadapt_ITSxpress_ASV_phylogeny")
+dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+
+method_colors <- c(Cutadapt = "#1B9E77", ITSxpress = "#D95F02")
+
+datatable_basic <- function(x, page_length = 15) {
+  DT::datatable(
+    x, rownames = FALSE, filter = "none",
+    options = list(dom = "tip", pageLength = page_length,
+                   autoWidth = TRUE, orderClasses = FALSE)
+  )
+}
+
+deepest_taxon <- function(x) {
+  vapply(str_split(x, ";"), function(z) {
+    z <- str_replace(z, "^(?:[dkpcofgs]|sh)__", "")
+    z <- z[!is.na(z) & z != "" & z != "Unassigned"]
+    z <- z[!str_detect(z, "^SH[0-9]+")]
+    if (!length(z)) "Unassigned" else str_replace_all(tail(z, 1), "_", " ")
+  }, character(1))
+}
+```
+
+# 1. 분석 목적과 해석 범위
+
+- QC20, maxEE 2/2의 Cutadapt와 ITSxpress 결과만 비교함.
+- 동일한 ASV ID가 아니라 **염기서열 자체**를 비교함.
+- ITSxpress ASV가 더 긴 Cutadapt ASV 안에 100 bp 이상 exact substring으로 존재하는 관계를 전체 자료에서 확인함.
+- 전체 740쌍을 한 tree에 그리면 tip이 겹쳐 판독이 불가능하므로, 전체 포함 관계는 수치로 보존하고 tree는 abundance와 taxonomy 다양성을 반영한 대표 24쌍으로 작성함.
+- ITS2는 길이 변이가 크고 대표 tree에는 full sequence와 internal fragment가 함께 있으므로, 이 tree는 species phylogeny 확정용이 아니라 **두 방법의 서열 대응을 시각적으로 점검하는 보조 자료**임.
+
+```{r input}
+asv_metrics <- read_csv(
+  "Results/01_Preprocessing/05a_unresolved_taxa_ASV_metrics.csv",
+  show_col_types = FALSE
+)
+best_pairs <- read_csv(
+  "Results/01_Preprocessing/05n_best_exact_containment_pairs.csv",
+  show_col_types = FALSE
+)
+
+sequence_info <- asv_metrics |>
+  transmute(
+    Method, FeatureID, Sequence,
+    Length_bp = as.integer(Length_bp),
+    Raw_Taxonomy,
+    Taxon_Label = deepest_taxon(Raw_Taxonomy),
+    ASV_Total_Reads = Total_Reads
+  )
+
+cut_info <- sequence_info |>
+  filter(Method == "Cutadapt") |>
+  rename(
+    Cutadapt_FeatureID = FeatureID,
+    Cutadapt_Sequence = Sequence,
+    Cutadapt_Taxon = Taxon_Label,
+    Cutadapt_Raw_Taxonomy = Raw_Taxonomy
+  ) |>
+  select(Cutadapt_FeatureID, Cutadapt_Sequence, Cutadapt_Taxon,
+         Cutadapt_Raw_Taxonomy)
+
+its_info <- sequence_info |>
+  filter(Method == "ITSxpress") |>
+  rename(
+    ITSxpress_FeatureID = FeatureID,
+    ITSxpress_Sequence = Sequence,
+    ITSxpress_Taxon = Taxon_Label,
+    ITSxpress_Raw_Taxonomy = Raw_Taxonomy
+  ) |>
+  select(ITSxpress_FeatureID, ITSxpress_Sequence, ITSxpress_Taxon,
+         ITSxpress_Raw_Taxonomy)
+
+pairs <- best_pairs |>
+  left_join(cut_info, by = "Cutadapt_FeatureID") |>
+  left_join(its_info, by = "ITSxpress_FeatureID") |>
+  mutate(
+    ITS_Start = str_locate(Cutadapt_Sequence, fixed(ITSxpress_Sequence))[, "start"],
+    ITS_End = ITS_Start + ITSxpress_Length - 1L,
+    Left_Flank_bp = ITS_Start - 1L,
+    Right_Flank_bp = Cutadapt_Length - ITS_End,
+    Total_Flank_bp = Left_Flank_bp + Right_Flank_bp,
+    ITS_Fraction = ITSxpress_Length / Cutadapt_Length,
+    Taxon_Label = coalesce(ITSxpress_Taxon, Cutadapt_Taxon, "Unassigned")
+  )
+
+stopifnot(all(!is.na(pairs$ITS_Start)))
+```
+
+# 2. 전체 exact-containment 결과
+
+```{r all-summary}
+all_summary <- tibble(
+  Metric = c(
+    "Cutadapt fungal ASVs",
+    "ITSxpress fungal ASVs",
+    "ITSxpress ASVs with exact containment",
+    "Matched ITSxpress ASV fraction",
+    "Matched ITSxpress read fraction",
+    "Median ITSxpress/Cutadapt length fraction",
+    "Median external flank length (bp)"
+  ),
+  Value = c(
+    sum(asv_metrics$Method == "Cutadapt"),
+    sum(asv_metrics$Method == "ITSxpress"),
+    n_distinct(pairs$ITSxpress_FeatureID),
+    n_distinct(pairs$ITSxpress_FeatureID) / sum(asv_metrics$Method == "ITSxpress"),
+    sum(pairs$ITSxpress_Total_Reads) /
+      sum(asv_metrics$Total_Reads[asv_metrics$Method == "ITSxpress"]),
+    median(pairs$ITS_Fraction),
+    median(pairs$Total_Flank_bp)
+  )
+)
+
+datatable_basic(all_summary, 10) |>
+  DT::formatSignif("Value", 5)
+
+write_csv(all_summary, file.path(results_dir, "01_exact_containment_summary.csv"))
+write_csv(pairs, file.path(results_dir, "02_all_best_exact_containment_pairs.csv"))
+```
+
+# 3. 대표 pair 선정
+
+각 taxonomy label에서 ITSxpress read 수가 높은 pair를 최대 3개 선택한 뒤, 그중 전체 abundance 상위 24쌍을 사용함. 동일 Cutadapt ASV가 두 번 선택되지 않도록 제한함.
+
+```{r representative-selection}
+representative_pairs <- pairs |>
+  arrange(desc(ITSxpress_Total_Reads), desc(Cutadapt_Total_Reads)) |>
+  distinct(Cutadapt_FeatureID, .keep_all = TRUE) |>
+  group_by(Taxon_Label) |>
+  slice_head(n = 3) |>
+  ungroup() |>
+  slice_max(ITSxpress_Total_Reads, n = 24, with_ties = FALSE) |>
+  arrange(desc(ITSxpress_Total_Reads)) |>
+  mutate(Pair_ID = sprintf("P%02d", row_number()))
+
+datatable_basic(
+  representative_pairs |>
+    transmute(
+      Pair_ID, Taxon_Label,
+      Cutadapt_Length, ITSxpress_Length,
+      Left_Flank_bp, Right_Flank_bp,
+      ITS_fraction_percent = 100 * ITS_Fraction,
+      Cutadapt_Total_Reads, ITSxpress_Total_Reads
+    ),
+  24
+) |>
+  DT::formatRound("ITS_fraction_percent", 1)
+
+write_csv(representative_pairs,
+          file.path(results_dir, "03_representative_containment_pairs.csv"))
+```
+
+# 4. Cutadapt 내부에서 ITSxpress 서열의 실제 위치
+
+회색 막대는 Cutadapt ASV 전체, 주황색 막대는 그 안에서 **완전히 동일하게 일치하는 ITSxpress 서열 구간**임.
+
+```{r containment-position, fig.width=12, fig.height=10}
+position_data <- representative_pairs |>
+  mutate(
+    Pair_Label = paste0(Pair_ID, " | ", Taxon_Label,
+                        " | ITS reads ", comma(ITSxpress_Total_Reads)),
+    Pair_Label = factor(Pair_Label, levels = rev(Pair_Label))
+  )
+
+containment_plot <- ggplot(position_data, aes(y = Pair_Label)) +
+  geom_segment(aes(x = 1, xend = Cutadapt_Length, yend = Pair_Label),
+               linewidth = 4.8, colour = "grey78", lineend = "butt") +
+  geom_segment(aes(x = ITS_Start, xend = ITS_End, yend = Pair_Label),
+               linewidth = 4.8, colour = method_colors[["ITSxpress"]],
+               lineend = "butt") +
+  geom_point(aes(x = ITS_Start), shape = 124, size = 2.8) +
+  geom_point(aes(x = ITS_End), shape = 124, size = 2.8) +
+  scale_x_continuous(expand = expansion(mult = c(0.01, 0.04))) +
+  labs(
+    title = "ITSxpress ASV is an exact internal segment of the Cutadapt ASV",
+    subtitle = "Representative 24 pairs; grey = Cutadapt full ASV, orange = exact ITSxpress interval",
+    x = "Position in Cutadapt ASV (bp)", y = NULL
+  ) +
+  theme_bw(base_size = 11) +
+  theme(panel.grid.major.y = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+ggsave(file.path(results_dir, "04_representative_exact_containment.png"),
+       containment_plot, width = 12, height = 10, dpi = 220, bg = "white")
+containment_plot
+```
+
+# 5. Multiple sequence alignment 및 maximum-likelihood tree
+
+```{r alignment-tree-data}
+tree_sequences <- c(
+  representative_pairs$Cutadapt_Sequence,
+  representative_pairs$ITSxpress_Sequence
+)
+tree_names <- c(
+  paste0(representative_pairs$Pair_ID, "|Cut|",
+         substr(representative_pairs$Cutadapt_FeatureID, 1, 8)),
+  paste0(representative_pairs$Pair_ID, "|ITS|",
+         substr(representative_pairs$ITSxpress_FeatureID, 1, 8))
+)
+names(tree_sequences) <- tree_names
+
+unaligned <- DNAStringSet(tree_sequences)
+writeXStringSet(unaligned,
+                file.path(results_dir, "05_representative_ASVs_unaligned.fasta"))
+
+alignment <- AlignSeqs(unaligned, processors = 1, verbose = FALSE)
+writeXStringSet(alignment,
+                file.path(results_dir, "06_representative_ASVs_aligned.fasta"))
+
+phy_dat <- phyDat(as.matrix(alignment), type = "DNA")
+distance_ml <- dist.ml(phy_dat)
+tree_start <- NJ(distance_ml)
+fit_start <- pml(tree_start, data = phy_dat, k = 4)
+fit_ml <- suppressWarnings(optim.pml(
+  fit_start, model = "GTR", optGamma = TRUE,
+  rearrangement = "stochastic",
+  control = pml.control(trace = 0)
+))
+
+tree_ml <- midpoint(fit_ml$tree)
+write.tree(tree_ml, file = file.path(results_dir, "07_representative_ML_tree.nwk"))
+
+tip_metadata <- bind_rows(
+  representative_pairs |>
+    transmute(
+      label = paste0(Pair_ID, "|Cut|", substr(Cutadapt_FeatureID, 1, 8)),
+      Pair_ID, Method = "Cutadapt", Taxon_Label,
+      Display_Label = paste0(Pair_ID, "  Cutadapt  ", Taxon_Label,
+                             "  [", substr(Cutadapt_FeatureID, 1, 8), "]")
+    ),
+  representative_pairs |>
+    transmute(
+      label = paste0(Pair_ID, "|ITS|", substr(ITSxpress_FeatureID, 1, 8)),
+      Pair_ID, Method = "ITSxpress", Taxon_Label,
+      Display_Label = paste0(Pair_ID, "  ITSxpress  ", Taxon_Label,
+                             "  [", substr(ITSxpress_FeatureID, 1, 8), "]")
+    )
+)
+
+tree_plot <- ggtree(tree_ml, linewidth = 0.45) %<+% tip_metadata +
+  geom_tippoint(aes(colour = Method, shape = Method), size = 2.5) +
+  geom_tiplab(aes(label = Display_Label, colour = Method),
+              size = 2.3, linesize = 0.25, align = TRUE) +
+  scale_colour_manual(values = method_colors) +
+  scale_shape_manual(values = c(Cutadapt = 16, ITSxpress = 17)) +
+  xlim_tree(1.65) +
+  labs(
+    title = "Representative Cutadapt–ITSxpress ASV maximum-likelihood tree",
+    subtitle = "DECIPHER alignment; GTR+Gamma ML tree; matching pair numbers are identical",
+    colour = "Method", shape = "Method"
+  ) +
+  theme_tree2(base_size = 10) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold"))
+
+ggsave(file.path(results_dir, "08_representative_ML_tree.png"),
+       tree_plot, width = 14, height = 15, dpi = 220,
+       bg = "white", limitsize = FALSE)
+tree_plot
+```
+
+[고해상도 계통수 PNG](Results/01_Cutadapt_ITSxpress_ASV_phylogeny/08_representative_ML_tree.png)
+
+# 6. Tree에서 paired tip이 실제로 가까운가?
+
+각 ITSxpress tip에서 모든 대표 Cutadapt tip까지의 patristic distance를 계산하고, exact-containment 상대 Cutadapt가 몇 번째로 가까운지 확인함. `Rank = 1`이면 해당 Cutadapt ASV가 tree에서도 가장 가까운 Cutadapt tip이라는 뜻임.
+
+```{r pair-distance}
+tree_distance <- cophenetic(tree_ml)
+cut_tips <- tip_metadata$label[tip_metadata$Method == "Cutadapt"]
+
+pair_tree_distance <- representative_pairs |>
+  rowwise() |>
+  mutate(
+    Cut_Tip = paste0(Pair_ID, "|Cut|", substr(Cutadapt_FeatureID, 1, 8)),
+    ITS_Tip = paste0(Pair_ID, "|ITS|", substr(ITSxpress_FeatureID, 1, 8)),
+    Paired_Patristic_Distance = tree_distance[ITS_Tip, Cut_Tip],
+    Rank_Among_Cutadapt = rank(tree_distance[ITS_Tip, cut_tips],
+                               ties.method = "min")[match(Cut_Tip, cut_tips)],
+    Distance_vs_Median_Cutadapt =
+      Paired_Patristic_Distance / median(tree_distance[ITS_Tip, cut_tips])
+  ) |>
+  ungroup() |>
+  select(Pair_ID, Taxon_Label, Paired_Patristic_Distance,
+         Rank_Among_Cutadapt, Distance_vs_Median_Cutadapt,
+         Cutadapt_Total_Reads, ITSxpress_Total_Reads)
+
+tree_fit_summary <- tibble(
+  Representative_Pairs = nrow(representative_pairs),
+  Tree_Tips = length(tree_ml$tip.label),
+  Alignment_Columns = width(alignment)[1],
+  Model = "GTR+Gamma",
+  Log_Likelihood = fit_ml$logLik,
+  Paired_Cutadapt_is_Nearest_N = sum(pair_tree_distance$Rank_Among_Cutadapt == 1),
+  Paired_Cutadapt_is_Top3_N = sum(pair_tree_distance$Rank_Among_Cutadapt <= 3),
+  Median_Paired_vs_Other_Distance_Ratio =
+    median(pair_tree_distance$Distance_vs_Median_Cutadapt)
+)
+
+datatable_basic(tree_fit_summary, 10) |>
+  DT::formatRound(c("Log_Likelihood", "Median_Paired_vs_Other_Distance_Ratio"), 4)
+datatable_basic(pair_tree_distance, 24) |>
+  DT::formatRound(c("Paired_Patristic_Distance",
+                    "Distance_vs_Median_Cutadapt"), 5)
+
+write_csv(tree_fit_summary, file.path(results_dir, "09_tree_fit_summary.csv"))
+write_csv(pair_tree_distance, file.path(results_dir, "10_pair_tree_distances.csv"))
+```
+
+# 7. 결론
+
+```{r conclusion, results='asis'}
+cat(paste0(
+  "- ITSxpress fungal ASV ", sum(asv_metrics$Method == "ITSxpress"), "개 중 ",
+  n_distinct(pairs$ITSxpress_FeatureID), "개 (",
+  percent(n_distinct(pairs$ITSxpress_FeatureID) /
+            sum(asv_metrics$Method == "ITSxpress"), accuracy = 0.1),
+  ")가 Cutadapt ASV 내부에서 exact match됨.\n",
+  "- 이 exact-contained ASV들은 ITSxpress 전체 fungal reads의 ",
+  percent(sum(pairs$ITSxpress_Total_Reads) /
+            sum(asv_metrics$Total_Reads[asv_metrics$Method == "ITSxpress"]),
+          accuracy = 0.1), "를 차지함.\n",
+  "- 대표 ", nrow(representative_pairs), "쌍 중 paired Cutadapt tip이 가장 가까운 경우는 ",
+  sum(pair_tree_distance$Rank_Among_Cutadapt == 1), "쌍, 상위 3개 안에 드는 경우는 ",
+  sum(pair_tree_distance$Rank_Among_Cutadapt <= 3), "쌍임.\n",
+  "- tree에서 일부 pair가 바로 이웃하지 않더라도 exact containment가 부정되는 것은 아님. ",
+  "full-length Cutadapt 서열과 internal ITSxpress fragment의 gap 구조 및 ITS2 다중서열정렬 불확실성이 tree 거리에 영향을 줌."
+))
+```

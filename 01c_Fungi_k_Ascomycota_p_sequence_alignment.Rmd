@@ -1,0 +1,398 @@
+---
+title: "Fungi_k / Ascomycota_p ASV 서열 구조"
+subtitle: "maxEE22 Cutadapt–ITSxpress exact-containment pairwise alignment"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    self_contained: true
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 160)
+suppressPackageStartupMessages({
+  library(Biostrings)
+  library(DECIPHER)
+  library(dplyr)
+  library(tidyr)
+  library(readr)
+  library(stringr)
+  library(ggplot2)
+  library(RColorBrewer)
+  library(DT)
+  library(scales)
+  library(htmltools)
+})
+
+set.seed(42)
+results_dir <- file.path("Results", "01c_Fungi_k_Ascomycota_p_sequence_alignment")
+dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+
+group_colors <- c(Fungi_k = "#1B9E77", Ascomycota_p = "#7570B3")
+
+datatable_basic <- function(x, page_length = 15) {
+  DT::datatable(
+    x, rownames = FALSE, filter = "none",
+    options = list(dom = "tip", pageLength = page_length,
+                   autoWidth = TRUE, orderClasses = FALSE)
+  )
+}
+```
+
+```{r alignment-css, echo=FALSE, results='asis'}
+cat("<style>
+.seq-card {border:1px solid #d8dee4; border-left:6px solid #7570B3; border-radius:6px; padding:10px 12px; margin:14px 0 20px 0; background:#fff;}
+.seq-card.fungi {border-left-color:#1B9E77;}
+.seq-meta {font-size:13px; color:#38444d; margin-bottom:8px;}
+.seq-block {font-family:Consolas, 'Courier New', monospace; font-size:12px; line-height:1.45; white-space:pre; overflow-x:auto; background:#f8fafc; padding:9px; border-radius:4px;}
+.seq-core {background:#ffd8a8; color:#7f2704; font-weight:700;}
+.seq-flank {color:#263238;}
+.seq-gap {color:#b0bec5;}
+.seq-match {color:#d95f02; font-weight:700;}
+.msa-block {font-family:Consolas, 'Courier New', monospace; font-size:11px; line-height:1.35; white-space:pre; overflow-x:auto; background:#101820; color:#edf2f4; padding:12px; border-radius:5px;}
+.msa-a {color:#7CFC98;} .msa-c {color:#66B3FF;} .msa-g {color:#FFD166;} .msa-t {color:#FF7B7B;} .msa-gap {color:#637381;}
+details {margin:12px 0;} summary {cursor:pointer; font-weight:700;}
+</style>")
+```
+
+# 1. 분석 대상
+
+이 보고서는 `Fungi_k`와 `Ascomycota_p`로만 분류된 Cutadapt ASV를 대상으로 함. 각 Cutadapt ASV 내부에서 exact match되는 ITSxpress ASV를 찾아 다음처럼 직접 표시함.
+
+```text
+Cutadapt   [left external sequence][exact ITSxpress sequence][right external sequence]
+ITSxpress  -------------------------[exact ITSxpress sequence]-------------------------
+Match                               |||||||||||||||||||||||||||
+```
+
+여기서 주황색 구간은 두 방법에서 염기가 완전히 동일한 부분이며, 회색 dash는 ITSxpress 결과에 존재하지 않는 Cutadapt 외부 서열임.
+
+```{r input}
+asv_metrics <- read_csv(
+  "Results/01_Preprocessing/05a_unresolved_taxa_ASV_metrics.csv",
+  show_col_types = FALSE
+)
+all_matches <- read_csv(
+  "Results/01_Preprocessing/05m_all_exact_containment_pairs.csv",
+  show_col_types = FALSE
+)
+
+sequence_info <- asv_metrics |>
+  select(Method, FeatureID, Sequence, Raw_Taxonomy)
+
+cut_info <- sequence_info |>
+  filter(Method == "Cutadapt") |>
+  transmute(
+    Cutadapt_FeatureID = FeatureID,
+    Cutadapt_Sequence = Sequence,
+    Cutadapt_Raw_Taxonomy = Raw_Taxonomy
+  )
+
+its_info <- sequence_info |>
+  filter(Method == "ITSxpress") |>
+  transmute(
+    ITSxpress_FeatureID = FeatureID,
+    ITSxpress_Sequence = Sequence,
+    ITSxpress_Raw_Taxonomy = Raw_Taxonomy
+  )
+
+focus_pairs <- all_matches |>
+  filter(
+    Cutadapt_Group %in% c("Fungi_k", "Ascomycota_p"),
+    Match_Type == "ITSxpress_within_Cutadapt"
+  ) |>
+  left_join(cut_info, by = "Cutadapt_FeatureID") |>
+  left_join(its_info, by = "ITSxpress_FeatureID") |>
+  mutate(
+    ITS_Start = str_locate(Cutadapt_Sequence, fixed(ITSxpress_Sequence))[, "start"],
+    ITS_End = ITS_Start + ITSxpress_Length - 1L,
+    Left_Flank_bp = ITS_Start - 1L,
+    Right_Flank_bp = Cutadapt_Length - ITS_End,
+    Total_Flank_bp = Left_Flank_bp + Right_Flank_bp
+  ) |>
+  arrange(factor(Cutadapt_Group, levels = c("Fungi_k", "Ascomycota_p")),
+          desc(Cutadapt_Total_Reads)) |>
+  group_by(Cutadapt_Group) |>
+  mutate(Group_Pair = row_number()) |>
+  ungroup() |>
+  mutate(Pair_ID = if_else(
+    Cutadapt_Group == "Fungi_k",
+    sprintf("F%02d", Group_Pair),
+    sprintf("A%02d", Group_Pair)
+  ))
+
+stopifnot(nrow(focus_pairs) == 28L, all(!is.na(focus_pairs$ITS_Start)))
+write_csv(focus_pairs, file.path(results_dir, "01_focused_exact_containment_pairs.csv"))
+```
+
+# 2. Flank/core 길이 구조
+
+```{r structure-summary}
+structure_summary <- focus_pairs |>
+  group_by(Cutadapt_Group) |>
+  summarise(
+    N_ASV_pairs = n(),
+    Median_Cutadapt_length = median(Cutadapt_Length),
+    Median_ITSxpress_length = median(ITSxpress_Length),
+    Median_left_flank = median(Left_Flank_bp),
+    Median_right_flank = median(Right_Flank_bp),
+    Median_total_flank = median(Total_Flank_bp),
+    Min_total_flank = min(Total_Flank_bp),
+    Max_total_flank = max(Total_Flank_bp),
+    .groups = "drop"
+  )
+
+datatable_basic(structure_summary, 10)
+write_csv(structure_summary, file.path(results_dir, "02_flank_core_length_summary.csv"))
+```
+
+```{r structure-plot, fig.width=11, fig.height=8}
+structure_long <- focus_pairs |>
+  transmute(
+    Pair_ID, Cutadapt_Group, Cutadapt_Total_Reads,
+    Left_flank = Left_Flank_bp,
+    Exact_ITSxpress_core = ITSxpress_Length,
+    Right_flank = Right_Flank_bp
+  ) |>
+  pivot_longer(c(Left_flank, Exact_ITSxpress_core, Right_flank),
+               names_to = "Region", values_to = "Length_bp") |>
+  mutate(
+    Region = factor(Region,
+                    levels = c("Left_flank", "Exact_ITSxpress_core", "Right_flank")),
+    Pair_ID = factor(Pair_ID, levels = rev(focus_pairs$Pair_ID))
+  )
+
+structure_plot <- ggplot(structure_long,
+                         aes(Pair_ID, Length_bp, fill = Region)) +
+  geom_col(width = 0.78) +
+  coord_flip() +
+  facet_grid(Cutadapt_Group ~ ., scales = "free_y", space = "free_y") +
+  scale_fill_manual(values = c(
+    Left_flank = "#BDBDBD",
+    Exact_ITSxpress_core = "#D95F02",
+    Right_flank = "#737373"
+  )) +
+  labs(
+    title = "Cutadapt ASV = external flanks + exact ITSxpress core",
+    subtitle = "Fungi_k and Ascomycota_p exact-containment pairs",
+    x = NULL, y = "Sequence length (bp)", fill = "Sequence region"
+  ) +
+  theme_bw(base_size = 11) +
+  theme(panel.grid.major.y = element_blank(), legend.position = "bottom",
+        strip.text = element_text(face = "bold"),
+        plot.title = element_text(face = "bold"))
+
+ggsave(file.path(results_dir, "03_flank_core_structure.png"),
+       structure_plot, width = 11, height = 8, dpi = 220, bg = "white")
+structure_plot
+```
+
+# 3. 실제 염기서열 pairwise alignment
+
+각 pair를 75 bp 단위로 나누어 표시함. 아래에는 ASV 이름보다 실제 A/C/G/T 배열이 중심이 되도록 구성함.
+
+```{r pairwise-functions, include=FALSE}
+escape_html <- function(x) htmltools::htmlEscape(x)
+
+style_cut_window <- function(seq, from, to, core_start, core_end) {
+  pos <- seq.int(from, to)
+  chars <- substring(seq, pos, pos)
+  cls <- ifelse(pos >= core_start & pos <= core_end, "seq-core", "seq-flank")
+  runs <- rle(cls)
+  ends <- cumsum(runs$lengths)
+  starts <- c(1, head(ends, -1) + 1)
+  paste0(vapply(seq_along(starts), function(i) {
+    paste0("<span class='", runs$values[i], "'>",
+           paste0(chars[starts[i]:ends[i]], collapse = ""), "</span>")
+  }, character(1)), collapse = "")
+}
+
+style_its_window <- function(its, full_length, core_start, core_end, from, to) {
+  pos <- seq.int(from, to)
+  chars <- vapply(pos, function(p) {
+    if (p < core_start || p > core_end) "-" else substring(its, p - core_start + 1L, p - core_start + 1L)
+  }, character(1))
+  cls <- ifelse(chars == "-", "seq-gap", "seq-core")
+  runs <- rle(cls)
+  ends <- cumsum(runs$lengths)
+  starts <- c(1, head(ends, -1) + 1)
+  paste0(vapply(seq_along(starts), function(i) {
+    paste0("<span class='", runs$values[i], "'>",
+           paste0(chars[starts[i]:ends[i]], collapse = ""), "</span>")
+  }, character(1)), collapse = "")
+}
+
+render_pair <- function(row, width = 75L) {
+  n <- nchar(row$Cutadapt_Sequence)
+  starts <- seq.int(1L, n, by = width)
+  blocks <- vapply(starts, function(from) {
+    to <- min(from + width - 1L, n)
+    cut_html <- style_cut_window(row$Cutadapt_Sequence, from, to,
+                                 row$ITS_Start, row$ITS_End)
+    its_html <- style_its_window(row$ITSxpress_Sequence, n,
+                                 row$ITS_Start, row$ITS_End, from, to)
+    match_chars <- ifelse(seq.int(from, to) >= row$ITS_Start &
+                            seq.int(from, to) <= row$ITS_End, "|", " ")
+    match_html <- paste0("<span class='seq-match'>",
+                         paste0(match_chars, collapse = ""), "</span>")
+    paste0(
+      sprintf("%7d-%-7d\n", from, to),
+      "Cutadapt   ", cut_html, "\n",
+      "ITSxpress  ", its_html, "\n",
+      "Match      ", match_html, "\n"
+    )
+  }, character(1))
+
+  card_class <- ifelse(row$Cutadapt_Group == "Fungi_k", "seq-card fungi", "seq-card")
+  paste0(
+    "<div class='", card_class, "'>",
+    "<div class='seq-meta'><b>", row$Pair_ID, " · ", row$Cutadapt_Group,
+    "</b> &nbsp; Cutadapt ", row$Cutadapt_Length, " bp · ITSxpress ",
+    row$ITSxpress_Length, " bp · left/right flank ", row$Left_Flank_bp,
+    "/", row$Right_Flank_bp, " bp · Cutadapt reads ",
+    scales::comma(row$Cutadapt_Total_Reads), "</div>",
+    "<pre class='seq-block'>", paste0(blocks, collapse = "\n"), "</pre></div>"
+  )
+}
+
+plain_pair <- function(row, width = 75L) {
+  n <- nchar(row$Cutadapt_Sequence)
+  aligned_its <- paste0(
+    strrep("-", row$ITS_Start - 1L), row$ITSxpress_Sequence,
+    strrep("-", n - row$ITS_End)
+  )
+  starts <- seq.int(1L, n, by = width)
+  blocks <- vapply(starts, function(from) {
+    to <- min(from + width - 1L, n)
+    cut <- substring(row$Cutadapt_Sequence, from, to)
+    its <- substring(aligned_its, from, to)
+    mat <- ifelse(strsplit(its, "")[[1]] == "-", " ", "|")
+    paste0(sprintf("%d-%d\n", from, to),
+           "Cutadapt  ", cut, "\n",
+           "ITSxpress ", its, "\n",
+           "Match     ", paste0(mat, collapse = ""), "\n")
+  }, character(1))
+  paste0(">", row$Pair_ID, " | ", row$Cutadapt_Group,
+         " | left/core/right=", row$Left_Flank_bp, "/",
+         row$ITSxpress_Length, "/", row$Right_Flank_bp, " bp\n",
+         paste0(blocks, collapse = "\n"))
+}
+```
+
+## 3.1 Fungi_k — 8 pairs
+
+```{r fungi-pairwise, echo=FALSE, results='asis'}
+fungi_rows <- focus_pairs |> filter(Cutadapt_Group == "Fungi_k")
+cat(paste0(vapply(seq_len(nrow(fungi_rows)), function(i) {
+  render_pair(fungi_rows[i, ], 75L)
+}, character(1)), collapse = "\n"))
+```
+
+## 3.2 Ascomycota_p — 20 pairs
+
+```{r asco-pairwise, echo=FALSE, results='asis'}
+asco_rows <- focus_pairs |> filter(Cutadapt_Group == "Ascomycota_p")
+cat(paste0(vapply(seq_len(nrow(asco_rows)), function(i) {
+  render_pair(asco_rows[i, ], 75L)
+}, character(1)), collapse = "\n"))
+```
+
+```{r save-plain-alignments, include=FALSE}
+writeLines(
+  vapply(seq_len(nrow(fungi_rows)), function(i) plain_pair(fungi_rows[i, ]), character(1)),
+  file.path(results_dir, "04_Fungi_k_pairwise_alignments.txt")
+)
+writeLines(
+  vapply(seq_len(nrow(asco_rows)), function(i) plain_pair(asco_rows[i, ]), character(1)),
+  file.path(results_dir, "05_Ascomycota_p_pairwise_alignments.txt")
+)
+```
+
+# 4. 그룹별 multiple sequence alignment
+
+각 pair의 Cutadapt와 ITSxpress 서열을 함께 DECIPHER로 정렬함. `CUT`와 `ITS`가 같은 pair 번호를 공유함. 아래 화면은 실제 정렬 서열을 70 column씩 나눈 것이며, 전체 FASTA도 별도로 저장함.
+
+```{r msa-functions, include=FALSE}
+make_group_alignment <- function(dat, group_name) {
+  seqs <- unlist(lapply(seq_len(nrow(dat)), function(i) {
+    setNames(
+      c(dat$Cutadapt_Sequence[i], dat$ITSxpress_Sequence[i]),
+      c(paste0(dat$Pair_ID[i], "_CUT_", substr(dat$Cutadapt_FeatureID[i], 1, 8)),
+        paste0(dat$Pair_ID[i], "_ITS_", substr(dat$ITSxpress_FeatureID[i], 1, 8)))
+    )
+  }))
+  dna <- DNAStringSet(seqs)
+  aln <- AlignSeqs(dna, processors = 1, verbose = FALSE)
+  writeXStringSet(
+    aln,
+    file.path(results_dir, paste0("06_", group_name, "_Cutadapt_ITSxpress_MSA.fasta"))
+  )
+  aln
+}
+
+color_msa <- function(x) {
+  chars <- strsplit(x, "", fixed = TRUE)[[1]]
+  cls <- c(A = "msa-a", C = "msa-c", G = "msa-g", T = "msa-t", `-` = "msa-gap")
+  paste0(vapply(chars, function(ch) {
+    paste0("<span class='", unname(cls[ch]), "'>", ch, "</span>")
+  }, character(1)), collapse = "")
+}
+
+render_msa <- function(aln, width = 70L) {
+  mat <- as.matrix(aln)
+  seq_strings <- apply(mat, 1, paste0, collapse = "")
+  aln_width <- ncol(mat)
+  label_width <- max(nchar(names(seq_strings)))
+  starts <- seq.int(1L, aln_width, by = width)
+  blocks <- vapply(starts, function(from) {
+    to <- min(from + width - 1L, aln_width)
+    rows <- vapply(seq_along(seq_strings), function(i) {
+      paste0(sprintf(paste0("%-", label_width, "s  "), names(seq_strings)[i]),
+             color_msa(substring(seq_strings[i], from, to)))
+    }, character(1))
+    paste0(sprintf("Alignment columns %d-%d\n", from, to),
+           paste0(rows, collapse = "\n"))
+  }, character(1))
+  paste0("<pre class='msa-block'>", paste0(blocks, collapse = "\n\n"), "</pre>")
+}
+
+fungi_msa <- make_group_alignment(fungi_rows, "Fungi_k")
+asco_msa <- make_group_alignment(asco_rows, "Ascomycota_p")
+```
+
+## 4.1 Fungi_k Cutadapt + ITSxpress MSA
+
+```{r fungi-msa-view, echo=FALSE, results='asis'}
+cat(render_msa(fungi_msa, 70L))
+```
+
+## 4.2 Ascomycota_p Cutadapt + ITSxpress MSA
+
+```{r asco-msa-view, echo=FALSE, results='asis'}
+cat("<details><summary>Ascomycota_p 40-sequence MSA 펼치기</summary>")
+cat(render_msa(asco_msa, 70L))
+cat("</details>")
+```
+
+# 5. 관찰 결과
+
+```{r conclusion, results='asis'}
+fungi_summary <- structure_summary |> filter(Cutadapt_Group == "Fungi_k")
+asco_summary <- structure_summary |> filter(Cutadapt_Group == "Ascomycota_p")
+
+cat(paste0(
+  "- `Fungi_k` exact-containment pair는 ", nrow(fungi_rows), "개이며 median left/core/right 길이는 ",
+  fungi_summary$Median_left_flank, "/", fungi_summary$Median_ITSxpress_length, "/",
+  fungi_summary$Median_right_flank, " bp임.\n",
+  "- `Ascomycota_p` exact-containment pair는 ", nrow(asco_rows), "개이며 median left/core/right 길이는 ",
+  asco_summary$Median_left_flank, "/", asco_summary$Median_ITSxpress_length, "/",
+  asco_summary$Median_right_flank, " bp임.\n",
+  "- 두 그룹 모두 ITSxpress 서열은 Cutadapt ASV 중앙의 완전 동일 구간이며, 차이는 주로 Cutadapt에 남은 양쪽 외부 서열에서 발생함.\n",
+  "- 따라서 이 두 미해결 taxonomy 그룹에서는 단순한 서로 다른 ASV라기보다, 같은 내부 ITS 서열을 서로 다른 boundary로 표현한 경우가 실제 염기서열에서 확인됨.\n",
+  "- 다만 이 구조만으로 ITSxpress taxonomy가 항상 더 정확하다고 단정할 수는 없으며, reference database match와 raw read boundary를 함께 확인해야 함."
+))
+```

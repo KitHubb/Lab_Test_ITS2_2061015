@@ -1,0 +1,1311 @@
+---
+title: "02. ITS2 basic analysis"
+subtitle: "Cutadapt paired-end 기반 True sample 및 control profile"
+date: "2026-10-15"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  dpi = 160,
+  dev = "ragg_png",
+  out.width = "100%"
+)
+
+library(phyloseq)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(stringr)
+library(purrr)
+library(vegan)
+library(patchwork)
+library(cowplot)
+library(ComplexHeatmap)
+library(circlize)
+library(RColorBrewer)
+library(DT)
+library(scales)
+
+set.seed(42)
+
+report_date <- "20261015"
+results_dir <- "Results"
+phyloseq_dir <- "Phyloseq"
+dir.create(results_dir, showWarnings = FALSE)
+dir.create(phyloseq_dir, showWarnings = FALSE)
+
+group_colors <- c(
+  "Control" = "#D55E00",
+  "True" = "#0072B2",
+  "Mock" = "#009E73"
+)
+
+theme_set(
+  theme_bw(base_family = "Noto Sans CJK KR", base_size = 11) +
+    theme(
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold"),
+      strip.background = element_rect(fill = "white", colour = "grey70"),
+      legend.position = "bottom"
+    )
+)
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x,
+    rownames = FALSE,
+    filter = "none",
+    extensions = character(0),
+    options = list(
+      dom = "tp",
+      pageLength = page_length,
+      autoWidth = TRUE
+    )
+  )
+}
+
+q2_metadata <- readr::read_tsv(
+  "metadata.qiime.tsv",
+  skip = 2,
+  col_names = c(
+    "SampleID", "No", "Subject", "Direction", "Region", "Cycle_1st",
+    "Cycle_2nd", "PCR1_Group", "PCR2_Group", "PCR_Cycle_Group",
+    "Qubit_ng_uL", "bp", "Mol_Conc_nM", "Normalized"
+  ),
+  show_col_types = FALSE
+) |>
+  dplyr::mutate(
+    Sample_Type = dplyr::case_when(
+      stringr::str_detect(Subject, regex("mock|zymo", ignore_case = TRUE)) ~ "Mock",
+      stringr::str_detect(Subject, regex("^(ASwab|CSwab|ETube)", ignore_case = TRUE)) ~ "Control",
+      TRUE ~ "True"
+    ),
+    Control_Type = dplyr::case_when(
+      stringr::str_detect(Subject, regex("^ASwab", ignore_case = TRUE)) ~ "Air swab",
+      stringr::str_detect(Subject, regex("^CSwab", ignore_case = TRUE)) ~ "Clean bench swab",
+      stringr::str_detect(Subject, regex("^ETube", ignore_case = TRUE)) ~ "Empty tube",
+      Sample_Type == "Mock" ~ "Mock",
+      TRUE ~ "Skin sample"
+    ),
+    Skin_Site = dplyr::case_when(
+      Sample_Type == "True" & (is.na(Direction) | Direction %in% c("", "-")) ~
+        as.character(Region),
+      Sample_Type == "True" ~ paste(Region, Direction),
+      TRUE ~ as.character(Control_Type)
+    ),
+    Biological_Unit = dplyr::if_else(
+      Sample_Type == "True",
+      paste(Subject, Skin_Site, sep = " / "),
+      as.character(Subject)
+    ),
+    Sample_Type = factor(Sample_Type, levels = c("Control", "True", "Mock")),
+    Control_Type = factor(
+      Control_Type,
+      levels = c("Air swab", "Clean bench swab", "Empty tube", "Skin sample", "Mock")
+    ),
+    PCR_Cycle_Group = factor(
+      PCR_Cycle_Group,
+      levels = c(
+        "PCR1_33__PCR2_8", "PCR1_33__PCR2_10",
+        "PCR1_35__PCR2_8", "PCR1_35__PCR2_10"
+      )
+    )
+  )
+
+# taxa-barplot의 species-level non-rarefied count와 metadata를 분리한다.
+species_export <- readr::read_csv(
+  "html_exports/taxa_barplot/level-7.csv",
+  show_col_types = FALSE,
+  name_repair = "minimal"
+)
+
+metadata_columns <- c(
+  "No", "Subject", "Direction", "Region", "Cycle_1st", "Cycle_2nd",
+  "PCR1_Group", "PCR2_Group", "PCR_Cycle_Group", "Qubit_ng_uL", "bp",
+  "Mol_Conc_nM", "Normalized"
+)
+taxa_columns <- setdiff(names(species_export), c("index", metadata_columns))
+
+species_count <- species_export |>
+  dplyr::select(index, dplyr::all_of(taxa_columns)) |>
+  dplyr::rename(SampleID = index) |>
+  dplyr::mutate(dplyr::across(dplyr::all_of(taxa_columns), as.numeric))
+
+taxonomy_raw <- purrr::map_dfr(taxa_columns, function(x) {
+  rank_value <- stringr::str_split(x, ";", simplify = TRUE)
+  rank_value <- c(rank_value, rep("", max(0, 7 - length(rank_value))))[seq_len(7)]
+  tibble::tibble(
+    FeatureID = x,
+    Kingdom = rank_value[1],
+    Phylum = rank_value[2],
+    Class = rank_value[3],
+    Order = rank_value[4],
+    Family = rank_value[5],
+    Genus = rank_value[6],
+    Species = rank_value[7]
+  )
+})
+
+otu_matrix <- species_count |>
+  tibble::column_to_rownames("SampleID") |>
+  as.matrix()
+otu_matrix <- t(otu_matrix)
+
+sample_frame <- q2_metadata |>
+  dplyr::filter(SampleID %in% colnames(otu_matrix)) |>
+  tibble::column_to_rownames("SampleID") |>
+  data.frame(check.names = FALSE)
+otu_matrix <- otu_matrix[, rownames(sample_frame), drop = FALSE]
+
+tax_frame_raw <- taxonomy_raw |>
+  tibble::column_to_rownames("FeatureID") |>
+  as.matrix()
+
+phy_raw <- phyloseq::phyloseq(
+  phyloseq::otu_table(otu_matrix, taxa_are_rows = TRUE),
+  phyloseq::tax_table(tax_frame_raw),
+  phyloseq::sample_data(sample_frame)
+)
+
+# 01_Preprocessing.Rmd의 taxonomy cleaning 원칙을 ITS2 rank에 적용한다.
+tax_clean <- function(ps) {
+  tax <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+  tax[] <- lapply(tax, function(x) {
+    x <- stringr::str_replace(as.character(x), "^[kpcofgs]__", "")
+    x[x %in% c("__", "NA", "uncultured")] <- ""
+    x
+  })
+
+  for (i in seq_len(nrow(tax))) {
+    if (tax$Species[i] != "") {
+      tax$Species[i] <- stringr::str_replace_all(tax$Species[i], " ", "_")
+    } else if (tax$Phylum[i] == "") {
+      tax[i, 2:7] <- paste0(tax$Kingdom[i], "_k")
+    } else if (tax$Class[i] == "") {
+      tax[i, 3:7] <- paste0(tax$Phylum[i], "_p")
+    } else if (tax$Order[i] == "") {
+      tax[i, 4:7] <- paste0(tax$Class[i], "_c")
+    } else if (tax$Family[i] == "") {
+      tax[i, 5:7] <- paste0(tax$Order[i], "_o")
+    } else if (tax$Genus[i] == "") {
+      tax[i, 6:7] <- paste0(tax$Family[i], "_f")
+    } else {
+      tax$Species[i] <- paste0(tax$Genus[i], "_g")
+    }
+  }
+
+  phyloseq::tax_table(ps) <- phyloseq::tax_table(as.matrix(tax))
+  ps
+}
+
+phy_taxclean <- tax_clean(phy_raw)
+kingdom_value <- as.character(phyloseq::tax_table(phy_taxclean)[, "Kingdom"])
+phy_fungi <- phyloseq::prune_taxa(kingdom_value == "Fungi", phy_taxclean)
+phy <- phyloseq::prune_samples(phyloseq::sample_sums(phy_fungi) > 0, phy_fungi)
+phy <- phyloseq::prune_taxa(phyloseq::taxa_sums(phy) > 0, phy)
+saveRDS(phy, file.path(phyloseq_dir, paste0("phy_ITS2_species_", report_date, ".rds")))
+
+preprocessing_audit <- tibble::tibble(
+  Stage = c(
+    "Imported species-level table",
+    "Taxonomy cleaned",
+    "Kingdom == Fungi retained",
+    "Zero-sum samples/taxa removed"
+  ),
+  Samples = as.integer(c(
+    phyloseq::nsamples(phy_raw), phyloseq::nsamples(phy_taxclean),
+    phyloseq::nsamples(phy_fungi), phyloseq::nsamples(phy)
+  )),
+  Taxa = as.integer(c(
+    phyloseq::ntaxa(phy_raw), phyloseq::ntaxa(phy_taxclean),
+    phyloseq::ntaxa(phy_fungi), phyloseq::ntaxa(phy)
+  )),
+  Total_Reads = as.numeric(c(
+    sum(phyloseq::sample_sums(phy_raw)),
+    sum(phyloseq::sample_sums(phy_taxclean)),
+    sum(phyloseq::sample_sums(phy_fungi)),
+    sum(phyloseq::sample_sums(phy))
+  ))
+)
+
+kingdom_before <- tibble::tibble(
+  Kingdom = as.character(phyloseq::tax_table(phy_taxclean)[, "Kingdom"]),
+  Reads = as.numeric(phyloseq::taxa_sums(phy_taxclean))
+) |>
+  dplyr::group_by(Kingdom) |>
+  dplyr::summarise(Taxa = as.integer(dplyr::n()), Reads = sum(Reads), .groups = "drop") |>
+  dplyr::mutate(Status = dplyr::if_else(Kingdom == "Fungi", "Retained", "Excluded"))
+
+kingdom_after <- tibble::tibble(
+  Kingdom = as.character(phyloseq::tax_table(phy)[, "Kingdom"]),
+  Reads = as.numeric(phyloseq::taxa_sums(phy))
+) |>
+  dplyr::group_by(Kingdom) |>
+  dplyr::summarise(Taxa = as.integer(dplyr::n()), Reads = sum(Reads), .groups = "drop")
+
+otu_matrix <- as(phyloseq::otu_table(phy), "matrix")
+if (!phyloseq::taxa_are_rows(phy)) otu_matrix <- t(otu_matrix)
+
+taxonomy_matrix <- data.frame(phyloseq::tax_table(phy), check.names = FALSE) |>
+  tibble::rownames_to_column("FeatureID") |>
+  dplyr::mutate(
+    Display_Taxon = dplyr::case_when(
+      Species != "" ~ stringr::str_replace_all(Species, "_", " "),
+      Genus != "" ~ paste0(Genus, " sp."),
+      Family != "" ~ paste0(Family, " (unclassified)"),
+      TRUE ~ "Unclassified fungi"
+    )
+  )
+
+sample_info <- data.frame(phyloseq::sample_data(phy), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(Read_Depth = as.numeric(phyloseq::sample_sums(phy)[SampleID]))
+
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data,
+    ") format('opentype');font-weight:400;font-style:normal;} ",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1400px!important;} .section h1{margin-top:36px;}",
+    "</style>"
+  ))
+}
+```
+
+# 1. Dataset
+
+## 분석 목표 및 입력
+
+- 분석 목표: True skin sample과 negative control 간 alpha diversity, beta diversity 및 taxonomic composition 차이의 기초 확인
+- phyloseq 입력: QIIME 2 taxa barplot의 non-rarefied species count와 sample metadata를 결합한 `phy` object
+- diversity 입력: non-rarefied phyloseq count를 사용함. alpha diversity는 raw count, Bray–Curtis는 relative abundance, Jaccard는 presence/absence로 계산함
+- rarefaction: sample filtering 또는 분석 포함 기준으로 사용하지 않고 sequencing depth에 따른 observed richness 추이만 제시함
+- 추가 filtering: Kingdom이 Fungi인 taxon을 유지한 뒤 zero-depth sample 및 zero-sum taxon만 제거함. abundance threshold와 decontam은 적용하지 않음
+- 연구 구조: 2개 skin subject와 3개 control source에서 PCR cycle 조건을 반복 측정한 탐색 자료임
+- Skin sample은 대상자와 좌/우를 포함한 해부학적 site를 유지하며, 동일 biological unit에서 PCR 조건별 library가 반복된 구조로 분석함
+
+## Phyloseq preprocessing 및 taxonomy 검증
+
+- `01_Preprocessing.Rmd`의 순서에 따라 count table과 metadata 결합, taxonomy prefix 정리, 미분류 rank 보완, Kingdom filtering을 수행함.
+- ITS2 분석이므로 `Kingdom == Fungi`를 명시적으로 확인하고 유지함.
+- rarefaction, low-abundance threshold 및 contaminant removal은 preprocessing 단계에 적용하지 않음.
+
+```{r preprocessing-audit}
+datatable_basic(preprocessing_audit, 10) |>
+  DT::formatRound("Total_Reads", 0)
+
+datatable_basic(kingdom_before, 10) |>
+  DT::formatRound("Reads", 0)
+
+datatable_basic(kingdom_after, 10) |>
+  DT::formatRound("Reads", 0)
+```
+
+```{r taxonomy-check}
+taxonomy_check <- taxonomy_matrix |>
+  dplyr::select(Kingdom, Phylum, Class, Order, Family, Genus, Species) |>
+  dplyr::slice_head(n = 12)
+
+datatable_basic(taxonomy_check, 12)
+```
+
+- Import 이후 taxonomy cleaning과 Kingdom filtering에 따른 sample, taxa 및 total read 변화를 위 표에서 직접 확인함.
+- Kingdom filtering 이후 남은 Kingdom level과 taxa/read 합계를 별도 표로 재확인함.
+
+## Sample info
+
+```{r sample-overview}
+sample_overview <- sample_info |>
+  dplyr::count(Sample_Type, Control_Type, PCR_Cycle_Group, name = "N") |>
+  dplyr::mutate(N = as.integer(N)) |>
+  dplyr::arrange(Sample_Type, Control_Type, PCR_Cycle_Group)
+
+sample_totals <- tibble::tibble(
+  Item = c(
+    "Metadata libraries", "Libraries used for alpha/beta/taxa",
+    "Independent skin subjects", "Independent control sources", "Species-level taxa"
+  ),
+  N = as.integer(c(
+    nrow(q2_metadata), phyloseq::nsamples(phy),
+    dplyr::n_distinct(sample_info$Subject[sample_info$Sample_Type == "True"]),
+    dplyr::n_distinct(sample_info$Subject[sample_info$Sample_Type == "Control"]),
+    phyloseq::ntaxa(phy)
+  ))
+)
+
+datatable_basic(sample_totals, 10)
+datatable_basic(sample_overview, 12)
+
+skin_design <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::count(Subject, Region, Direction, Skin_Site, PCR_Cycle_Group, name = "Library_N") |>
+  dplyr::arrange(Subject, Skin_Site, PCR_Cycle_Group)
+
+datatable_basic(skin_design, 15)
+```
+
+현재 분석 metadata에서 Mock으로 식별되는 sample은 `r sum(sample_info$Sample_Type == "Mock", na.rm = TRUE)`개임. QC20/QC30, maxEE 22/44/88 및 ITSxpress 사용 여부를 나타내는 column은 현재 metadata와 QIIME artifact에 포함되지 않아 해당 parameter 간 비교는 수행하지 않음.
+
+## NGS info
+
+```{r ngs-summary}
+depth_summary <- sample_info |>
+  dplyr::group_by(Sample_Type, Control_Type) |>
+  dplyr::summarise(
+    N = as.integer(dplyr::n()),
+    Min = as.integer(min(Read_Depth)),
+    Max = as.integer(max(Read_Depth)),
+    Median = round(stats::median(Read_Depth), 1),
+    Mean = round(mean(Read_Depth), 1),
+    SD = round(stats::sd(Read_Depth), 1),
+    Qubit_Median_ng_uL = round(stats::median(Qubit_ng_uL, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+
+missingness <- q2_metadata |>
+  dplyr::summarise(dplyr::across(dplyr::everything(), ~ sum(is.na(.)))) |>
+  tidyr::pivot_longer(dplyr::everything(), names_to = "Variable", values_to = "Missing_N") |>
+  dplyr::filter(Missing_N > 0) |>
+  dplyr::mutate(Missing_N = as.integer(Missing_N))
+
+datatable_basic(depth_summary, 10)
+if (nrow(missingness) > 0) datatable_basic(missingness, 10)
+```
+
+```{r depth-plots, fig.width=12, fig.height=6.2}
+depth_plot <- ggplot(
+  sample_info,
+  aes(x = Control_Type, y = Read_Depth, colour = Sample_Type)
+) +
+  geom_boxplot(outlier.shape = NA, colour = "grey45") +
+  geom_jitter(width = 0.15, alpha = 0.8, size = 2) +
+  scale_y_log10(labels = scales::label_comma()) +
+  scale_colour_manual(values = group_colors, drop = FALSE) +
+  labs(
+    title = "Sequencing depth by sample/control type",
+    x = NULL,
+    y = "Non-rarefied fungal reads (Species level)",
+    colour = "Sample type"
+  ) +
+  guides(colour = guide_legend(nrow = 1)) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+
+concentration_plot <- ggplot(
+  sample_info,
+  aes(x = Qubit_ng_uL, y = Read_Depth, colour = Sample_Type, shape = Control_Type)
+) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  scale_y_log10(labels = scales::label_comma()) +
+  scale_colour_manual(values = group_colors, drop = FALSE) +
+  labs(
+    title = "DNA concentration and sequencing depth",
+    x = "Qubit concentration (ng/µL)",
+    y = "Non-rarefied fungal reads (Species level)",
+    colour = "Sample type",
+    shape = "Control type"
+  ) +
+  guides(
+    colour = guide_legend(nrow = 1),
+    shape = guide_legend(nrow = 2)
+  )
+
+(depth_plot + concentration_plot) +
+  patchwork::plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+- Negative control에서도 fungal read가 확인되며 control type별 depth 차이가 존재함.
+- 현재 입력은 최종 feature table 이후의 count만 포함하므로 NC read가 demultiplexing, Cutadapt, ITSxpress, denoising/merging 또는 chimera removal 중 어느 단계에서 유지되었는지는 판정할 수 없음.
+
+## Rarefaction trend
+
+- Rarefaction은 sample filtering 또는 분석 포함 기준으로 사용하지 않음.
+- 각 library의 full non-rarefied count에서 sequencing depth 증가에 따른 expected observed richness 추이만 확인함.
+
+```{r rarefaction-trend, fig.width=11, fig.height=6.5}
+rarefaction_input <- t(otu_matrix)
+rarefaction_curve <- vegan::rarecurve(
+  rarefaction_input,
+  step = 100,
+  label = FALSE,
+  tidy = TRUE
+) |>
+  dplyr::rename(SampleID = Site, Sequencing_Depth = Sample, Expected_Richness = Species) |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group
+      ),
+    by = "SampleID"
+  )
+
+ggplot(
+  rarefaction_curve,
+  aes(
+    x = Sequencing_Depth,
+    y = Expected_Richness,
+    group = SampleID,
+    colour = Sample_Type
+  )
+) +
+  geom_line(alpha = 0.48, linewidth = 0.45) +
+  facet_wrap(~ PCR_Cycle_Group, scales = "free_x") +
+  scale_colour_manual(values = group_colors) +
+  scale_x_continuous(labels = scales::label_comma()) +
+  labs(
+    x = "Sequencing depth (non-rarefied reads)",
+    y = "Expected observed richness (Species)",
+    colour = "Sample type"
+  )
+```
+
+## NC-ranked top 50 Species heatmap
+
+```{r heatmap-data}
+heatmap_info <- sample_info |>
+  dplyr::mutate(
+    Site = dplyr::if_else(is.na(Skin_Site) | Skin_Site == "", "Missing", Skin_Site),
+    Subject = dplyr::if_else(is.na(Subject) | Subject == "", "Missing", Subject)
+  )
+
+species_name <- taxonomy_matrix$Display_Taxon[
+  match(rownames(otu_matrix), taxonomy_matrix$FeatureID)
+]
+species_count <- rowsum(otu_matrix, group = species_name, reorder = FALSE) |>
+  t()
+species_relative_heatmap <- species_count / rowSums(species_count)
+
+control_ids <- heatmap_info |>
+  dplyr::filter(Sample_Type == "Control") |>
+  dplyr::pull(SampleID)
+
+top_species <- species_relative_heatmap[control_ids, , drop = FALSE] |>
+  colMeans() |>
+  sort(decreasing = TRUE) |>
+  head(50) |>
+  names()
+
+species_clr <- log(species_count[, top_species, drop = FALSE] + 0.5)
+species_clr <- species_clr - rowMeans(species_clr)
+
+top_species_table <- tibble::tibble(
+  Species = top_species,
+  NC_Mean_Relative_Abundance = colMeans(
+    species_relative_heatmap[control_ids, top_species, drop = FALSE]
+  ),
+  NC_Prevalence = colMeans(species_count[control_ids, top_species, drop = FALSE] > 0),
+  NC_Reads = colSums(species_count[control_ids, top_species, drop = FALSE])
+)
+
+datatable_basic(top_species_table, 10) |>
+  DT::formatPercentage(c("NC_Mean_Relative_Abundance", "NC_Prevalence"), 1) |>
+  DT::formatRound("NC_Reads", 0)
+```
+
+```{r heatmap-colors}
+cycle_color <- c(
+  "PCR1_33__PCR2_8" = "#0072B2",
+  "PCR1_33__PCR2_10" = "#D55E00",
+  "PCR1_35__PCR2_8" = "#009E73",
+  "PCR1_35__PCR2_10" = "#CC79A7"
+)
+
+subject_levels <- sort(unique(heatmap_info$Subject))
+subject_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(12, "Paired")
+)(length(subject_levels))
+names(subject_color) <- subject_levels
+
+site_levels <- sort(unique(heatmap_info$Site))
+site_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(9, "Set1")
+)(length(site_levels))
+names(site_color) <- site_levels
+
+control_levels <- levels(droplevels(heatmap_info$Control_Type))
+control_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(8, "Dark2")
+)(length(control_levels))
+names(control_color) <- control_levels
+
+qubit_color <- circlize::colorRamp2(
+  range(heatmap_info$Qubit_ng_uL, na.rm = TRUE),
+  c("#FFF5EB", "#A63603")
+)
+mol_color <- circlize::colorRamp2(
+  range(heatmap_info$Mol_Conc_nM, na.rm = TRUE),
+  c("#F7FBFF", "#08519C")
+)
+heatmap_color <- circlize::colorRamp2(
+  c(-3, 0, 3),
+  c("#2166AC", "white", "#B2182B")
+)
+```
+
+```{r heatmap-function}
+draw_species_heatmap <- function(sample_ids, title, show_sample_name = FALSE) {
+  meta <- heatmap_info |>
+    dplyr::filter(SampleID %in% sample_ids) |>
+    dplyr::arrange(match(SampleID, sample_ids))
+
+  z_table <- t(scale(species_clr[meta$SampleID, top_species, drop = FALSE]))
+  z_table[!is.finite(z_table)] <- 0
+  z_table[z_table > 3] <- 3
+  z_table[z_table < -3] <- -3
+
+  annotation <- data.frame(
+    PCR_Cycle_Group = meta$PCR_Cycle_Group,
+    Subject = meta$Subject,
+    Site = meta$Site,
+    Control_Type = meta$Control_Type,
+    Qubit_ng_uL = meta$Qubit_ng_uL,
+    Mol_Conc_nM = meta$Mol_Conc_nM,
+    row.names = meta$SampleID,
+    check.names = FALSE
+  )
+
+  top_annotation <- ComplexHeatmap::HeatmapAnnotation(
+    df = annotation,
+    col = list(
+      PCR_Cycle_Group = cycle_color,
+      Subject = subject_color,
+      Site = site_color,
+      Control_Type = control_color,
+      Qubit_ng_uL = qubit_color,
+      Mol_Conc_nM = mol_color
+    ),
+    simple_anno_size = grid::unit(3, "mm")
+  )
+
+  ComplexHeatmap::Heatmap(
+    z_table,
+    name = "CLR z score",
+    col = heatmap_color,
+    top_annotation = top_annotation,
+    cluster_rows = TRUE,
+    cluster_columns = TRUE,
+    show_column_names = show_sample_name,
+    column_names_rot = 90,
+    column_names_gp = grid::gpar(fontsize = 7),
+    row_names_gp = grid::gpar(fontsize = 7),
+    column_title = title,
+    border = TRUE,
+    use_raster = FALSE
+  )
+}
+```
+
+```{r species-heatmaps, fig.width=16, fig.height=10}
+heatmap_total <- draw_species_heatmap(
+  heatmap_info$SampleID,
+  "Total: NC-ranked top 50 Species"
+)
+heatmap_control <- draw_species_heatmap(
+  heatmap_info$SampleID[heatmap_info$Sample_Type == "Control"],
+  "Control: NC-ranked top 50 Species",
+  TRUE
+)
+heatmap_true <- draw_species_heatmap(
+  heatmap_info$SampleID[heatmap_info$Sample_Type == "True"],
+  "True samples: NC-ranked top 50 Species",
+  TRUE
+)
+
+ComplexHeatmap::draw(heatmap_total)
+ComplexHeatmap::draw(heatmap_control)
+ComplexHeatmap::draw(heatmap_true)
+```
+
+# 2. Alpha diversity
+
+- 지수: Observed species, Shannon, Simpson
+- 비교군: True vs Control
+- 검정: 독립표본 Wilcoxon rank-sum test, paired structure 미적용
+- multiple testing: 세 alpha index의 True vs Control 검정에 BH correction 적용
+- 입력: non-rarefied phyloseq count의 전체 `r phyloseq::nsamples(phy)`개 library
+
+```{r alpha-data}
+alpha_data <- phyloseq::estimate_richness(
+  phy,
+  measures = c("Observed", "Shannon", "Simpson")
+) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(SampleID = stringr::str_replace(SampleID, "^X(?=\\d)", "")) |>
+  tidyr::pivot_longer(
+    c("Observed", "Shannon", "Simpson"),
+    names_to = "Metric",
+    values_to = "Value"
+  ) |>
+  dplyr::mutate(
+    Metric = dplyr::recode(Metric, "Observed" = "Observed species")
+  ) |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group
+      ),
+    by = "SampleID"
+  ) |>
+  dplyr::filter(!is.na(Sample_Type), Sample_Type != "Mock") |>
+  dplyr::mutate(Sample_Type = droplevels(Sample_Type))
+
+alpha_tests <- alpha_data |>
+  dplyr::group_by(Metric) |>
+  dplyr::summarise(
+    N_Control = as.integer(sum(Sample_Type == "Control")),
+    N_True = as.integer(sum(Sample_Type == "True")),
+    Median_Control = stats::median(Value[Sample_Type == "Control"]),
+    Median_True = stats::median(Value[Sample_Type == "True"]),
+    P_value = stats::wilcox.test(
+      Value[Sample_Type == "Control"],
+      Value[Sample_Type == "True"],
+      exact = FALSE
+    )$p.value,
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    P_adjust_BH = stats::p.adjust(P_value, method = "BH"),
+    Significant = dplyr::case_when(
+      P_adjust_BH < 0.001 ~ "***",
+      P_adjust_BH < 0.01 ~ "**",
+      P_adjust_BH < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+
+datatable_basic(alpha_tests, 10) |>
+  DT::formatRound(c("Median_Control", "Median_True"), 3) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r alpha-plot, fig.width=11, fig.height=4.6}
+ggplot(alpha_data, aes(x = Sample_Type, y = Value, fill = Sample_Type)) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, alpha = 0.65) +
+  geom_jitter(width = 0.14, size = 1.7, alpha = 0.75) +
+  facet_wrap(~ Metric, scales = "free_y", nrow = 1) +
+  scale_fill_manual(values = group_colors) +
+  labs(x = NULL, y = "Alpha diversity", fill = "Sample type")
+```
+
+## Skin sample별 alpha diversity
+
+- Skin은 group mean으로 합치지 않고 각 library를 하나의 점과 표의 한 행으로 제시함.
+- x축 site는 좌/우 방향을 포함하며, panel은 대상자별로 분리하고 색은 PCR 조건을 나타냄.
+- 동일 `Subject × Skin site`에서 PCR 조건이 반복된 구조이므로 이 그림은 sample-level pattern 확인용임.
+
+```{r skin-alpha-table}
+skin_alpha <- alpha_data |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::arrange(Subject, Skin_Site, PCR_Cycle_Group, SampleID, Metric)
+
+datatable_basic(
+  skin_alpha |>
+    dplyr::select(
+      SampleID, Subject, Region, Direction, Skin_Site,
+      PCR_Cycle_Group, Metric, Value
+    ),
+  15
+) |>
+  DT::formatRound("Value", 4)
+```
+
+```{r skin-alpha-plot, fig.width=15, fig.height=9}
+ggplot(
+  skin_alpha,
+  aes(x = Skin_Site, y = Value, colour = PCR_Cycle_Group)
+) +
+  geom_point(
+    position = position_jitter(width = 0.12, height = 0),
+    size = 2.2,
+    alpha = 0.82
+  ) +
+  facet_grid(Metric ~ Subject, scales = "free_y") +
+  scale_colour_manual(values = cycle_color, drop = FALSE) +
+  labs(
+    x = "Skin site (direction retained)",
+    y = "Alpha diversity",
+    colour = "PCR cycle group"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+- True–Control 차이는 library 단위의 탐색 결과이며 동일 source/subject의 PCR 조건 반복을 독립 표본으로 간주한 제한이 있음.
+- 독립적인 biological replicate가 적으므로 adjusted p-value만으로 생물학적 차이를 확정하지 않음.
+
+# 3. Beta diversity
+
+- distance: non-rarefied count에서 Bray–Curtis relative abundance 및 Jaccard presence/absence를 계산함
+- ordination: PCoA
+- marginal plot: PCoA1 및 PCoA2의 Sample type별 density를 함께 제시함
+- PERMANOVA: `Sample_Type` 단일 predictor, 999 permutations, seed 42
+- dispersion: `betadisper` 후 999-permutation test
+- 반복측정: `Sample_Type`이 subject/source 내부에서 변하지 않아 strata 적용 시 group 효과를 검정할 수 없음. 따라서 unstratified 결과를 탐색값으로만 제시함
+- multiple testing: 두 distance의 PERMANOVA와 dispersion p-value에 각각 BH correction 적용
+
+```{r beta-analysis}
+analyse_distance <- function(distance_object, distance_name) {
+  sample_ids <- attr(distance_object, "Labels")
+  meta <- sample_info |>
+    dplyr::filter(SampleID %in% sample_ids, Sample_Type != "Mock") |>
+    dplyr::arrange(match(SampleID, sample_ids)) |>
+    dplyr::mutate(
+      Sample_Type = droplevels(Sample_Type),
+      Control_Type = droplevels(Control_Type)
+    ) |>
+    data.frame(check.names = FALSE)
+  keep_ids <- meta$SampleID
+  distance_matrix <- as.matrix(distance_object)[keep_ids, keep_ids, drop = FALSE]
+  distance_filtered <- stats::as.dist(distance_matrix)
+
+  set.seed(42)
+  permanova <- vegan::adonis2(
+    distance_filtered ~ Sample_Type,
+    data = meta,
+    permutations = 999
+  )
+  dispersion <- vegan::betadisper(distance_filtered, meta$Sample_Type)
+  set.seed(42)
+  dispersion_test <- vegan::permutest(dispersion, permutations = 999)
+
+  pcoa <- stats::cmdscale(distance_filtered, k = 2, eig = TRUE, add = TRUE)
+  variance <- pcoa$eig[pcoa$eig > 0] / sum(pcoa$eig[pcoa$eig > 0]) * 100
+  score <- tibble::as_tibble(pcoa$points, rownames = "SampleID") |>
+    dplyr::rename(Axis1 = V1, Axis2 = V2) |>
+    dplyr::left_join(meta, by = "SampleID") |>
+    dplyr::mutate(Distance = distance_name)
+
+  result <- tibble::tibble(
+    Distance = distance_name,
+    N = as.integer(nrow(meta)),
+    PERMANOVA_R2 = as.numeric(permanova$R2[1]),
+    PERMANOVA_P = as.numeric(permanova$`Pr(>F)`[1]),
+    Betadisper_P = as.numeric(dispersion_test$tab$`Pr(>F)`[1])
+  )
+
+  main_plot <- ggplot(
+    score,
+    aes(x = Axis1, y = Axis2, colour = Sample_Type, shape = Control_Type)
+  ) +
+    geom_hline(yintercept = 0, colour = "grey85") +
+    geom_vline(xintercept = 0, colour = "grey85") +
+    geom_point(size = 2.6, alpha = 0.82) +
+    stat_ellipse(aes(group = Sample_Type), linewidth = 0.7, linetype = 2) +
+    scale_colour_manual(values = group_colors) +
+    labs(
+      title = distance_name,
+      x = paste0("PCoA1 (", round(variance[1], 1), "%)"),
+      y = paste0("PCoA2 (", round(variance[2], 1), "%)"),
+      colour = "Sample type",
+      shape = "Control type"
+    ) +
+    guides(colour = guide_legend(nrow = 1), shape = guide_legend(nrow = 2)) +
+    theme(legend.position = "bottom")
+
+  density_score <- score |>
+    dplyr::group_by(Sample_Type) |>
+    dplyr::filter(dplyr::n() > 1) |>
+    dplyr::ungroup()
+
+  x_density <- cowplot::axis_canvas(main_plot, axis = "x") +
+    geom_density(
+      data = density_score,
+      aes(x = Axis1, fill = Sample_Type, colour = Sample_Type),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = group_colors) +
+    scale_colour_manual(values = group_colors)
+
+  y_density <- cowplot::axis_canvas(main_plot, axis = "y", coord_flip = TRUE) +
+    geom_density(
+      data = density_score,
+      aes(x = Axis2, fill = Sample_Type, colour = Sample_Type),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = group_colors) +
+    scale_colour_manual(values = group_colors) +
+    coord_flip()
+
+  plot <- main_plot |>
+    cowplot::insert_xaxis_grob(
+      x_density,
+      grid::unit(0.7, "in"),
+      position = "top"
+    ) |>
+    cowplot::insert_yaxis_grob(
+      y_density,
+      grid::unit(0.7, "in"),
+      position = "right"
+    ) |>
+    cowplot::ggdraw()
+
+  list(result = result, plot = plot, score = score)
+}
+
+beta_sample_ids <- sample_info |>
+  dplyr::filter(Sample_Type != "Mock") |>
+  dplyr::pull(SampleID)
+beta_count <- t(otu_matrix[, beta_sample_ids, drop = FALSE])
+beta_relative <- sweep(beta_count, 1, rowSums(beta_count), "/")
+
+bray_distance <- vegan::vegdist(beta_relative, method = "bray")
+jaccard_distance <- vegan::vegdist(beta_count, method = "jaccard", binary = TRUE)
+
+beta_results <- list(
+  analyse_distance(bray_distance, "Bray–Curtis"),
+  analyse_distance(jaccard_distance, "Jaccard")
+)
+
+beta_table <- purrr::map_dfr(beta_results, "result") |>
+  dplyr::mutate(
+    PERMANOVA_P_adjust_BH = stats::p.adjust(PERMANOVA_P, method = "BH"),
+    Betadisper_P_adjust_BH = stats::p.adjust(Betadisper_P, method = "BH")
+  )
+
+datatable_basic(beta_table, 10) |>
+  DT::formatRound("PERMANOVA_R2", 4) |>
+  DT::formatSignif(
+    c("PERMANOVA_P", "Betadisper_P", "PERMANOVA_P_adjust_BH", "Betadisper_P_adjust_BH"),
+    3
+  )
+```
+
+```{r beta-plots, fig.width=16, fig.height=7.5}
+cowplot::plot_grid(
+  beta_results[[1]]$plot,
+  beta_results[[2]]$plot,
+  labels = c("A", "B"),
+  ncol = 2
+)
+```
+
+## Skin sample별 beta diversity
+
+- Skin library만 분리하여 대상자와 좌/우 포함 site를 동시에 표시함.
+- 탐색적 PERMANOVA는 `Subject + Skin_Site + PCR_Cycle_Group`를 함께 넣어 각 요인의 주변효과를 계산함.
+- 동일 biological unit에서 PCR 조건이 반복되므로 permutation p-value는 확증 검정이 아니라 구조 확인용임.
+
+```{r skin-beta-analysis}
+analyse_skin_distance <- function(distance_object, distance_name) {
+  skin_ids <- sample_info |>
+    dplyr::filter(Sample_Type == "True") |>
+    dplyr::pull(SampleID)
+  distance_matrix <- as.matrix(distance_object)[skin_ids, skin_ids, drop = FALSE]
+  distance_skin <- stats::as.dist(distance_matrix)
+  meta <- sample_info |>
+    dplyr::filter(SampleID %in% skin_ids) |>
+    dplyr::arrange(match(SampleID, skin_ids)) |>
+    dplyr::mutate(
+      Subject = factor(Subject),
+      Skin_Site = factor(Skin_Site),
+      PCR_Cycle_Group = droplevels(PCR_Cycle_Group)
+    ) |>
+    data.frame(check.names = FALSE)
+
+  set.seed(42)
+  permanova <- vegan::adonis2(
+    distance_skin ~ Subject + Skin_Site + PCR_Cycle_Group,
+    data = meta,
+    permutations = 999,
+    by = "margin"
+  )
+  permanova_table <- as.data.frame(permanova) |>
+    tibble::rownames_to_column("Term") |>
+    dplyr::filter(Term %in% c("Subject", "Skin_Site", "PCR_Cycle_Group")) |>
+    dplyr::transmute(
+      Distance = distance_name,
+      Term,
+      Df = as.integer(Df),
+      R2 = as.numeric(R2),
+      F = as.numeric(F),
+      P_value = as.numeric(`Pr(>F)`)
+    )
+
+  pcoa <- stats::cmdscale(distance_skin, k = 2, eig = TRUE, add = TRUE)
+  variance <- pcoa$eig[pcoa$eig > 0] / sum(pcoa$eig[pcoa$eig > 0]) * 100
+  score <- tibble::as_tibble(pcoa$points, rownames = "SampleID") |>
+    dplyr::rename(Axis1 = V1, Axis2 = V2) |>
+    dplyr::left_join(meta, by = "SampleID") |>
+    dplyr::mutate(Distance = distance_name)
+
+  skin_subject_levels <- sort(unique(score$Subject))
+  skin_subject_color <- c("KSY" = "#0072B2", "PYH" = "#D55E00")
+  if (!all(skin_subject_levels %in% names(skin_subject_color))) {
+    skin_subject_color <- setNames(
+      scales::hue_pal()(length(skin_subject_levels)),
+      skin_subject_levels
+    )
+  }
+  skin_site_levels <- sort(unique(score$Skin_Site))
+  skin_site_shape <- setNames(rep(0:24, length.out = length(skin_site_levels)), skin_site_levels)
+
+  main_plot <- ggplot(
+    score,
+    aes(x = Axis1, y = Axis2, colour = Subject, shape = Skin_Site)
+  ) +
+    geom_hline(yintercept = 0, colour = "grey85") +
+    geom_vline(xintercept = 0, colour = "grey85") +
+    geom_point(size = 2.8, alpha = 0.84) +
+    stat_ellipse(aes(group = Subject), linewidth = 0.7, linetype = 2) +
+    scale_colour_manual(values = skin_subject_color) +
+    scale_shape_manual(values = skin_site_shape) +
+    labs(
+      title = paste0(distance_name, " — skin samples"),
+      x = paste0("PCoA1 (", round(variance[1], 1), "%)"),
+      y = paste0("PCoA2 (", round(variance[2], 1), "%)"),
+      colour = "Subject",
+      shape = "Skin site"
+    ) +
+    guides(shape = guide_legend(ncol = 2)) +
+    theme(legend.position = "bottom")
+
+  x_density <- cowplot::axis_canvas(main_plot, axis = "x") +
+    geom_density(
+      data = score,
+      aes(x = Axis1, fill = Subject, colour = Subject),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = skin_subject_color) +
+    scale_colour_manual(values = skin_subject_color)
+
+  y_density <- cowplot::axis_canvas(main_plot, axis = "y", coord_flip = TRUE) +
+    geom_density(
+      data = score,
+      aes(x = Axis2, fill = Subject, colour = Subject),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = skin_subject_color) +
+    scale_colour_manual(values = skin_subject_color) +
+    coord_flip()
+
+  plot <- main_plot |>
+    cowplot::insert_xaxis_grob(
+      x_density, grid::unit(0.7, "in"), position = "top"
+    ) |>
+    cowplot::insert_yaxis_grob(
+      y_density, grid::unit(0.7, "in"), position = "right"
+    ) |>
+    cowplot::ggdraw()
+
+  list(result = permanova_table, plot = plot, score = score)
+}
+
+skin_beta_results <- list(
+  analyse_skin_distance(bray_distance, "Bray–Curtis"),
+  analyse_skin_distance(jaccard_distance, "Jaccard")
+)
+
+skin_beta_table <- purrr::map_dfr(skin_beta_results, "result") |>
+  dplyr::group_by(Term) |>
+  dplyr::mutate(P_adjust_BH = stats::p.adjust(P_value, method = "BH")) |>
+  dplyr::ungroup()
+
+datatable_basic(skin_beta_table, 10) |>
+  DT::formatRound(c("R2", "F"), 4) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+
+skin_pcoa_scores <- purrr::map_dfr(skin_beta_results, "score") |>
+  dplyr::select(
+    Distance, SampleID, Subject, Region, Direction, Skin_Site,
+    PCR_Cycle_Group, Axis1, Axis2
+  ) |>
+  dplyr::arrange(Distance, Subject, Skin_Site, PCR_Cycle_Group)
+
+datatable_basic(skin_pcoa_scores, 15) |>
+  DT::formatRound(c("Axis1", "Axis2"), 5)
+```
+
+```{r skin-beta-plots, fig.width=16, fig.height=8.5}
+cowplot::plot_grid(
+  skin_beta_results[[1]]$plot,
+  skin_beta_results[[2]]$plot,
+  labels = c("A", "B"),
+  ncol = 2
+)
+```
+
+- PERMANOVA와 betadisper를 함께 확인해야 centroid 차이와 dispersion 차이를 구분할 수 있음.
+- group과 subject/source가 완전히 분리되어 있어 현재 p-value는 biological replicate 수준의 확증 통계로 해석할 수 없음.
+
+# 4. Taxonomic composition
+
+- taxonomic level: Species
+- 표시 기준: 전체 sample mean relative abundance 상위 14 taxa
+- 분석 단위: non-rarefied species count의 sample별 relative abundance
+- taxa 차이: 상위 14 taxa의 True vs Control library-level Wilcoxon test 및 BH correction
+
+```{r taxonomy-data}
+display_lookup <- taxonomy_matrix |>
+  dplyr::select(FeatureID, Display_Taxon)
+
+relative_matrix <- sweep(otu_matrix, 2, colSums(otu_matrix), "/")
+relative_long <- as.data.frame(t(relative_matrix), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  tidyr::pivot_longer(-SampleID, names_to = "FeatureID", values_to = "Relative_Abundance") |>
+  dplyr::left_join(display_lookup, by = "FeatureID") |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group
+      ),
+    by = "SampleID"
+  )
+
+species_relative <- relative_long |>
+  dplyr::group_by(
+    SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+    Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon
+  ) |>
+  dplyr::summarise(
+    Relative_Abundance = sum(Relative_Abundance),
+    .groups = "drop"
+  )
+
+top_taxa <- species_relative |>
+  dplyr::group_by(Display_Taxon) |>
+  dplyr::summarise(Mean = mean(Relative_Abundance), .groups = "drop") |>
+  dplyr::arrange(dplyr::desc(Mean)) |>
+  dplyr::slice_head(n = 14)
+
+composition_data <- species_relative |>
+  dplyr::mutate(
+    Display_Taxon = dplyr::if_else(
+      Display_Taxon %in% top_taxa$Display_Taxon,
+      Display_Taxon,
+      "Others"
+    )
+  ) |>
+  dplyr::group_by(
+    SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+    Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon
+  ) |>
+  dplyr::summarise(Relative_Abundance = sum(Relative_Abundance), .groups = "drop")
+
+composition_summary <- composition_data |>
+  dplyr::group_by(Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon) |>
+  dplyr::summarise(Mean_Relative_Abundance = mean(Relative_Abundance), .groups = "drop")
+
+taxa_tests <- species_relative |>
+  dplyr::filter(Display_Taxon %in% top_taxa$Display_Taxon, Sample_Type != "Mock") |>
+  dplyr::mutate(Sample_Type = droplevels(Sample_Type)) |>
+  dplyr::group_by(Display_Taxon) |>
+  dplyr::summarise(
+    Mean_Control = mean(Relative_Abundance[Sample_Type == "Control"]),
+    Mean_True = mean(Relative_Abundance[Sample_Type == "True"]),
+    Prevalence_Control = mean(Relative_Abundance[Sample_Type == "Control"] > 0),
+    Prevalence_True = mean(Relative_Abundance[Sample_Type == "True"] > 0),
+    P_value = stats::wilcox.test(
+      Relative_Abundance[Sample_Type == "Control"],
+      Relative_Abundance[Sample_Type == "True"],
+      exact = FALSE
+    )$p.value,
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    P_adjust_BH = stats::p.adjust(P_value, method = "BH"),
+    Significant = dplyr::case_when(
+      P_adjust_BH < 0.001 ~ "***",
+      P_adjust_BH < 0.01 ~ "**",
+      P_adjust_BH < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  ) |>
+  dplyr::arrange(P_adjust_BH)
+
+datatable_basic(taxa_tests, 14) |>
+  DT::formatPercentage(
+    c("Mean_Control", "Mean_True", "Prevalence_Control", "Prevalence_True"),
+    1
+  ) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r composition-plot, fig.width=13, fig.height=6.2}
+taxon_levels <- c(top_taxa$Display_Taxon, "Others")
+composition_summary <- composition_summary |>
+  dplyr::mutate(Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels)))
+
+ggplot(
+  composition_summary,
+  aes(
+    x = interaction(Control_Type, PCR_Cycle_Group, sep = "\n"),
+    y = Mean_Relative_Abundance,
+    fill = Display_Taxon
+  )
+) +
+  geom_col(width = 0.86) +
+  facet_grid(~ Sample_Type, scales = "free_x", space = "free_x") +
+  scale_y_continuous(labels = scales::label_percent(), expand = c(0, 0)) +
+  scale_fill_viridis_d(option = "turbo", direction = -1) +
+  labs(
+    title = "Group-mean taxonomic composition overview",
+    x = "Control type / PCR cycle group",
+    y = "Mean relative abundance (Species)",
+    fill = "Species"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+## Skin sample별 taxonomic composition
+
+- 아래 stacked bar의 각 막대는 개별 Skin library 한 개이며 평균으로 합치지 않음.
+- 대상자와 PCR 조건을 panel로 분리하고, 좌/우 포함 site와 SampleID는 표에서 함께 확인함.
+
+```{r skin-composition-data}
+skin_sample_order <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::arrange(Subject, PCR_Cycle_Group, Skin_Site, SampleID) |>
+  dplyr::pull(SampleID)
+
+skin_composition <- composition_data |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::mutate(
+    SampleID = factor(SampleID, levels = skin_sample_order),
+    Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels))
+  )
+
+skin_composition_index <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::select(
+    SampleID, Subject, Region, Direction, Skin_Site,
+    PCR_Cycle_Group, Read_Depth, Qubit_ng_uL, Mol_Conc_nM
+  ) |>
+  dplyr::arrange(Subject, PCR_Cycle_Group, Skin_Site, SampleID)
+
+datatable_basic(skin_composition_index, 15) |>
+  DT::formatRound(c("Read_Depth", "Qubit_ng_uL", "Mol_Conc_nM"), 2)
+```
+
+```{r skin-composition-plot, fig.width=17, fig.height=10}
+ggplot(
+  skin_composition,
+  aes(x = SampleID, y = Relative_Abundance, fill = Display_Taxon)
+) +
+  geom_col(width = 0.9) +
+  facet_wrap(
+    vars(Subject, PCR_Cycle_Group),
+    scales = "free_x",
+    ncol = 4
+  ) +
+  scale_y_continuous(labels = scales::label_percent(), expand = c(0, 0)) +
+  scale_fill_viridis_d(option = "turbo", direction = -1, drop = FALSE) +
+  labs(
+    title = "Sample-level fungal composition of skin libraries",
+    x = "SampleID",
+    y = "Relative abundance (Species)",
+    fill = "Species"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6.5),
+    legend.position = "right"
+  )
+```
+
+```{r control-heatmap, fig.width=11, fig.height=7}
+control_heatmap <- species_relative |>
+  dplyr::filter(Display_Taxon %in% top_taxa$Display_Taxon) |>
+  dplyr::group_by(Control_Type, PCR_Cycle_Group, Display_Taxon) |>
+  dplyr::summarise(Mean_Relative_Abundance = mean(Relative_Abundance), .groups = "drop") |>
+  dplyr::mutate(
+    Profile = interaction(Control_Type, PCR_Cycle_Group, sep = " / "),
+    Display_Taxon = factor(Display_Taxon, levels = rev(top_taxa$Display_Taxon))
+  )
+
+ggplot(
+  control_heatmap,
+  aes(x = Profile, y = Display_Taxon, fill = Mean_Relative_Abundance)
+) +
+  geom_tile(colour = "white", linewidth = 0.25) +
+  scale_fill_viridis_c(
+    option = "C",
+    trans = "sqrt",
+    labels = scales::label_percent(accuracy = 0.1),
+    guide = guide_colorbar(
+      direction = "vertical",
+      barheight = grid::unit(55, "mm")
+    )
+  ) +
+  labs(
+    x = "Sample/control profile / PCR cycle group",
+    y = "Species",
+    fill = "Mean relative\nabundance"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 55, hjust = 1),
+    legend.position = "right"
+  )
+```
+
+# 5. 결론
+
+```{r conclusion-text, results='asis'}
+alpha_min <- alpha_tests |>
+  dplyr::slice_min(P_adjust_BH, n = 1, with_ties = FALSE)
+beta_min <- beta_table |>
+  dplyr::slice_min(PERMANOVA_P_adjust_BH, n = 1, with_ties = FALSE)
+taxa_sig_n <- sum(taxa_tests$P_adjust_BH < 0.05, na.rm = TRUE)
+
+cat(paste0(
+  "- 총 ", phyloseq::nsamples(phy), "개 library와 ", phyloseq::ntaxa(phy),
+  "개 species-level taxon이 phyloseq object에 포함됨.\n",
+  "- Rarefaction에 의한 sample filtering 없이 전체 ", phyloseq::nsamples(phy),
+  "개 library에서 alpha/beta/taxa를 평가함.\n",
+  "- Skin은 ", sum(sample_info$Sample_Type == "True"),
+  "개 library를 대상자와 좌/우 포함 site별로 유지했으며, ",
+  dplyr::n_distinct(sample_info$Biological_Unit[sample_info$Sample_Type == "True"]),
+  "개 Subject × Site biological unit의 sample-level alpha, beta 및 taxa 결과를 별도 제시함.\n",
+  "- Alpha diversity에서 가장 작은 BH-adjusted p-value는 ", alpha_min$Metric,
+  "의 ", signif(alpha_min$P_adjust_BH, 3), "로 확인됨.\n",
+  "- Beta diversity에서 가장 작은 BH-adjusted PERMANOVA p-value는 ",
+  beta_min$Distance, "의 ", signif(beta_min$PERMANOVA_P_adjust_BH, 3),
+  "이며, subject/source confounding으로 확증적 해석은 제한됨.\n",
+  "- 상위 14 species 중 library-level True–Control 비교에서 BH-adjusted p < 0.05인 taxon은 ",
+  taxa_sig_n, "개로 확인됨.\n",
+  "- Negative control의 read와 taxonomic profile이 확인되어 후속 decontam 평가가 필요함."
+))
+```
+
+# 6. 한계점 및 향후 분석 예정
+
+- Skin은 2명과 좌/우 포함 9개 해부학적 site로 구성되며, Subject × Site별 결과를 개별 sample 수준으로 제시했지만 대상자 수가 2명뿐이므로 일반화가 제한됨.
+- 동일 source/subject에서 PCR cycle 조건이 반복되어 library-level Wilcoxon 및 PERMANOVA의 독립성 가정이 충족되지 않음.
+- 현재 metadata에 Mock sample이 없어 positive-control recovery 및 expected composition을 평가하지 못함.
+- QC20/QC30, maxEE 22/44/88 및 ITSxpress 사용 여부가 metadata에 없어 preprocessing parameter별 결과를 비교하지 못함.
+- 현재 count는 최종 feature table 단계의 산출물이므로 NC read가 유입 또는 유지된 정확한 pipeline stage를 특정하지 못함.
+- taxonomy qza 원본이 없어 phyloseq taxonomy는 taxa barplot의 species-level aggregated count에서 재구성됨. ASV-level contaminant 판정 전 원본 feature table과 taxonomy artifact 확인이 필요함.
+- Rarefaction은 observed richness trend 확인에만 사용했으며 sample filtering 또는 diversity 계산 입력으로 사용하지 않음.
+- decontam method, threshold 및 contaminant removal은 적용하지 않음.
+
+향후 분석 우선순위:
+
+1. 각 QC/maxEE/ITSxpress 조합의 feature table, taxonomy, metadata 및 DADA2/ITSxpress 단계별 read tracking table을 동일한 sample key로 통합함.
+2. batch balance와 control source 구성을 확인한 후 pooled 또는 batch-stratified decontam 여부 및 method를 결정함.
+3. 승인된 decontam 설정에서 threshold sensitivity와 alpha/beta/taxa before–after 비교를 수행함.

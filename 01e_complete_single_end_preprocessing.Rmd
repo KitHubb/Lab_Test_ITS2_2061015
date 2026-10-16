@@ -1,0 +1,555 @@
+---
+title: "01e. Complete single-end ITS2 preprocessing"
+subtitle: "Cutadapt forward / QC20 / maxEE 2 — ITSxpress 적용 전 QC"
+date: "2026-10-16"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.align = "center", dpi = 180, dev = "ragg_png", out.width = "100%"
+)
+suppressPackageStartupMessages({
+  library(qiime2R)
+  library(phyloseq)
+  library(Biostrings)
+  library(dplyr)
+  library(tidyr)
+  library(tibble)
+  library(readr)
+  library(stringr)
+  library(ggplot2)
+  library(scales)
+  library(RColorBrewer)
+  library(DT)
+  library(patchwork)
+  library(jsonlite)
+})
+set.seed(42)
+
+pipeline_dir <- file.path(
+  "benchmark_results", "q20_ee22_both_full_cutadapt_forward"
+)
+table_path <- file.path(pipeline_dir, "dada2", "cutadapt", "single", "table.qza")
+repseq_path <- file.path(pipeline_dir, "dada2", "cutadapt", "single", "repseq.qza")
+stats_path <- file.path(pipeline_dir, "dada2", "cutadapt", "single", "denoising_stats.qza")
+taxonomy_path <- file.path(
+  pipeline_dir, "taxonomy", "cutadapt", "single",
+  "unite_v10_99_full", "taxonomy.tsv"
+)
+settings_path <- file.path(pipeline_dir, "settings.json")
+complete_path <- file.path(pipeline_dir, "COMPLETE.json")
+metadata_source <- file.path(
+  "Phyloseq", "phy_ITS2_cutadapt_single_q20_ee22_20261016.rds"
+)
+out_dir <- file.path("Results", "01e_complete_single_end_preprocessing")
+phyloseq_out <- file.path(
+  "Phyloseq", "phy_ITS2_cutadapt_single_complete_q20_ee2_20261016.rds"
+)
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+dir.create("Phyloseq", showWarnings = FALSE)
+
+required_files <- c(
+  table_path, repseq_path, stats_path, taxonomy_path,
+  settings_path, complete_path, metadata_source
+)
+if (!all(file.exists(required_files))) {
+  stop("필수 입력 파일이 없습니다: ", paste(required_files[!file.exists(required_files)], collapse = ", "))
+}
+
+method_color <- "#1F78B4"
+group_colors <- c("Control" = "#D55E00", "True" = "#0072B2", "Mock" = "#009E73")
+subject_colors <- c(
+  "KSY" = "#E78AC3", "PYH" = "#66A61E",
+  "Air swab" = "#E6AB02", "Clean bench swab" = "#A6761D",
+  "Empty tube" = "#7570B3", "Mock" = "#009E73"
+)
+
+soyeon_theme <- theme_classic(base_family = "Noto Sans CJK KR", base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13),
+    plot.subtitle = element_text(size = 10, colour = "grey30"),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 9, colour = "black"),
+    strip.background = element_rect(fill = "white", colour = "black"),
+    strip.text = element_text(face = "bold"),
+    legend.position = "bottom",
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.45)
+  )
+theme_set(soyeon_theme)
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x, rownames = FALSE, filter = "none",
+    options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE, scrollX = TRUE)
+  )
+}
+
+clean_tax_text <- function(x) {
+  x <- stringr::str_replace(as.character(x), "^[dkpcofgs]__", "")
+  x[is.na(x) | x %in% c("", "__", "NA", "uncultured", "Unassigned")] <- ""
+  x
+}
+
+get_otu <- function(ps) {
+  x <- as(phyloseq::otu_table(ps), "matrix")
+  if (!phyloseq::taxa_are_rows(ps)) x <- t(x)
+  x
+}
+
+settings <- jsonlite::fromJSON(settings_path)
+complete <- jsonlite::fromJSON(complete_path)
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data, ") format('opentype');font-weight:400;font-style:normal;}",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1500px!important;}",
+    ".callout{border-left:5px solid #2C7FB8;background:#F3F8FC;padding:14px 18px;margin:18px 0;}",
+    ".warn{border-left-color:#E67E22;background:#FFF8F0;}</style>"
+  ))
+}
+```
+
+# 1. 분석 범위
+
+이번 보고서는 새로 완료된 **Cutadapt forward single-end** 결과만 사용하여 다음을 수행한다.
+
+1. QIIME2 DADA2 table, representative sequence 및 UNITE taxonomy 무결성 확인
+2. metadata 연결 및 sample 일치 검증
+3. fungal phyloseq 생성과 단계별 sample/ASV/read audit
+4. DADA2 filtering 및 chimera 제거 retention 확인
+5. read depth, observed ASV, ASV 길이 및 taxonomy resolution 확인
+6. 기존 시험용 Cutadapt Single 결과와 exact-ASV 수준 비교
+7. Aureobasidium-like signal의 회수 여부 확인
+
+<div class="callout">
+ITSxpress 결과는 아직 생성되지 않았으므로 본 보고서에는 Cutadapt–ITSxpress 비교를 넣지 않았다.
+Rarefaction, abundance filtering, decontam 및 True–Control 가설검정도 적용하지 않았다.
+</div>
+
+## 실행 조건
+
+```{r settings-table}
+settings_table <- tibble::tribble(
+  ~Stage, ~Setting,
+  "Read cleanup", settings$cleanup,
+  "Forward primer", settings$primer,
+  "Read-through", settings$readthrough,
+  "DADA2 maxEE", as.character(settings$dada2$max_ee),
+  "DADA2 truncQ", as.character(settings$dada2$trunc_q),
+  "DADA2 truncLen", as.character(settings$dada2$trunc_len),
+  "Pooling", settings$dada2$pooling,
+  "Chimera", settings$dada2$chimera,
+  "Classifier confidence", as.character(settings$confidence)
+)
+datatable_basic(settings_table, 12)
+```
+
+이번 결과의 `maxEE`는 single-end이므로 **2**이다. 기존 파일명에 사용된 `ee22`는 paired
+workflow의 표기이고, 본 phyloseq 출력명에는 혼동을 피하기 위해 `ee2`를 사용한다.
+
+# 2. QIIME2 결과 import와 무결성 확인
+
+```{r import-qza}
+count_raw <- qiime2R::read_qza(table_path)[["data"]]
+repseq <- qiime2R::read_qza(repseq_path)[["data"]]
+denoise_stats <- qiime2R::read_qza(stats_path)[["data"]] |>
+  tibble::rownames_to_column("SampleID")
+taxonomy_input <- readr::read_tsv(taxonomy_path, show_col_types = FALSE)
+
+if (!all(rownames(count_raw) %in% taxonomy_input$`Feature ID`)) {
+  stop("Feature table의 일부 ASV가 taxonomy.tsv에 없습니다.")
+}
+if (!setequal(rownames(count_raw), names(repseq))) {
+  stop("Feature table과 repseq의 Feature ID가 일치하지 않습니다.")
+}
+if (!setequal(colnames(count_raw), denoise_stats$SampleID)) {
+  stop("Feature table과 DADA2 stats의 SampleID가 일치하지 않습니다.")
+}
+
+input_integrity <- tibble(
+  Item = c("Pipeline completion", "Samples requested", "Samples retained",
+           "DADA2 samples", "Raw ASVs", "Raw table reads",
+           "Repseq ASVs", "Taxonomy rows"),
+  Value = c(
+    as.character(complete$completed), complete$samples_input, complete$samples_retained,
+    ncol(count_raw), nrow(count_raw), sum(count_raw), length(repseq), nrow(taxonomy_input)
+  )
+)
+datatable_basic(input_integrity, 10)
+```
+
+# 3. Metadata 연결과 phyloseq 생성
+
+```{r build-phyloseq}
+metadata_ps <- readRDS(metadata_source)
+metadata <- data.frame(phyloseq::sample_data(metadata_ps), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID")
+
+sample_audit <- tibble(
+  Check = c("New table samples", "Metadata samples", "Shared samples",
+            "New-table only", "Metadata only"),
+  N = c(
+    ncol(count_raw), nrow(metadata),
+    length(intersect(colnames(count_raw), metadata$SampleID)),
+    length(setdiff(colnames(count_raw), metadata$SampleID)),
+    length(setdiff(metadata$SampleID, colnames(count_raw)))
+  )
+)
+if (sample_audit$N[sample_audit$Check == "New-table only"] > 0) {
+  stop("새 table sample 중 metadata에 없는 ID가 있습니다.")
+}
+
+tax_split <- stringr::str_split_fixed(taxonomy_input$Taxon, ";", 8)[, 1:7, drop = FALSE]
+colnames(tax_split) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+tax_split <- as.data.frame(tax_split, stringsAsFactors = FALSE)
+tax_split[] <- lapply(tax_split, clean_tax_text)
+rownames(tax_split) <- taxonomy_input$`Feature ID`
+tax_split <- as.matrix(tax_split)
+
+md <- metadata |>
+  filter(SampleID %in% colnames(count_raw)) |>
+  arrange(match(SampleID, colnames(count_raw))) |>
+  column_to_rownames("SampleID") |>
+  data.frame(check.names = FALSE)
+count_raw <- count_raw[, rownames(md), drop = FALSE]
+tax_split <- tax_split[rownames(count_raw), , drop = FALSE]
+
+phy_imported <- phyloseq(
+  otu_table(count_raw, taxa_are_rows = TRUE),
+  tax_table(tax_split),
+  sample_data(md),
+  refseq(repseq[rownames(count_raw)])
+)
+
+fungal_flag <- as.character(tax_table(phy_imported)[, "Kingdom"]) == "Fungi"
+fungal_flag[is.na(fungal_flag)] <- FALSE
+phy_fungi <- prune_taxa(fungal_flag, phy_imported)
+phy_final <- prune_samples(sample_sums(phy_fungi) > 0, phy_fungi)
+phy_final <- prune_taxa(taxa_sums(phy_final) > 0, phy_final)
+
+saveRDS(phy_final, phyloseq_out)
+
+preprocessing_audit <- tibble(
+  Stage = c("Imported ASV table", "Kingdom == Fungi retained",
+            "Zero-sum samples/taxa removed"),
+  Samples = c(nsamples(phy_imported), nsamples(phy_fungi), nsamples(phy_final)),
+  ASVs = c(ntaxa(phy_imported), ntaxa(phy_fungi), ntaxa(phy_final)),
+  Total_Reads = c(sum(sample_sums(phy_imported)), sum(sample_sums(phy_fungi)),
+                  sum(sample_sums(phy_final)))
+)
+write_csv(sample_audit, file.path(out_dir, "01_sample_matching_audit.csv"))
+write_csv(preprocessing_audit, file.path(out_dir, "02_preprocessing_audit.csv"))
+```
+
+```{r audit-tables}
+datatable_basic(sample_audit, 10)
+datatable_basic(preprocessing_audit, 10) |>
+  DT::formatRound(c("Samples", "ASVs", "Total_Reads"), 0)
+```
+
+# 4. DADA2 read retention
+
+```{r denoise-summary}
+denoise_long <- denoise_stats |>
+  select(SampleID, input, filtered, denoised, non.chimeric,
+         percentage.of.input.passed.filter,
+         percentage.of.input.non.chimeric) |>
+  left_join(metadata |> select(SampleID, Sample_Type, Subject, Control_Type), by = "SampleID") |>
+  mutate(
+    Display_Group = case_when(
+      Sample_Type == "True" ~ as.character(Subject),
+      Sample_Type == "Control" ~ as.character(Control_Type),
+      TRUE ~ as.character(Sample_Type)
+    )
+  )
+
+denoise_summary <- tibble(
+  Stage = c("Input", "Filtered", "Denoised", "Non-chimeric"),
+  Reads = c(sum(denoise_stats$input), sum(denoise_stats$filtered),
+            sum(denoise_stats$denoised), sum(denoise_stats$non.chimeric)),
+  Percent_of_input = 100 * Reads / sum(denoise_stats$input)
+)
+write_csv(denoise_stats, file.path(out_dir, "03_DADA2_per_sample_stats.csv"))
+write_csv(denoise_summary, file.path(out_dir, "04_DADA2_overall_retention.csv"))
+datatable_basic(denoise_summary, 10) |>
+  DT::formatRound(c("Reads", "Percent_of_input"), c(0, 1))
+```
+
+```{r denoise-plots, fig.width=13, fig.height=6}
+p_retention <- denoise_summary |>
+  mutate(Stage = factor(Stage, levels = Stage)) |>
+  ggplot(aes(Stage, Reads, fill = Stage)) +
+  geom_col(width = 0.65, color = "black", linewidth = 0.3) +
+  geom_text(aes(label = paste0(comma(Reads), "\n(", number(Percent_of_input, .1), "%)")),
+            vjust = -0.35, size = 3.8) +
+  scale_fill_brewer(palette = "Blues", direction = 1, guide = "none") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, .18))) +
+  labs(x = NULL, y = "Reads", title = "DADA2 단계별 전체 read retention")
+
+p_sample_retention <- denoise_long |>
+  ggplot(aes(Display_Group, percentage.of.input.non.chimeric,
+             fill = Sample_Type)) +
+  geom_boxplot(width = .62, outlier.shape = NA, color = "black") +
+  geom_point(position = position_jitter(width = .12), alpha = .7, size = 1.8) +
+  scale_fill_manual(values = group_colors, drop = FALSE) +
+  labs(x = NULL, y = "Input retained as non-chimeric (%)",
+       title = "Sample group별 최종 retention") +
+  theme(axis.text.x = element_text(angle = 25, hjust = 1))
+
+retention_plot <- p_retention + p_sample_retention
+ggsave(file.path(out_dir, "01_DADA2_read_retention.png"), retention_plot,
+       width = 13, height = 6, dpi = 300)
+retention_plot
+```
+
+# 5. 최종 library depth와 observed ASV
+
+```{r library-qc-data}
+otu_final <- get_otu(phy_final)
+library_qc <- tibble(
+  SampleID = sample_names(phy_final),
+  Read_Depth = as.numeric(sample_sums(phy_final)),
+  Observed_ASV = as.integer(colSums(otu_final > 0))
+) |>
+  left_join(metadata, by = "SampleID") |>
+  mutate(
+    Display_Group = case_when(
+      Sample_Type == "True" ~ as.character(Subject),
+      Sample_Type == "Control" ~ as.character(Control_Type),
+      TRUE ~ as.character(Sample_Type)
+    )
+  )
+
+library_summary <- library_qc |>
+  group_by(Sample_Type, Display_Group) |>
+  summarise(
+    N = n(), Min_Reads = min(Read_Depth), Median_Reads = median(Read_Depth),
+    Max_Reads = max(Read_Depth), Median_Observed_ASV = median(Observed_ASV),
+    .groups = "drop"
+  )
+write_csv(library_qc, file.path(out_dir, "05_final_library_QC.csv"))
+write_csv(library_summary, file.path(out_dir, "06_library_group_summary.csv"))
+datatable_basic(library_summary, 10)
+```
+
+```{r library-qc-plot, fig.width=13, fig.height=6}
+library_qc_long <- library_qc |>
+  select(SampleID, Sample_Type, Display_Group, Read_Depth, Observed_ASV) |>
+  pivot_longer(c(Read_Depth, Observed_ASV), names_to = "Metric", values_to = "Value") |>
+  mutate(Metric = recode(Metric, Read_Depth = "Read count", Observed_ASV = "Observed ASV"))
+
+library_plot <- ggplot(library_qc_long, aes(Display_Group, Value, fill = Sample_Type)) +
+  geom_boxplot(width = .62, outlier.shape = NA, color = "black") +
+  geom_point(position = position_jitter(width = .12), alpha = .65, size = 1.7) +
+  facet_wrap(~Metric, scales = "free_y", nrow = 1) +
+  scale_fill_manual(values = group_colors, drop = FALSE) +
+  scale_y_continuous(labels = comma) +
+  labs(x = NULL, y = NULL, title = "완전체 Cutadapt Single library QC") +
+  theme(axis.text.x = element_text(angle = 25, hjust = 1))
+ggsave(file.path(out_dir, "02_final_library_QC.png"), library_plot,
+       width = 13, height = 6, dpi = 300)
+library_plot
+```
+
+# 6. ASV 길이와 taxonomy resolution
+
+```{r sequence-qc}
+sequence_qc <- tibble(
+  FeatureID = taxa_names(phy_final),
+  Sequence = as.character(refseq(phy_final)),
+  Length_bp = width(refseq(phy_final)),
+  Total_Reads = as.numeric(taxa_sums(phy_final)),
+  Prevalence = rowSums(otu_final > 0)
+) |>
+  arrange(desc(Total_Reads))
+
+length_summary <- sequence_qc |>
+  summarise(
+    ASVs = n(), Min = min(Length_bp), Q1 = quantile(Length_bp, .25),
+    Median = median(Length_bp), Q3 = quantile(Length_bp, .75), Max = max(Length_bp),
+    ASV_length_le_100 = sum(Length_bp <= 100),
+    Reads_length_le_100 = sum(Total_Reads[Length_bp <= 100])
+  )
+
+tax_final <- data.frame(tax_table(phy_final), check.names = FALSE) |>
+  rownames_to_column("FeatureID")
+rank_names_order <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+taxonomy_resolution <- tibble(
+  Rank = rank_names_order,
+  Classified_ASVs = vapply(rank_names_order, function(rank) {
+    sum(!is.na(tax_final[[rank]]) & tax_final[[rank]] != "")
+  }, numeric(1)),
+  Total_ASVs = ntaxa(phy_final)
+) |>
+  mutate(Classified_Percent = 100 * Classified_ASVs / Total_ASVs)
+
+write_csv(sequence_qc, file.path(out_dir, "07_ASV_sequence_QC.csv"))
+write_csv(taxonomy_resolution, file.path(out_dir, "08_taxonomy_resolution.csv"))
+datatable_basic(length_summary, 10)
+datatable_basic(taxonomy_resolution, 10) |>
+  DT::formatRound("Classified_Percent", 1)
+```
+
+```{r sequence-qc-plots, fig.width=13, fig.height=5.5}
+p_length <- ggplot(sequence_qc, aes(Length_bp, weight = Total_Reads)) +
+  geom_histogram(binwidth = 2, fill = method_color, color = "white") +
+  scale_y_continuous(labels = comma) +
+  labs(x = "ASV length (bp)", y = "Read-weighted frequency",
+       title = "Read-weighted ASV length")
+
+p_rank <- ggplot(taxonomy_resolution,
+                 aes(factor(Rank, levels = rank_names_order), Classified_Percent)) +
+  geom_col(fill = method_color, width = .68, color = "black", linewidth = .3) +
+  geom_text(aes(label = paste0(number(Classified_Percent, .1), "%")),
+            vjust = -.35, size = 3.8) +
+  scale_y_continuous(limits = c(0, 108), breaks = seq(0, 100, 20)) +
+  labs(x = NULL, y = "ASVs classified (%)", title = "Taxonomy rank completeness")
+
+sequence_plot <- p_length + p_rank
+ggsave(file.path(out_dir, "03_ASV_length_taxonomy_QC.png"), sequence_plot,
+       width = 13, height = 5.5, dpi = 300)
+sequence_plot
+```
+
+# 7. 기존 시험용 Cutadapt Single과 비교
+
+```{r previous-comparison}
+phy_previous <- readRDS(metadata_source)
+shared_asv <- intersect(taxa_names(phy_final), taxa_names(phy_previous))
+new_only <- setdiff(taxa_names(phy_final), taxa_names(phy_previous))
+previous_only <- setdiff(taxa_names(phy_previous), taxa_names(phy_final))
+
+common_samples <- intersect(sample_names(phy_final), sample_names(phy_previous))
+depth_compare <- tibble(
+  SampleID = common_samples,
+  Previous = as.numeric(sample_sums(phy_previous)[common_samples]),
+  Complete = as.numeric(sample_sums(phy_final)[common_samples])
+)
+
+comparison_summary <- tibble(
+  Metric = c(
+    "Samples", "Final fungal ASVs", "Total fungal reads", "Exact shared ASVs",
+    "Complete-only ASVs", "Previous-only ASVs",
+    "Complete reads in shared ASVs (%)", "Previous reads in shared ASVs (%)",
+    "Sample-depth Spearman rho"
+  ),
+  Previous = c(
+    nsamples(phy_previous), ntaxa(phy_previous), sum(sample_sums(phy_previous)),
+    length(shared_asv), NA, length(previous_only), NA,
+    100 * sum(taxa_sums(phy_previous)[shared_asv]) / sum(sample_sums(phy_previous)),
+    cor(depth_compare$Previous, depth_compare$Complete, method = "spearman")
+  ),
+  Complete = c(
+    nsamples(phy_final), ntaxa(phy_final), sum(sample_sums(phy_final)),
+    length(shared_asv), length(new_only), NA,
+    100 * sum(taxa_sums(phy_final)[shared_asv]) / sum(sample_sums(phy_final)), NA,
+    cor(depth_compare$Previous, depth_compare$Complete, method = "spearman")
+  )
+)
+write_csv(comparison_summary, file.path(out_dir, "09_previous_vs_complete_summary.csv"))
+datatable_basic(comparison_summary, 12) |>
+  DT::formatSignif(c("Previous", "Complete"), 5)
+```
+
+```{r previous-comparison-plot, fig.width=7, fig.height=6}
+depth_plot <- ggplot(depth_compare, aes(Previous, Complete)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, color = "grey45") +
+  geom_point(color = method_color, size = 2.3, alpha = .75) +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = comma) +
+  coord_equal() +
+  labs(x = "Previous trial single reads", y = "Complete single reads",
+       title = "Sample별 read depth 재현성",
+       subtitle = paste0("Spearman rho = ",
+                         number(cor(depth_compare$Previous, depth_compare$Complete,
+                                    method = "spearman"), .001)))
+ggsave(file.path(out_dir, "04_previous_vs_complete_depth.png"), depth_plot,
+       width = 7, height = 6, dpi = 300)
+depth_plot
+```
+
+새 결과는 기존 시험용 결과와 별도의 산출물이므로 exact ASV와 read 변화가 존재한다. 이후 분석은
+본 보고서에서 저장한 완전체 phyloseq를 기준으로 고정한다.
+
+# 8. Aureobasidium-like signal 확인
+
+```{r aureobasidium-check}
+aureo_ids <- tax_final |>
+  filter(
+    str_detect(Genus, regex("Aureobasidium", ignore_case = TRUE)) |
+      str_detect(Species, regex("Aureobasidium", ignore_case = TRUE))
+  ) |>
+  pull(FeatureID)
+
+aureo_summary <- sequence_qc |>
+  filter(FeatureID %in% aureo_ids) |>
+  left_join(tax_final |> select(FeatureID, Genus, Species), by = "FeatureID") |>
+  arrange(desc(Total_Reads)) |>
+  mutate(Read_Fraction_Percent = 100 * Total_Reads / sum(sample_sums(phy_final)))
+
+write_csv(aureo_summary, file.path(out_dir, "10_Aureobasidium_ASVs.csv"))
+datatable_basic(
+  aureo_summary |>
+    select(FeatureID, Length_bp, Total_Reads, Prevalence,
+           Read_Fraction_Percent, Genus, Species),
+  10
+) |>
+  DT::formatSignif("Read_Fraction_Percent", 4)
+```
+
+대표 ASV의 UNITE species label은 classifier 결과이다. 기존 BLAST에서는 303-bp full sequence와
+155-bp core가 `A. pullulans` 및 `A. melanogenum`에 동일하게 100% query cover/identity를 보여,
+species 고유성은 확인되지 않았다. 따라서 현 단계에서도 `Aureobasidium-like ASV`로 보수적으로
+해석한다.
+
+# 9. 결론
+
+```{r conclusion, results='asis'}
+final_reads <- sum(sample_sums(phy_final))
+retention_pct <- 100 * sum(denoise_stats$non.chimeric) / sum(denoise_stats$input)
+cat(paste0(
+  "- 입력 83개 sample은 모두 DADA2 결과와 metadata에 연결되었다.\n",
+  "- DADA2 input ", comma(sum(denoise_stats$input)), " reads 중 ",
+  comma(sum(denoise_stats$non.chimeric)), " reads(", number(retention_pct, .1),
+  "%)가 non-chimeric으로 유지되었다.\n",
+  "- 최종 fungal phyloseq에는 ", nsamples(phy_final), "개 library, ",
+  ntaxa(phy_final), "개 ASV, ", comma(final_reads), " reads가 포함되었다.\n",
+  "- 완전체 Cutadapt Single phyloseq를 `", phyloseq_out, "`에 저장하였다.\n",
+  "- ITSxpress Single이 완료되면 동일 sample과 sequence-family 기준으로 본 객체와 비교한다."
+))
+```
+
+# 10. 제한점과 다음 단계
+
+- 본 보고서는 Cutadapt forward single-end 결과의 preprocessing QC이며 biological hypothesis test가 아니다.
+- abundance threshold와 singleton removal은 적용하지 않았다. 향후 제거 기준은 depth와 ASV frequency를 검토한 뒤 사용자가 결정해야 한다.
+- rarefaction은 수행하지 않았으며 taxa filtering에도 사용하지 않았다.
+- decontam은 수행하지 않았다. Control source와 DNA concentration을 포함한 method/threshold 결정이 선행되어야 한다.
+- ITSxpress Single 결과가 아직 없으므로 현재 단계에서 Cutadapt와 ITSxpress 중 최종 방법을 확정하지 않는다.
+- Aureobasidium species label은 BLAST상 비고유적이므로 species 수준 확정으로 사용하지 않는다.
+
+ITSxpress Single 완료 후 다음 비교만 추가하면 된다.
+
+1. sample별 read retention 및 observed ASV
+2. exact containment 기반 sequence-family 대응
+3. taxonomy rank 변화와 BLAST-supported focal ASV
+4. Aitchison PCoA와 sample별 composition 일치도
+5. Aureobasidium-like family 회수 여부
+

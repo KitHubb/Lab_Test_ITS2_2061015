@@ -1,0 +1,733 @@
+---
+title: "ITSxpress maxEE22 vs maxEE88"
+subtitle: "QC20 paired-end ITS2 — maxEE sensitivity and taxonomic classification"
+date: "2026-10-15"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  dpi = 160,
+  dev = "ragg_png",
+  out.width = "100%"
+)
+
+library(qiime2R)
+library(phyloseq)
+library(Biostrings)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(stringr)
+library(purrr)
+library(vegan)
+library(cowplot)
+library(patchwork)
+library(DT)
+library(scales)
+
+set.seed(42)
+
+comparison_colors <- c("maxEE22" = "#0072B2", "maxEE88" = "#D55E00")
+results_dir <- file.path("Results", "01_ITSxpress_maxEE22_vs_maxEE88")
+dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+
+theme_set(
+  theme_bw(base_family = "Noto Sans CJK KR", base_size = 11) +
+    theme(
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold"),
+      strip.background = element_rect(fill = "white", colour = "grey70"),
+      legend.position = "bottom"
+    )
+)
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x,
+    rownames = FALSE,
+    filter = "none",
+    extensions = character(0),
+    options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE)
+  )
+}
+
+q2_metadata <- readr::read_tsv(
+  "benchmark_results/q20_ee22_both_full/downstream/cutadapt_paired/metadata.qiime.tsv",
+  skip = 2,
+  col_names = c(
+    "SampleID", "No", "Subject", "Direction", "Region", "Cycle_1st",
+    "Cycle_2nd", "PCR1_Group", "PCR2_Group", "PCR_Cycle_Group",
+    "Qubit_ng_uL", "bp", "Mol_Conc_nM", "Normalized"
+  ),
+  show_col_types = FALSE
+) |>
+  mutate(
+    Sample_Type = case_when(
+      str_detect(Subject, regex("mock|zymo", ignore_case = TRUE)) ~ "Mock",
+      str_detect(Subject, regex("^(ASwab|CSwab|ETube)", ignore_case = TRUE)) ~ "Control",
+      TRUE ~ "True"
+    ),
+    Control_Type = case_when(
+      str_detect(Subject, regex("^ASwab", ignore_case = TRUE)) ~ "Air swab",
+      str_detect(Subject, regex("^CSwab", ignore_case = TRUE)) ~ "Clean bench swab",
+      str_detect(Subject, regex("^ETube", ignore_case = TRUE)) ~ "Empty tube",
+      Sample_Type == "Mock" ~ "Mock",
+      TRUE ~ "Skin sample"
+    ),
+    Skin_Site = case_when(
+      Sample_Type == "True" & (is.na(Direction) | Direction %in% c("", "-")) ~ as.character(Region),
+      Sample_Type == "True" ~ paste(Region, Direction),
+      TRUE ~ Control_Type
+    ),
+    Shape_Group = case_when(
+      Sample_Type == "Control" ~ Control_Type,
+      Sample_Type == "True" ~ Subject,
+      TRUE ~ "Mock"
+    ),
+    PCR_Cycle_Group = factor(
+      PCR_Cycle_Group,
+      levels = c(
+        "PCR1_33__PCR2_8", "PCR1_33__PCR2_10",
+        "PCR1_35__PCR2_8", "PCR1_35__PCR2_10"
+      )
+    )
+  )
+
+phy_22 <- readRDS("Phyloseq/phy_ITS2_itsxpress_q20_ee22_20261015.rds")
+phy_88 <- readRDS("Phyloseq/phy_ITS2_itsxpress_q20_ee88_20261015.rds")
+
+common_samples <- intersect(sample_names(phy_22), sample_names(phy_88))
+phy_22_common <- prune_samples(common_samples, phy_22)
+phy_88_common <- prune_samples(common_samples, phy_88)
+
+otu_matrix <- function(ps) {
+  x <- as(otu_table(ps), "matrix")
+  if (!taxa_are_rows(ps)) x <- t(x)
+  x
+}
+
+species_matrix <- function(ps) {
+  otu <- otu_matrix(ps)
+  tax <- data.frame(tax_table(ps), check.names = FALSE)
+  label <- as.character(tax$Species)
+  label[is.na(label) | label == ""] <- "Unclassified_fungi"
+  label <- str_replace_all(label, "_", " ")
+  rowsum(otu, group = label, reorder = FALSE)
+}
+
+taxon_palette <- c(
+  RColorBrewer::brewer.pal(12, "Paired"),
+  RColorBrewer::brewer.pal(8, "Dark2")
+)
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data,
+    ") format('opentype');font-weight:400;font-style:normal;} ",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1400px!important;} .section h1{margin-top:36px;}",
+    "</style>"
+  ))
+}
+```
+
+# 1. Dataset 및 object 차이
+
+- ITSxpress와 QC20을 고정하고 DADA2 maxEE 2/2와 8/8만 비교함.
+- abundance filtering, singleton removal, rarefaction 및 decontam은 적용하지 않음.
+- 각 object의 실제 fungal sample과 ASV를 먼저 확인하고, paired 통계와 beta diversity는 두 object에 공통으로 존재하는 SampleID만 사용함.
+
+```{r object-summary}
+object_summary <- tibble(
+  maxEE = c("maxEE22", "maxEE88"),
+  Samples = c(nsamples(phy_22), nsamples(phy_88)),
+  Fungal_ASVs = c(ntaxa(phy_22), ntaxa(phy_88)),
+  Total_Fungal_Reads = c(sum(sample_sums(phy_22)), sum(sample_sums(phy_88))),
+  Method_Only_Samples = c(
+    length(setdiff(sample_names(phy_22), sample_names(phy_88))),
+    length(setdiff(sample_names(phy_88), sample_names(phy_22)))
+  ),
+  Common_Samples = length(common_samples)
+)
+
+datatable_basic(object_summary, 10) |>
+  DT::formatRound("Total_Fungal_Reads", 0)
+
+write_csv(object_summary, file.path(results_dir, "00_object_summary.csv"))
+```
+
+# 2. Sample별 read 및 observed ASV
+
+```{r sample-qc}
+sample_qc <- bind_rows(
+  tibble(
+    SampleID = sample_names(phy_22_common),
+    maxEE = "maxEE22",
+    Read_Depth = as.numeric(sample_sums(phy_22_common)),
+    Observed_ASV = as.integer(estimate_richness(phy_22_common, measures = "Observed")$Observed)
+  ),
+  tibble(
+    SampleID = sample_names(phy_88_common),
+    maxEE = "maxEE88",
+    Read_Depth = as.numeric(sample_sums(phy_88_common)),
+    Observed_ASV = as.integer(estimate_richness(phy_88_common, measures = "Observed")$Observed)
+  )
+) |>
+  left_join(q2_metadata, by = "SampleID") |>
+  mutate(maxEE = factor(maxEE, levels = c("maxEE22", "maxEE88")))
+
+sample_qc_wide <- sample_qc |>
+  select(SampleID, maxEE, Read_Depth, Observed_ASV) |>
+  pivot_wider(names_from = maxEE, values_from = c(Read_Depth, Observed_ASV))
+
+paired_qc <- tibble(
+  Metric = c("Read depth", "Observed ASV"),
+  N_Pairs = nrow(sample_qc_wide),
+  Median_maxEE22 = c(
+    median(sample_qc_wide$Read_Depth_maxEE22),
+    median(sample_qc_wide$Observed_ASV_maxEE22)
+  ),
+  Median_maxEE88 = c(
+    median(sample_qc_wide$Read_Depth_maxEE88),
+    median(sample_qc_wide$Observed_ASV_maxEE88)
+  ),
+  P_value = c(
+    wilcox.test(sample_qc_wide$Read_Depth_maxEE88, sample_qc_wide$Read_Depth_maxEE22,
+                paired = TRUE, exact = FALSE)$p.value,
+    wilcox.test(sample_qc_wide$Observed_ASV_maxEE88, sample_qc_wide$Observed_ASV_maxEE22,
+                paired = TRUE, exact = FALSE)$p.value
+  )
+) |>
+  mutate(P_adjust_BH = p.adjust(P_value, method = "BH"))
+
+datatable_basic(paired_qc, 10) |>
+  DT::formatRound(c("Median_maxEE22", "Median_maxEE88"), 1) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+
+write_csv(paired_qc, file.path(results_dir, "01a_paired_sample_QC_tests.csv"))
+```
+
+```{r sample-qc-plot, fig.width=13, fig.height=5.8}
+depth_plot <- ggplot(sample_qc_wide, aes(Read_Depth_maxEE22, Read_Depth_maxEE88)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey55") +
+  geom_point(size = 2.2, alpha = 0.75, colour = comparison_colors[["maxEE88"]]) +
+  scale_x_log10(labels = label_comma()) +
+  scale_y_log10(labels = label_comma()) +
+  coord_equal() +
+  labs(title = "Paired fungal read depth", x = "maxEE22", y = "maxEE88")
+
+asv_plot <- ggplot(sample_qc_wide, aes(Observed_ASV_maxEE22, Observed_ASV_maxEE88)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey55") +
+  geom_point(size = 2.2, alpha = 0.75, colour = comparison_colors[["maxEE22"]]) +
+  coord_equal() +
+  labs(title = "Paired observed ASV", x = "maxEE22", y = "maxEE88")
+
+sample_qc_plot <- depth_plot + asv_plot
+ggsave(file.path(results_dir, "01_paired_sample_QC.png"), sample_qc_plot,
+       width = 13, height = 5.8, dpi = 200, bg = "white")
+sample_qc_plot
+```
+
+# 3. Exact ASV sequence 및 taxonomy 안정성
+
+```{r asv-sequence-data}
+seq_22 <- getElement(read_qza(
+  "benchmark_results/q20_ee22_both_full/dada2/itsxpress/paired/repseq.qza"
+), "data")
+seq_88 <- getElement(read_qza(
+  "benchmark_results/q20_ee88_both_full/dada2/itsxpress/paired/repseq.qza"
+), "data")
+
+otu_22 <- otu_matrix(phy_22)
+otu_88 <- otu_matrix(phy_88)
+tax_22 <- data.frame(tax_table(phy_22), check.names = FALSE) |>
+  rownames_to_column("FeatureID")
+tax_88 <- data.frame(tax_table(phy_88), check.names = FALSE) |>
+  rownames_to_column("FeatureID")
+
+asv_22 <- tibble(
+  FeatureID_22 = rownames(otu_22),
+  Sequence = as.character(seq_22[rownames(otu_22)]),
+  Length_22 = width(seq_22[rownames(otu_22)]),
+  Reads_22 = rowSums(otu_22),
+  Prevalence_22 = rowSums(otu_22 > 0)
+) |>
+  left_join(tax_22 |> rename(FeatureID_22 = FeatureID), by = "FeatureID_22")
+
+asv_88 <- tibble(
+  FeatureID_88 = rownames(otu_88),
+  Sequence = as.character(seq_88[rownames(otu_88)]),
+  Length_88 = width(seq_88[rownames(otu_88)]),
+  Reads_88 = rowSums(otu_88),
+  Prevalence_88 = rowSums(otu_88 > 0)
+) |>
+  left_join(tax_88 |> rename(FeatureID_88 = FeatureID), by = "FeatureID_88")
+
+shared_asv <- inner_join(asv_22, asv_88, by = "Sequence", suffix = c("_22", "_88")) |>
+  mutate(
+    Frequency_22 = Reads_22 / sum(otu_22),
+    Frequency_88 = Reads_88 / sum(otu_88),
+    Taxonomy_Identical =
+      coalesce(Kingdom_22, "") == coalesce(Kingdom_88, "") &
+      coalesce(Phylum_22, "") == coalesce(Phylum_88, "") &
+      coalesce(Class_22, "") == coalesce(Class_88, "") &
+      coalesce(Order_22, "") == coalesce(Order_88, "") &
+      coalesce(Family_22, "") == coalesce(Family_88, "") &
+      coalesce(Genus_22, "") == coalesce(Genus_88, "") &
+      coalesce(Species_22, "") == coalesce(Species_88, "")
+  )
+
+unique_22 <- anti_join(asv_22, asv_88 |> select(Sequence), by = "Sequence") |>
+  mutate(Status = "maxEE22 only")
+unique_88 <- anti_join(asv_88, asv_22 |> select(Sequence), by = "Sequence") |>
+  mutate(Status = "maxEE88 only")
+
+sequence_overlap <- tibble(
+  Item = c(
+    "maxEE22 fungal ASVs", "maxEE88 fungal ASVs", "Exact shared ASVs",
+    "maxEE22-only ASVs", "maxEE88-only ASVs",
+    "maxEE22 reads in shared ASVs", "maxEE88 reads in shared ASVs",
+    "Shared sequences with different cleaned taxonomy"
+  ),
+  N_or_fraction = c(
+    nrow(asv_22), nrow(asv_88), nrow(shared_asv), nrow(unique_22), nrow(unique_88),
+    sum(shared_asv$Reads_22) / sum(otu_22),
+    sum(shared_asv$Reads_88) / sum(otu_88),
+    sum(!shared_asv$Taxonomy_Identical)
+  )
+)
+
+datatable_basic(sequence_overlap, 10) |>
+  DT::formatSignif("N_or_fraction", 5)
+```
+
+```{r shared-asv-frequency-plot, fig.width=8.5, fig.height=7}
+sequence_rho <- cor(shared_asv$Frequency_22, shared_asv$Frequency_88, method = "spearman")
+
+shared_frequency_plot <- ggplot(shared_asv, aes(Frequency_22, Frequency_88)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey55") +
+  geom_point(alpha = 0.7, size = 1.7, colour = comparison_colors[["maxEE88"]]) +
+  scale_x_log10(labels = label_percent()) +
+  scale_y_log10(labels = label_percent()) +
+  coord_equal() +
+  labs(
+    title = paste0("Exact shared ASV frequency (Spearman rho = ", round(sequence_rho, 3), ")"),
+    x = "maxEE22 fraction of fungal reads",
+    y = "maxEE88 fraction of fungal reads"
+  )
+
+ggsave(file.path(results_dir, "02_exact_shared_ASV_frequency.png"), shared_frequency_plot,
+       width = 8.5, height = 7, dpi = 200, bg = "white")
+shared_frequency_plot
+```
+
+```{r unique-asv-tables}
+unique_asv_summary <- bind_rows(
+  unique_22 |>
+    transmute(Status, FeatureID = FeatureID_22, Length = Length_22,
+              Reads = Reads_22, Prevalence = Prevalence_22, Species),
+  unique_88 |>
+    transmute(Status, FeatureID = FeatureID_88, Length = Length_88,
+              Reads = Reads_88, Prevalence = Prevalence_88, Species)
+) |>
+  mutate(Species = str_replace_all(Species, "_", " ")) |>
+  arrange(Status, desc(Reads))
+
+unique_asv_group_summary <- unique_asv_summary |>
+  group_by(Status) |>
+  summarise(
+    N_ASV = n(),
+    Total_Reads = sum(Reads),
+    Median_Reads = median(Reads),
+    Single_Sample_ASVs = sum(Prevalence == 1),
+    Median_Length = median(Length),
+    .groups = "drop"
+  )
+
+datatable_basic(unique_asv_group_summary, 10)
+datatable_basic(unique_asv_summary |> group_by(Status) |> slice_max(Reads, n = 20) |> ungroup(), 20)
+
+write_csv(sequence_overlap, file.path(results_dir, "02a_sequence_overlap_summary.csv"))
+write_csv(shared_asv, file.path(results_dir, "02b_exact_shared_ASVs.csv"))
+write_csv(unique_asv_summary, file.path(results_dir, "02c_condition_specific_ASVs.csv"))
+```
+
+# 4. Species 검출 및 abundance 차이
+
+```{r species-data}
+species_22 <- species_matrix(phy_22_common)
+species_88 <- species_matrix(phy_88_common)
+all_species <- union(rownames(species_22), rownames(species_88))
+
+align_species <- function(x) {
+  out <- matrix(0, nrow = length(all_species), ncol = length(common_samples),
+                dimnames = list(all_species, common_samples))
+  out[rownames(x), colnames(x)] <- x[, common_samples, drop = FALSE]
+  out
+}
+
+species_22_aligned <- align_species(species_22)
+species_88_aligned <- align_species(species_88)
+rel_22 <- sweep(species_22_aligned, 2, colSums(species_22_aligned), "/")
+rel_88 <- sweep(species_88_aligned, 2, colSums(species_88_aligned), "/")
+
+species_comparison <- tibble(
+  Species = all_species,
+  Reads_maxEE22 = rowSums(species_22_aligned),
+  Reads_maxEE88 = rowSums(species_88_aligned),
+  Prevalence_maxEE22 = rowSums(species_22_aligned > 0),
+  Prevalence_maxEE88 = rowSums(species_88_aligned > 0),
+  Mean_maxEE22 = rowMeans(rel_22),
+  Mean_maxEE88 = rowMeans(rel_88)
+) |>
+  mutate(
+    Detection_Status = case_when(
+      Reads_maxEE22 > 0 & Reads_maxEE88 > 0 ~ "Shared",
+      Reads_maxEE22 > 0 ~ "maxEE22 only",
+      TRUE ~ "maxEE88 only"
+    ),
+    Mean_Difference_88_minus_22 = Mean_maxEE88 - Mean_maxEE22,
+    Combined_Mean = (Mean_maxEE22 + Mean_maxEE88) / 2
+  ) |>
+  arrange(desc(Combined_Mean))
+
+species_overlap <- species_comparison |>
+  count(Detection_Status, name = "N_Species")
+
+top_species <- species_comparison |>
+  slice_head(n = 14) |>
+  pull(Species)
+
+paired_species <- lapply(top_species, function(sp) {
+  x <- rel_22[sp, ]
+  y <- rel_88[sp, ]
+  tibble(
+    Species = sp,
+    N_Pairs = length(x),
+    Mean_maxEE22 = mean(x),
+    Mean_maxEE88 = mean(y),
+    Mean_Difference_88_minus_22 = mean(y - x),
+    P_value = if (all(x == y)) 1 else wilcox.test(y, x, paired = TRUE, exact = FALSE)$p.value
+  )
+}) |>
+  bind_rows() |>
+  mutate(
+    P_adjust_BH = p.adjust(P_value, method = "BH"),
+    Significant = case_when(
+      P_adjust_BH < 0.001 ~ "***",
+      P_adjust_BH < 0.01 ~ "**",
+      P_adjust_BH < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  ) |>
+  arrange(P_adjust_BH)
+
+datatable_basic(species_overlap, 10)
+datatable_basic(paired_species, 14) |>
+  DT::formatPercentage(c("Mean_maxEE22", "Mean_maxEE88", "Mean_Difference_88_minus_22"), 3) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r species-scatter, fig.width=12, fig.height=7}
+label_species <- species_comparison |>
+  filter(Detection_Status != "Shared") |>
+  slice_max(Combined_Mean, n = 10, with_ties = FALSE) |>
+  bind_rows(species_comparison |> slice_max(abs(Mean_Difference_88_minus_22), n = 10, with_ties = FALSE)) |>
+  distinct(Species, .keep_all = TRUE)
+
+species_scatter <- ggplot(
+  species_comparison,
+  aes(Mean_maxEE22 + 1e-7, Mean_maxEE88 + 1e-7, colour = Detection_Status)
+) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey55") +
+  geom_point(alpha = 0.75, size = 2) +
+  ggrepel::geom_text_repel(
+    data = label_species,
+    aes(label = Species),
+    seed = 42,
+    max.overlaps = Inf,
+    size = 3,
+    min.segment.length = 0,
+    show.legend = FALSE
+  ) +
+  scale_x_log10(labels = label_percent()) +
+  scale_y_log10(labels = label_percent()) +
+  scale_colour_manual(values = c(
+    "Shared" = "grey65", "maxEE22 only" = comparison_colors[["maxEE22"]],
+    "maxEE88 only" = comparison_colors[["maxEE88"]]
+  )) +
+  coord_equal() +
+  labs(
+    title = paste0(
+      "Species mean relative abundance (Spearman rho = ",
+      round(cor(species_comparison$Mean_maxEE22, species_comparison$Mean_maxEE88,
+                method = "spearman"), 3), ")"
+    ),
+    x = "maxEE22 mean relative abundance",
+    y = "maxEE88 mean relative abundance",
+    colour = "Detection"
+  )
+
+ggsave(file.path(results_dir, "03_species_detection_and_abundance.png"), species_scatter,
+       width = 12, height = 7, dpi = 200, bg = "white")
+species_scatter
+
+write_csv(species_comparison, file.path(results_dir, "03a_species_comparison.csv"))
+write_csv(paired_species, file.path(results_dir, "03b_top_species_paired_tests.csv"))
+```
+
+```{r condition-specific-species}
+condition_specific_species <- species_comparison |>
+  filter(Detection_Status != "Shared") |>
+  arrange(desc(Combined_Mean))
+
+datatable_basic(condition_specific_species, 25) |>
+  DT::formatPercentage(c("Mean_maxEE22", "Mean_maxEE88", "Mean_Difference_88_minus_22"), 4)
+```
+
+# 5. Aitchison PCoA 및 paired maxEE effect
+
+```{r beta-data}
+clr_transform <- function(x, pseudocount = 0.5) {
+  log_x <- log(t(x) + pseudocount)
+  sweep(log_x, 1, rowMeans(log_x), "-")
+}
+
+clr_22 <- clr_transform(species_22_aligned)
+clr_88 <- clr_transform(species_88_aligned)
+rownames(clr_22) <- paste0("maxEE22__", rownames(clr_22))
+rownames(clr_88) <- paste0("maxEE88__", rownames(clr_88))
+combined_clr <- rbind(clr_22, clr_88)
+
+pcoa_meta <- tibble(RowID = rownames(combined_clr)) |>
+  separate(RowID, into = c("maxEE", "SampleID"), sep = "__", extra = "merge", remove = FALSE) |>
+  left_join(q2_metadata |> select(SampleID, Shape_Group, PCR_Cycle_Group), by = "SampleID") |>
+  mutate(
+    maxEE = factor(maxEE, levels = c("maxEE22", "maxEE88")),
+    Shape_Group = factor(Shape_Group,
+      levels = c("Air swab", "Clean bench swab", "Empty tube", "KSY", "PYH", "Mock"))
+  ) |>
+  column_to_rownames("RowID")
+
+aitchison_distance <- dist(combined_clr)
+set.seed(42)
+permanova <- adonis2(
+  aitchison_distance ~ maxEE,
+  data = pcoa_meta,
+  permutations = 999,
+  strata = pcoa_meta$SampleID
+)
+dispersion <- betadisper(aitchison_distance, pcoa_meta$maxEE)
+set.seed(42)
+dispersion_test <- permutest(dispersion, permutations = 999)
+
+pcoa <- cmdscale(aitchison_distance, k = 2, eig = TRUE, add = TRUE)
+pcoa_variance <- pcoa$eig[pcoa$eig > 0] / sum(pcoa$eig[pcoa$eig > 0]) * 100
+pcoa_score <- as_tibble(pcoa$points, rownames = "RowID") |>
+  rename(Axis1 = V1, Axis2 = V2) |>
+  left_join(rownames_to_column(pcoa_meta, "RowID"), by = "RowID")
+
+ord_22 <- cmdscale(dist(clr_22), k = 2, eig = TRUE, add = TRUE)
+ord_88 <- cmdscale(dist(clr_88), k = 2, eig = TRUE, add = TRUE)
+set.seed(42)
+procrustes_test <- protest(ord_22$points, ord_88$points, permutations = 999)
+
+beta_summary <- tibble(
+  Distance = "Aitchison (Species CLR, pseudocount 0.5)",
+  N_Samples = length(common_samples),
+  PERMANOVA_R2 = permanova$R2[1],
+  PERMANOVA_P = permanova$`Pr(>F)`[1],
+  Betadisper_P = dispersion_test$tab$`Pr(>F)`[1],
+  Procrustes_Correlation = procrustes_test$t0,
+  PROTEST_P = procrustes_test$signif
+)
+
+datatable_basic(beta_summary, 10) |>
+  DT::formatRound(c("PERMANOVA_R2", "Procrustes_Correlation"), 4) |>
+  DT::formatSignif(c("PERMANOVA_P", "Betadisper_P", "PROTEST_P"), 3)
+
+write_csv(beta_summary, file.path(results_dir, "04a_beta_summary.csv"))
+```
+
+```{r beta-plot, fig.width=12, fig.height=8}
+main_pcoa <- ggplot(pcoa_score, aes(Axis1, Axis2, colour = maxEE, shape = Shape_Group)) +
+  geom_hline(yintercept = 0, colour = "grey85") +
+  geom_vline(xintercept = 0, colour = "grey85") +
+  geom_line(aes(group = SampleID), colour = "grey80", linewidth = 0.3, alpha = 0.55) +
+  geom_point(size = 2.5, alpha = 0.82) +
+  stat_ellipse(aes(group = maxEE), linewidth = 0.7, linetype = 2) +
+  scale_colour_manual(values = comparison_colors) +
+  scale_shape_manual(values = c(
+    "Air swab" = 0, "Clean bench swab" = 1, "Empty tube" = 2,
+    "KSY" = 5, "PYH" = 6, "Mock" = 4
+  ), drop = TRUE) +
+  labs(
+    title = "ITSxpress maxEE22 vs maxEE88 — paired Aitchison PCoA",
+    x = paste0("PCoA1 (", round(pcoa_variance[1], 1), "%)"),
+    y = paste0("PCoA2 (", round(pcoa_variance[2], 1), "%)"),
+    colour = "maxEE", shape = "Control source / Skin subject"
+  )
+
+x_density <- axis_canvas(main_pcoa, axis = "x") +
+  geom_density(data = pcoa_score, aes(x = Axis1, fill = maxEE, colour = maxEE),
+               alpha = 0.25, linewidth = 0.4) +
+  scale_fill_manual(values = comparison_colors) +
+  scale_colour_manual(values = comparison_colors)
+
+y_density <- axis_canvas(main_pcoa, axis = "y", coord_flip = TRUE) +
+  geom_density(data = pcoa_score, aes(x = Axis2, fill = maxEE, colour = maxEE),
+               alpha = 0.25, linewidth = 0.4) +
+  scale_fill_manual(values = comparison_colors) +
+  scale_colour_manual(values = comparison_colors) +
+  coord_flip()
+
+pcoa_density_plot <- main_pcoa |>
+  insert_xaxis_grob(x_density, grid::unit(0.75, "in"), position = "top") |>
+  insert_yaxis_grob(y_density, grid::unit(0.75, "in"), position = "right") |>
+  ggdraw()
+
+ggsave(file.path(results_dir, "04_aitchison_PCoA.png"), pcoa_density_plot,
+       width = 12, height = 8, dpi = 200, bg = "white")
+pcoa_density_plot
+```
+
+# 6. SampleID별 Species composition
+
+```{r composition-data}
+top_composition_species <- species_comparison |>
+  slice_head(n = 14) |>
+  pull(Species)
+composition_levels <- c(top_composition_species, "Others")
+composition_colors <- setNames(taxon_palette[seq_along(composition_levels)], composition_levels)
+
+relative_long <- function(x, maxee) {
+  sweep(x, 2, colSums(x), "/") |>
+    t() |>
+    as.data.frame(check.names = FALSE) |>
+    rownames_to_column("SampleID") |>
+    pivot_longer(-SampleID, names_to = "Species", values_to = "Relative_Abundance") |>
+    mutate(maxEE = maxee)
+}
+
+composition_sample <- bind_rows(
+  relative_long(species_22_aligned, "maxEE22"),
+  relative_long(species_88_aligned, "maxEE88")
+) |>
+  left_join(q2_metadata |> select(SampleID, Sample_Type, Subject, Control_Type,
+                                  Skin_Site, PCR_Cycle_Group), by = "SampleID") |>
+  mutate(
+    Subject_Profile = case_when(
+      Sample_Type == "True" ~ Subject,
+      Sample_Type == "Control" ~ Control_Type,
+      TRUE ~ "Mock"
+    ),
+    Subject_Profile = factor(Subject_Profile,
+      levels = c("Air swab", "Clean bench swab", "Empty tube", "KSY", "PYH", "Mock")),
+    Species = if_else(Species %in% top_composition_species, Species, "Others"),
+    Species = factor(Species, levels = rev(composition_levels))
+  ) |>
+  group_by(maxEE, SampleID, Subject_Profile, PCR_Cycle_Group, Species) |>
+  summarise(Relative_Abundance = sum(Relative_Abundance), .groups = "drop")
+
+sample_order <- q2_metadata |>
+  mutate(Subject_Profile = case_when(
+    Sample_Type == "True" ~ Subject,
+    Sample_Type == "Control" ~ Control_Type,
+    TRUE ~ "Mock"
+  )) |>
+  arrange(Subject_Profile, PCR_Cycle_Group, Skin_Site, SampleID) |>
+  pull(SampleID)
+
+composition_sample <- composition_sample |>
+  mutate(SampleID = factor(SampleID, levels = sample_order))
+
+draw_composition <- function(maxee) {
+  ggplot(composition_sample |> filter(maxEE == maxee),
+         aes(SampleID, Relative_Abundance, fill = Species)) +
+    geom_col(width = 0.9) +
+    facet_wrap(vars(Subject_Profile, PCR_Cycle_Group), scales = "free_x", nrow = 1, drop = TRUE) +
+    scale_y_continuous(labels = label_percent(), expand = c(0, 0)) +
+    scale_fill_manual(values = composition_colors, drop = FALSE) +
+    labs(title = paste0("ITSxpress ", maxee, " — sample-level Species composition"),
+         x = "SampleID", y = "Relative abundance", fill = "Species") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6.5),
+          legend.position = "right")
+}
+
+composition_22_plot <- draw_composition("maxEE22")
+composition_88_plot <- draw_composition("maxEE88")
+
+ggsave(file.path(results_dir, "05a_species_composition_maxEE22.png"), composition_22_plot,
+       width = 42, height = 8, dpi = 200, bg = "white", limitsize = FALSE)
+ggsave(file.path(results_dir, "05b_species_composition_maxEE88.png"), composition_88_plot,
+       width = 42, height = 8, dpi = 200, bg = "white", limitsize = FALSE)
+```
+
+### maxEE22
+
+```{r composition-22-preview, fig.width=21, fig.height=4, out.width='100%'}
+composition_22_plot
+```
+
+[maxEE22 고해상도 PNG 원본](Results/01_ITSxpress_maxEE22_vs_maxEE88/05a_species_composition_maxEE22.png)
+
+### maxEE88
+
+```{r composition-88-preview, fig.width=21, fig.height=4, out.width='100%'}
+composition_88_plot
+```
+
+[maxEE88 고해상도 PNG 원본](Results/01_ITSxpress_maxEE22_vs_maxEE88/05b_species_composition_maxEE88.png)
+
+# 7. 결론
+
+```{r conclusion, results='asis'}
+cat(paste0(
+  "- 두 ITSxpress object의 공통 sample은 ", length(common_samples), "개임.\n",
+  "- fungal ASV는 maxEE22 ", ntaxa(phy_22), "개, maxEE88 ", ntaxa(phy_88), "개임.\n",
+  "- exact shared ASV는 ", nrow(shared_asv), "개이며 maxEE22 reads의 ",
+  percent(sum(shared_asv$Reads_22) / sum(otu_22), accuracy = 0.1),
+  ", maxEE88 reads의 ", percent(sum(shared_asv$Reads_88) / sum(otu_88), accuracy = 0.1),
+  "를 설명함.\n",
+  "- 동일 sequence에서 cleaned taxonomy가 달라진 경우는 ",
+  sum(!shared_asv$Taxonomy_Identical), "개임.\n",
+  "- condition-specific Species는 maxEE22-only ",
+  sum(species_comparison$Detection_Status == "maxEE22 only"), "개, maxEE88-only ",
+  sum(species_comparison$Detection_Status == "maxEE88 only"), "개임.\n",
+  "- maxEE88-only ASV ", nrow(unique_88), "개는 총 ", sum(unique_88$Reads_88),
+  " reads이며 모두 단일 sample에서만 관찰됨. 이 ASV들이 추가한 새 Species label은 없음.\n",
+  "- Aitchison PERMANOVA maxEE effect R2는 ", signif(beta_summary$PERMANOVA_R2, 3),
+  ", p-value는 ", signif(beta_summary$PERMANOVA_P, 3),
+  "임. p-value와 별개로 설명력은 사실상 0에 가까움.\n",
+  "- Procrustes correlation은 ", signif(beta_summary$Procrustes_Correlation, 3),
+  ", PROTEST p-value는 ", signif(beta_summary$PROTEST_P, 3), "임."
+))
+```
+
+# 8. 해석 한계
+
+- condition-specific ASV 또는 Species는 biological absence가 아니라 낮은 abundance, DADA2 error model 및 read retention 차이로 detection boundary를 넘나든 결과일 수 있음.
+- 동일 sequence의 taxonomy가 일치하면 maxEE에 따른 분류기 자체의 변화가 아니라, 해당 sequence의 검출 여부가 달라진 것임.
+- paired Wilcoxon은 maxEE parameter effect를 탐색하기 위한 분석이며 독립 biological group의 differential abundance 검정으로 해석하지 않음.
+- Aitchison 분석은 rarefaction 없이 수행했으며 pseudocount 0.5를 사용함.

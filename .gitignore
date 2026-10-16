@@ -1,0 +1,37 @@
+# Rendered reports and transient R Markdown files
+*.html
+*_files/
+*_cache/
+.Rhistory
+.RData
+.Rproj.user/
+
+# Large, reproducible workflow outputs
+benchmark_results/**
+!benchmark_results/**/
+!benchmark_results/**/*.py
+!benchmark_results/**/versions*.yml
+
+# Generated figures and analysis objects; retain diagnostic source code
+Results/**
+!Results/**/
+!Results/**/*.R
+Phyloseq/
+*.rds
+261014_ITS2_Test_list_modi.csv
+
+# QIIME 2 and compressed intermediate artifacts
+*.qza
+*.qzv
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.zip
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+Thumbs.db
+.DS_Store

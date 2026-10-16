@@ -1,0 +1,2006 @@
+---
+title: "02-b. ITSxpress ITS2 basic analysis"
+subtitle: "QC20 / maxEE 2,2 / ITSxpress 기반 True sample 및 control profile"
+date: "2026-10-16"
+params:
+  analysis_method: "ITSxpress"
+  input_phyloseq_file: "Phyloseq/phy_ITS2_itsxpress_q20_ee22_20261015.rds"
+  output_results_dir: "Results/02_b_basic_analysis_itsxpress_ITS2"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  dpi = 160,
+  dev = "ragg_png",
+  out.width = "100%"
+)
+
+library(phyloseq)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(stringr)
+library(purrr)
+library(vegan)
+library(patchwork)
+library(cowplot)
+library(ComplexHeatmap)
+library(circlize)
+library(RColorBrewer)
+library(DT)
+library(scales)
+
+set.seed(42)
+
+report_date <- "20261016"
+results_dir <- "Results"
+phyloseq_dir <- "Phyloseq"
+dir.create(results_dir, showWarnings = FALSE)
+dir.create(phyloseq_dir, showWarnings = FALSE)
+
+group_colors <- c(
+  "Control" = "#D55E00",
+  "True" = "#0072B2",
+  "Mock" = "#009E73"
+)
+
+subject_pair_colors <- c(
+  "KSY" = "#E78AC3",
+  "PYH" = "#66A61E"
+)
+
+soyeon_theme <- theme_classic(base_family = "Noto Sans CJK KR", base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, hjust = 0),
+    plot.subtitle = element_text(size = 10, colour = "grey30"),
+    axis.title = element_text(size = 11),
+    axis.text = element_text(size = 9, colour = "black"),
+    axis.line = element_line(colour = "black", linewidth = 0.45),
+    axis.ticks = element_line(colour = "black", linewidth = 0.4),
+    strip.background = element_rect(fill = "white", colour = "black", linewidth = 0.45),
+    strip.text = element_text(face = "bold", size = 9),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.45),
+    plot.margin = margin(8, 10, 8, 8)
+  )
+
+theme_set(soyeon_theme)
+
+cycle_levels <- c(
+  "PCR1_33__PCR2_8", "PCR1_33__PCR2_10",
+  "PCR1_35__PCR2_8", "PCR1_35__PCR2_10"
+)
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x,
+    rownames = FALSE,
+    filter = "none",
+    extensions = character(0),
+    options = list(
+      dom = "tp",
+      pageLength = page_length,
+      autoWidth = TRUE
+    )
+  )
+}
+
+analysis_method <- params$analysis_method
+analysis_qc <- "QC20"
+analysis_maxee <- "2,2"
+input_phyloseq_file <- params$input_phyloseq_file
+
+if (!file.exists(input_phyloseq_file)) {
+  stop("ITSxpress QC20/maxEE 2,2 phyloseq RDS를 찾을 수 없습니다: ", input_phyloseq_file)
+}
+
+phy <- readRDS(input_phyloseq_file)
+if (!inherits(phy, "phyloseq")) stop("입력 RDS가 phyloseq object가 아닙니다.")
+
+# 01_Preprocessing.Rmd에서 생성·정리된 ITSxpress 전용 phyloseq를 직접 사용한다.
+q2_metadata <- data.frame(phyloseq::sample_data(phy), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(
+    Sample_Type = factor(Sample_Type, levels = c("Control", "True", "Mock")),
+    Control_Type = factor(
+      Control_Type,
+      levels = c("Air swab", "Clean bench swab", "Empty tube", "Skin sample", "Mock")
+    ),
+    PCR_Cycle_Group = factor(
+      PCR_Cycle_Group,
+      levels = cycle_levels
+    )
+  )
+
+sample_frame <- q2_metadata |>
+  tibble::column_to_rownames("SampleID") |>
+  data.frame(check.names = FALSE)
+phyloseq::sample_data(phy) <- phyloseq::sample_data(sample_frame)
+
+# 안전 확인: preprocessing RDS의 Fungi와 양의 read를 가진 sample/taxa만 유지한다.
+kingdom_loaded <- as.character(phyloseq::tax_table(phy)[, "Kingdom"])
+phy <- phyloseq::prune_taxa(kingdom_loaded == "Fungi", phy)
+phy <- phyloseq::prune_samples(phyloseq::sample_sums(phy) > 0, phy)
+phy <- phyloseq::prune_taxa(phyloseq::taxa_sums(phy) > 0, phy)
+
+preprocessing_audit <- tibble::tibble(
+  Stage = "Loaded ITSxpress QC20 / maxEE 2,2 fungal phyloseq",
+  Samples = as.integer(phyloseq::nsamples(phy)),
+  Taxa = as.integer(phyloseq::ntaxa(phy)),
+  Total_Reads = as.numeric(sum(phyloseq::sample_sums(phy)))
+)
+
+kingdom_before <- tibble::tibble(
+  Kingdom = as.character(phyloseq::tax_table(phy)[, "Kingdom"]),
+  Reads = as.numeric(phyloseq::taxa_sums(phy))
+) |>
+  dplyr::group_by(Kingdom) |>
+  dplyr::summarise(Taxa = as.integer(dplyr::n()), Reads = sum(Reads), .groups = "drop") |>
+  dplyr::mutate(Status = "Retained")
+kingdom_after <- kingdom_before |>
+  dplyr::select(Kingdom, Taxa, Reads)
+
+otu_matrix <- as(phyloseq::otu_table(phy), "matrix")
+if (!phyloseq::taxa_are_rows(phy)) otu_matrix <- t(otu_matrix)
+
+taxonomy_matrix <- data.frame(phyloseq::tax_table(phy), check.names = FALSE) |>
+  tibble::rownames_to_column("FeatureID") |>
+  dplyr::mutate(
+    Display_Taxon = dplyr::case_when(
+      Species != "" ~ stringr::str_replace_all(Species, "_", " "),
+      Genus != "" ~ paste0(Genus, " sp."),
+      Family != "" ~ paste0(Family, " (unclassified)"),
+      TRUE ~ "Unclassified fungi"
+    )
+  )
+
+sample_info <- data.frame(phyloseq::sample_data(phy), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(Read_Depth = as.numeric(phyloseq::sample_sums(phy)[SampleID]))
+
+subject_levels <- sort(unique(as.character(sample_info$Subject)))
+subject_shapes <- stats::setNames(
+  rep(0:20, length.out = length(subject_levels)),
+  subject_levels
+)
+
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data,
+    ") format('opentype');font-weight:400;font-style:normal;} ",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1400px!important;} .section h1{margin-top:36px;}",
+    "</style>"
+  ))
+}
+```
+
+# 1. Dataset
+
+## 분석 목표 및 입력
+
+- 분석 목표: True skin sample과 negative control 간 alpha diversity, beta diversity 및 taxonomic composition 차이의 기초 확인
+- phyloseq 입력: `01_Preprocessing.Rmd`에서 생성한 QC20 / maxEE 2,2 / ITSxpress fungal ASV phyloseq object
+- diversity 입력: non-rarefied ASV count를 사용함. alpha diversity는 raw ASV count, Bray–Curtis는 relative abundance, Jaccard는 presence/absence로 계산함
+- rarefaction: sample filtering 또는 분석 포함 기준으로 사용하지 않고 sequencing depth에 따른 observed richness 추이만 제시함
+- 추가 filtering: Kingdom이 Fungi인 taxon을 유지한 뒤 zero-depth sample 및 zero-sum taxon만 제거함. abundance threshold와 decontam은 적용하지 않음
+- 연구 구조: 2개 skin subject와 3개 control source에서 PCR cycle 조건을 반복 측정한 탐색 자료임
+- Skin sample은 대상자와 좌/우를 포함한 해부학적 site를 유지하며, 동일 biological unit에서 PCR 조건별 library가 반복된 구조로 분석함
+
+## Phyloseq preprocessing 및 taxonomy 검증
+
+- `01_Preprocessing.Rmd`에서 count, taxonomy, metadata 결합과 taxonomy 정리 및 Kingdom filtering을 마친 ITSxpress phyloseq RDS를 직접 불러옴.
+- ITS2 분석이므로 불러온 object에서 `Kingdom == Fungi`와 양의 sample/taxa count를 다시 확인함.
+- rarefaction, low-abundance threshold 및 contaminant removal은 preprocessing 단계에 적용하지 않음.
+
+```{r preprocessing-audit}
+datatable_basic(preprocessing_audit, 10) |>
+  DT::formatRound("Total_Reads", 0)
+
+datatable_basic(kingdom_before, 10) |>
+  DT::formatRound("Reads", 0)
+
+datatable_basic(kingdom_after, 10) |>
+  DT::formatRound("Reads", 0)
+```
+
+```{r taxonomy-check}
+taxonomy_check <- taxonomy_matrix |>
+  dplyr::select(Kingdom, Phylum, Class, Order, Family, Genus, Species) |>
+  dplyr::slice_head(n = 12)
+
+datatable_basic(taxonomy_check, 12)
+```
+
+- 불러온 ITSxpress phyloseq의 sample, ASV, total read와 Kingdom 구성을 위 표에서 직접 확인함.
+- 입력 object가 fungal-only인지 Kingdom level의 ASV/read 합계로 재확인함.
+
+## Sample info
+
+```{r sample-overview}
+sample_overview <- sample_info |>
+  dplyr::count(Sample_Type, Control_Type, PCR_Cycle_Group, name = "N") |>
+  dplyr::mutate(N = as.integer(N)) |>
+  dplyr::arrange(Sample_Type, Control_Type, PCR_Cycle_Group)
+
+sample_totals <- tibble::tibble(
+  Item = c(
+    "Metadata libraries", "Libraries used for alpha/beta/taxa",
+    "Independent skin subjects", "Independent control sources", "ASVs"
+  ),
+  N = as.integer(c(
+    nrow(q2_metadata), phyloseq::nsamples(phy),
+    dplyr::n_distinct(sample_info$Subject[sample_info$Sample_Type == "True"]),
+    dplyr::n_distinct(sample_info$Subject[sample_info$Sample_Type == "Control"]),
+    phyloseq::ntaxa(phy)
+  ))
+)
+
+datatable_basic(sample_totals, 10)
+datatable_basic(sample_overview, 12)
+
+skin_design <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::count(Subject, Region, Direction, Skin_Site, PCR_Cycle_Group, name = "Library_N") |>
+  dplyr::arrange(Subject, Skin_Site, PCR_Cycle_Group)
+
+datatable_basic(skin_design, 15)
+```
+
+현재 분석 metadata에서 Mock으로 식별되는 sample은 `r sum(sample_info$Sample_Type == "Mock", na.rm = TRUE)`개임. 본 보고서는 **QC20 / maxEE 2,2 / ITSxpress** 결과로 고정하며 다른 preprocessing 조합과의 비교는 포함하지 않음.
+
+## NGS info
+
+```{r ngs-summary}
+depth_summary <- sample_info |>
+  dplyr::group_by(Sample_Type, Control_Type, Subject) |>
+  dplyr::summarise(
+    N = as.integer(dplyr::n()),
+    Min = as.integer(min(Read_Depth)),
+    Max = as.integer(max(Read_Depth)),
+    Median = round(stats::median(Read_Depth), 1),
+    Mean = round(mean(Read_Depth), 1),
+    SD = round(stats::sd(Read_Depth), 1),
+    Qubit_Median_ng_uL = round(stats::median(Qubit_ng_uL, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+
+missingness <- q2_metadata |>
+  dplyr::summarise(dplyr::across(dplyr::everything(), ~ sum(is.na(.)))) |>
+  tidyr::pivot_longer(dplyr::everything(), names_to = "Variable", values_to = "Missing_N") |>
+  dplyr::filter(Missing_N > 0) |>
+  dplyr::mutate(Missing_N = as.integer(Missing_N))
+
+datatable_basic(depth_summary, 10)
+if (nrow(missingness) > 0) datatable_basic(missingness, 10)
+```
+
+```{r depth-plots, fig.width=12, fig.height=6.2}
+depth_plot <- ggplot(
+  sample_info,
+  aes(x = Control_Type, y = Read_Depth, colour = Sample_Type, shape = Subject)
+) +
+  geom_boxplot(outlier.shape = NA, colour = "grey45") +
+  geom_jitter(width = 0.15, alpha = 0.8, size = 2) +
+  scale_y_log10(labels = scales::label_comma()) +
+  scale_colour_manual(values = group_colors, drop = FALSE) +
+  scale_shape_manual(values = subject_shapes) +
+  labs(
+    title = "Sequencing depth by sample/control type",
+    x = NULL,
+    y = "Non-rarefied fungal reads (ASV table)",
+    colour = "Sample type",
+    shape = "Subject"
+  ) +
+  guides(colour = guide_legend(nrow = 1), shape = guide_legend(nrow = 2)) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+
+concentration_plot <- ggplot(
+  sample_info,
+  aes(x = Qubit_ng_uL, y = Read_Depth, colour = Sample_Type, shape = Subject)
+) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  scale_y_log10(labels = scales::label_comma()) +
+  scale_colour_manual(values = group_colors, drop = FALSE) +
+  scale_shape_manual(values = subject_shapes) +
+  labs(
+    title = "DNA concentration and sequencing depth",
+    x = "Qubit concentration (ng/µL)",
+    y = "Non-rarefied fungal reads (ASV table)",
+    colour = "Sample type",
+    shape = "Subject"
+  ) +
+  guides(
+    colour = guide_legend(nrow = 1),
+    shape = guide_legend(nrow = 2)
+  )
+
+(depth_plot + concentration_plot) +
+  patchwork::plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+- Negative control에서도 fungal read가 확인되며 control type별 depth 차이가 존재함.
+- 현재 입력은 ITSxpress를 포함한 최종 feature table 이후의 count이므로 NC read가 demultiplexing, primer trimming, ITS extraction, denoising/merging 또는 chimera removal 중 어느 단계에서 유지되었는지는 이 보고서만으로 판정할 수 없음.
+
+## Rarefaction trend
+
+- Rarefaction은 sample filtering 또는 분석 포함 기준으로 사용하지 않음.
+- 각 library의 full non-rarefied count에서 sequencing depth 증가에 따른 expected observed richness 추이만 확인함.
+
+```{r rarefaction-trend, fig.width=11, fig.height=6.5}
+rarefaction_input <- t(otu_matrix)
+rarefaction_curve <- vegan::rarecurve(
+  rarefaction_input,
+  step = 100,
+  label = FALSE,
+  tidy = TRUE
+) |>
+  dplyr::rename(SampleID = Site, Sequencing_Depth = Sample, Expected_Richness = Species) |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group, Cycle_1st, Cycle_2nd
+      ),
+    by = "SampleID"
+  )
+
+ggplot(
+  rarefaction_curve,
+  aes(
+    x = Sequencing_Depth,
+    y = Expected_Richness,
+    group = SampleID,
+    colour = Sample_Type
+  )
+) +
+  geom_line(alpha = 0.48, linewidth = 0.45) +
+  facet_wrap(~ PCR_Cycle_Group, scales = "free_x") +
+  scale_colour_manual(values = group_colors) +
+  scale_x_continuous(labels = scales::label_comma()) +
+  labs(
+    x = "Sequencing depth (non-rarefied reads)",
+    y = "Expected observed richness (ASVs)",
+    colour = "Sample type"
+  )
+```
+
+## ASV abundance heatmap
+
+- phyloseq에 포함된 전체 ASV를 동일하게 사용하여 전체 library, NC, True sample의 전반적인 abundance pattern을 각각 표시함.
+- 전체 ASV heatmap은 패턴 확인이 목적이므로 row label을 표시하지 않음.
+- 추가로 NC와 True의 평균 TSS relative abundance 차이를 기준으로 NC-enriched ASV 50개를 선정하고, 동일 ASV set을 NC와 True에서 각각 표시함.
+- row 이름은 `ASV ID 앞 10자 | Species-level 이름`으로 통일함.
+
+```{r heatmap-data, include=FALSE}
+heatmap_info <- sample_info |>
+  dplyr::mutate(
+    Site = dplyr::case_when(
+      Sample_Type == "True" ~ as.character(Region),
+      Sample_Type == "Control" ~ "Control",
+      TRUE ~ "Mock"
+    ),
+    Subject = dplyr::case_when(
+      Sample_Type == "True" ~ as.character(Subject),
+      Sample_Type == "Control" ~ "Control",
+      TRUE ~ "Mock"
+    )
+  )
+
+asv_count_heatmap <- t(otu_matrix)
+asv_relative_heatmap <- asv_count_heatmap / rowSums(asv_count_heatmap)
+
+asv_label_lookup <- taxonomy_matrix |>
+  dplyr::transmute(
+    FeatureID,
+    tax_name = paste0(stringr::str_sub(FeatureID, 1, 10), " | ", Display_Taxon)
+  ) |>
+  dplyr::mutate(tax_name = make.unique(tax_name))
+
+control_ids <- heatmap_info |>
+  dplyr::filter(Sample_Type == "Control") |>
+  dplyr::pull(SampleID)
+
+true_ids <- heatmap_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::pull(SampleID)
+
+all_asv_ids <- colnames(asv_count_heatmap)
+
+nc_enrichment_table <- tibble::tibble(
+  FeatureID = colnames(asv_count_heatmap),
+  NC_Mean_Relative = colMeans(asv_relative_heatmap[control_ids, , drop = FALSE]),
+  True_Mean_Relative = colMeans(asv_relative_heatmap[true_ids, , drop = FALSE]),
+  NC_Reads = as.numeric(colSums(asv_count_heatmap[control_ids, , drop = FALSE])),
+  True_Reads = as.numeric(colSums(asv_count_heatmap[true_ids, , drop = FALSE])),
+  NC_Prevalence = colMeans(asv_count_heatmap[control_ids, , drop = FALSE] > 0),
+  True_Prevalence = colMeans(asv_count_heatmap[true_ids, , drop = FALSE] > 0)
+) |>
+  dplyr::mutate(
+    Log2_NC_to_True = log2((NC_Mean_Relative + 1e-6) / (True_Mean_Relative + 1e-6))
+  ) |>
+  dplyr::left_join(asv_label_lookup, by = "FeatureID") |>
+  dplyr::arrange(dplyr::desc(Log2_NC_to_True), dplyr::desc(NC_Mean_Relative))
+
+nc_enriched_50 <- nc_enrichment_table |>
+  dplyr::filter(NC_Reads > 0, Log2_NC_to_True > 0) |>
+  dplyr::slice_head(n = 50)
+```
+
+```{r heatmap-colors}
+cycle_color <- c(
+  "PCR1_33__PCR2_8" = "#0072B2",
+  "PCR1_33__PCR2_10" = "#D55E00",
+  "PCR1_35__PCR2_8" = "#009E73",
+  "PCR1_35__PCR2_10" = "#CC79A7"
+)
+
+subject_levels <- sort(unique(heatmap_info$Subject))
+subject_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(12, "Paired")
+)(length(subject_levels))
+names(subject_color) <- subject_levels
+
+site_levels <- sort(unique(heatmap_info$Site))
+site_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(9, "Set1")
+)(length(site_levels))
+names(site_color) <- site_levels
+
+control_levels <- levels(droplevels(heatmap_info$Control_Type))
+control_color <- grDevices::colorRampPalette(
+  RColorBrewer::brewer.pal(8, "Dark2")
+)(length(control_levels))
+names(control_color) <- control_levels
+
+heatmap_color <- circlize::colorRamp2(
+  c(-3, 0, 3),
+  c("#2166AC", "white", "#B2182B")
+)
+```
+
+```{r heatmap-function}
+draw_asv_heatmap <- function(
+  sample_ids, feature_ids, title,
+  show_sample_name = FALSE, show_row_name = TRUE
+) {
+  meta <- heatmap_info |>
+    dplyr::filter(SampleID %in% sample_ids) |>
+    dplyr::arrange(match(SampleID, sample_ids))
+
+  feature_ids <- intersect(feature_ids, colnames(asv_count_heatmap))
+  log_count <- log(asv_count_heatmap[meta$SampleID, feature_ids, drop = FALSE] + 0.5)
+  z_table <- t(scale(log_count))
+  z_table[!is.finite(z_table)] <- 0
+  z_table[z_table > 3] <- 3
+  z_table[z_table < -3] <- -3
+  rownames(z_table) <- asv_label_lookup$tax_name[
+    match(rownames(z_table), asv_label_lookup$FeatureID)
+  ]
+
+  annotation <- data.frame(
+    PCR_Cycle_Group = meta$PCR_Cycle_Group,
+    Subject = meta$Subject,
+    Site = meta$Site,
+    Control_Type = meta$Control_Type,
+    row.names = meta$SampleID,
+    check.names = FALSE
+  )
+
+  top_annotation <- ComplexHeatmap::HeatmapAnnotation(
+    df = annotation,
+    col = list(
+      PCR_Cycle_Group = cycle_color,
+      Subject = subject_color,
+      Site = site_color,
+      Control_Type = control_color
+    ),
+    simple_anno_size = grid::unit(3, "mm")
+  )
+
+  ComplexHeatmap::Heatmap(
+    z_table,
+    name = "Log-count z score",
+    col = heatmap_color,
+    top_annotation = top_annotation,
+    cluster_rows = TRUE,
+    cluster_columns = TRUE,
+    show_column_names = show_sample_name,
+    column_names_rot = 90,
+    column_names_gp = grid::gpar(fontsize = 7),
+    show_row_names = show_row_name,
+    row_names_gp = grid::gpar(fontsize = ifelse(length(feature_ids) > 50, 5.2, 6.8)),
+    column_title = title,
+    border = TRUE,
+    use_raster = length(feature_ids) > 200
+  )
+}
+```
+
+```{r all-asv-heatmaps, fig.width=17, fig.height=13}
+heatmap_total <- draw_asv_heatmap(
+  heatmap_info$SampleID,
+  all_asv_ids,
+  "All libraries — all ASVs",
+  show_row_name = FALSE
+)
+heatmap_control <- draw_asv_heatmap(
+  heatmap_info$SampleID[heatmap_info$Sample_Type == "Control"],
+  all_asv_ids,
+  "Negative controls — all ASVs",
+  TRUE,
+  FALSE
+)
+heatmap_true <- draw_asv_heatmap(
+  heatmap_info$SampleID[heatmap_info$Sample_Type == "True"],
+  all_asv_ids,
+  "True samples — all ASVs",
+  TRUE,
+  FALSE
+)
+
+ComplexHeatmap::draw(heatmap_total)
+ComplexHeatmap::draw(heatmap_control)
+ComplexHeatmap::draw(heatmap_true)
+```
+
+### NC-enriched top 50 ASV: NC와 True 비교
+
+```{r nc-enriched50-heatmaps, fig.width=17, fig.height=11}
+heatmap_nc_enriched_nc <- draw_asv_heatmap(
+  control_ids,
+  nc_enriched_50$FeatureID,
+  "Negative controls — NC-enriched top 50 ASVs",
+  TRUE
+)
+heatmap_nc_enriched_true <- draw_asv_heatmap(
+  true_ids,
+  nc_enriched_50$FeatureID,
+  "True samples — the same NC-enriched top 50 ASVs",
+  TRUE
+)
+
+ComplexHeatmap::draw(heatmap_nc_enriched_nc)
+ComplexHeatmap::draw(heatmap_nc_enriched_true)
+```
+
+# 2. Alpha diversity
+
+- 표시값: Observed ASVs, Shannon 및 library read count
+- Read count는 alpha diversity 지수가 아니라 sequencing-depth QC 값이며 alpha diversity 통계 검정에서는 제외함
+- 비교군: True vs Control
+- 검정: 독립표본 Wilcoxon rank-sum test, paired structure 미적용
+- multiple testing: 두 alpha index의 True vs Control 검정에 BH correction 적용
+- 입력: non-rarefied phyloseq count의 전체 `r phyloseq::nsamples(phy)`개 library
+
+```{r alpha-data}
+alpha_diversity_data <- phyloseq::estimate_richness(
+  phy,
+  measures = c("Observed", "Shannon")
+) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(SampleID = stringr::str_replace(SampleID, "^X(?=\\d)", "")) |>
+  tidyr::pivot_longer(
+    c("Observed", "Shannon"),
+    names_to = "Metric",
+    values_to = "Value"
+  ) |>
+  dplyr::mutate(
+    Metric = dplyr::recode(Metric, "Observed" = "Observed ASVs")
+  ) |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group
+      ),
+    by = "SampleID"
+  ) |>
+  dplyr::filter(!is.na(Sample_Type), Sample_Type != "Mock") |>
+  dplyr::mutate(Sample_Type = droplevels(Sample_Type))
+
+alpha_read_data <- sample_info |>
+  dplyr::filter(!is.na(Sample_Type), Sample_Type != "Mock") |>
+  dplyr::transmute(
+    SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+    Sample_Type = droplevels(Sample_Type), Control_Type, PCR_Cycle_Group,
+    Metric = "Read count",
+    Value = Read_Depth
+  )
+
+alpha_data <- dplyr::bind_rows(alpha_diversity_data, alpha_read_data) |>
+  dplyr::mutate(
+    Metric = factor(Metric, levels = c("Observed ASVs", "Shannon", "Read count"))
+  )
+
+alpha_tests <- alpha_data |>
+  dplyr::filter(Metric != "Read count") |>
+  dplyr::group_by(Metric) |>
+  dplyr::summarise(
+    N_Control = as.integer(sum(Sample_Type == "Control")),
+    N_True = as.integer(sum(Sample_Type == "True")),
+    Median_Control = stats::median(Value[Sample_Type == "Control"]),
+    Median_True = stats::median(Value[Sample_Type == "True"]),
+    P_value = stats::wilcox.test(
+      Value[Sample_Type == "Control"],
+      Value[Sample_Type == "True"],
+      exact = FALSE
+    )$p.value,
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    P_adjust_BH = stats::p.adjust(P_value, method = "BH"),
+    Significant = dplyr::case_when(
+      P_adjust_BH < 0.001 ~ "***",
+      P_adjust_BH < 0.01 ~ "**",
+      P_adjust_BH < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  )
+
+datatable_basic(alpha_tests, 10) |>
+  DT::formatRound(c("Median_Control", "Median_True"), 3) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r alpha-plot-data, include=FALSE}
+alpha_group_plot <- ggplot(
+  alpha_data |> dplyr::filter(Metric != "Read count"),
+  aes(x = Sample_Type, y = Value, fill = Sample_Type)
+) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, alpha = 0.65) +
+  geom_jitter(width = 0.14, size = 1.7, alpha = 0.75) +
+  facet_wrap(~ Metric, scales = "free_y", nrow = 1) +
+  scale_fill_manual(values = group_colors) +
+  labs(
+    title = "True vs Control",
+    x = NULL, y = "Alpha diversity", fill = "Sample type"
+  )
+
+alpha_subject_plot <- alpha_data |>
+  dplyr::filter(Sample_Type == "True", Metric != "Read count") |>
+  ggplot(aes(x = Subject, y = Value, fill = Subject)) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, alpha = 0.72) +
+  geom_jitter(width = 0.14, size = 1.7, alpha = 0.75) +
+  facet_wrap(~ Metric, scales = "free_y", nrow = 1) +
+  scale_fill_manual(values = subject_pair_colors, drop = FALSE) +
+  labs(
+    title = "Skin subjects: KSY vs PYH",
+    x = NULL, y = "Alpha diversity", fill = "Subject"
+  )
+
+```
+
+```{r alpha-true-control-plot, fig.width=11, fig.height=4.8}
+alpha_group_plot
+```
+
+```{r alpha-subject-plot, fig.width=11, fig.height=4.8}
+alpha_subject_plot
+```
+
+## Skin sample별 alpha diversity
+
+- 별도의 통계 검정 없이 각 `Subject × Skin site`에서 PCR cycle 조건별 값을 막대그래프로 표시함.
+- Observed ASVs와 Shannon에 library read count를 sequencing-depth QC 패널로 함께 표시함.
+- PCR 조건 순서는 `33/8 → 33/10 → 35/8 → 35/10`으로 고정함.
+
+```{r skin-alpha-data, include=FALSE}
+skin_alpha <- alpha_data |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::mutate(PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels)) |>
+  dplyr::arrange(Subject, Skin_Site, PCR_Cycle_Group, SampleID, Metric)
+```
+
+```{r skin-alpha-plot-data, include=FALSE}
+draw_skin_alpha <- function(metric_name) {
+  plot_data <- skin_alpha |>
+    dplyr::filter(Metric == metric_name) |>
+    dplyr::mutate(
+      Subject = factor(Subject, levels = c("KSY", "PYH")),
+      Skin_Site = factor(Skin_Site, levels = unique(as.character(Skin_Site)))
+    )
+  y_max <- max(plot_data$Value, na.rm = TRUE) * 1.05
+
+  ggplot(
+    plot_data,
+    aes(x = PCR_Cycle_Group, y = Value, fill = PCR_Cycle_Group)
+  ) +
+    geom_col(width = 0.42, colour = "black", linewidth = 0.25) +
+    facet_grid(Subject ~ Skin_Site) +
+    scale_y_continuous(limits = c(0, y_max), expand = expansion(mult = c(0, 0.02))) +
+    scale_fill_manual(values = cycle_color, drop = FALSE) +
+    labs(
+      title = metric_name,
+      x = "PCR cycle group",
+      y = metric_name,
+      fill = "PCR cycle group"
+    ) +
+    theme(axis.text.x = element_text(angle = 55, hjust = 1, size = 7))
+}
+
+skin_alpha_observed_plot <- draw_skin_alpha("Observed ASVs")
+skin_alpha_shannon_plot <- draw_skin_alpha("Shannon")
+skin_alpha_read_plot <- draw_skin_alpha("Read count") +
+  scale_y_continuous(
+    limits = c(0, max(skin_alpha$Value[skin_alpha$Metric == "Read count"], na.rm = TRUE) * 1.05),
+    labels = scales::label_comma(),
+    expand = expansion(mult = c(0, 0.02))
+  )
+
+```
+
+```{r skin-alpha-observed-plot, fig.width=16, fig.height=6.5}
+skin_alpha_observed_plot
+```
+
+```{r skin-alpha-shannon-plot, fig.width=16, fig.height=6.5}
+skin_alpha_shannon_plot
+```
+
+```{r skin-alpha-read-plot, fig.width=16, fig.height=6.5}
+skin_alpha_read_plot
+```
+
+## Read count (sequencing-depth QC)
+
+```{r alpha-read-count-data, include=FALSE}
+read_count_data <- alpha_data |>
+  dplyr::filter(Metric == "Read count")
+
+read_group_plot <- ggplot(
+  read_count_data,
+  aes(x = Sample_Type, y = Value, fill = Sample_Type)
+) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, alpha = 0.65) +
+  geom_jitter(width = 0.14, size = 1.7, alpha = 0.75) +
+  scale_fill_manual(values = group_colors) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(title = "Read count: True vs Control", x = NULL, y = "Read count", fill = "Sample type")
+
+read_subject_plot <- read_count_data |>
+  dplyr::filter(Sample_Type == "True") |>
+  ggplot(aes(x = Subject, y = Value, fill = Subject)) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, alpha = 0.72) +
+  geom_jitter(width = 0.14, size = 1.7, alpha = 0.75) +
+  scale_fill_manual(values = subject_pair_colors, drop = FALSE) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(title = "Read count: KSY vs PYH", x = NULL, y = "Read count", fill = "Subject")
+
+```
+
+```{r read-count-true-control-plot, fig.width=7.5, fig.height=5}
+read_group_plot
+```
+
+```{r read-count-subject-plot, fig.width=7.5, fig.height=5}
+read_subject_plot
+```
+
+- 이 그림은 PCR 조건에 따른 sample-level pattern 확인용이며, 동일 biological unit의 반복 library를 독립 표본으로 간주한 통계 검정은 수행하지 않음.
+
+# 3. Beta diversity
+
+- distance: non-rarefied count에서 Bray–Curtis relative abundance 및 Jaccard presence/absence를 계산함
+- ordination: PCoA
+- marginal plot: PCoA1 및 PCoA2의 Sample type별 density를 함께 제시함
+- PERMANOVA: `Sample_Type` 단일 predictor, 999 permutations, seed 42
+- dispersion: `betadisper` 후 999-permutation test
+- 반복측정: `Sample_Type`이 subject/source 내부에서 변하지 않아 strata 적용 시 group 효과를 검정할 수 없음. 따라서 unstratified 결과를 탐색값으로만 제시함
+- multiple testing: 두 distance의 PERMANOVA와 dispersion p-value에 각각 BH correction 적용
+
+```{r beta-analysis}
+analyse_distance <- function(distance_object, distance_name) {
+  sample_ids <- attr(distance_object, "Labels")
+  meta <- sample_info |>
+    dplyr::filter(SampleID %in% sample_ids, Sample_Type != "Mock") |>
+    dplyr::arrange(match(SampleID, sample_ids)) |>
+    dplyr::mutate(
+      Sample_Type = droplevels(Sample_Type),
+      Control_Type = droplevels(Control_Type)
+    ) |>
+    data.frame(check.names = FALSE)
+  keep_ids <- meta$SampleID
+  distance_matrix <- as.matrix(distance_object)[keep_ids, keep_ids, drop = FALSE]
+  distance_filtered <- stats::as.dist(distance_matrix)
+
+  set.seed(42)
+  permanova <- vegan::adonis2(
+    distance_filtered ~ Sample_Type,
+    data = meta,
+    permutations = 999
+  )
+  dispersion <- vegan::betadisper(distance_filtered, meta$Sample_Type)
+  set.seed(42)
+  dispersion_test <- vegan::permutest(dispersion, permutations = 999)
+
+  pcoa <- stats::cmdscale(distance_filtered, k = 2, eig = TRUE, add = TRUE)
+  variance <- pcoa$eig[pcoa$eig > 0] / sum(pcoa$eig[pcoa$eig > 0]) * 100
+  score <- tibble::as_tibble(pcoa$points, rownames = "SampleID") |>
+    dplyr::rename(Axis1 = V1, Axis2 = V2) |>
+    dplyr::left_join(meta, by = "SampleID") |>
+    dplyr::mutate(Distance = distance_name)
+
+  result <- tibble::tibble(
+    Distance = distance_name,
+    N = as.integer(nrow(meta)),
+    PERMANOVA_R2 = as.numeric(permanova$R2[1]),
+    PERMANOVA_P = as.numeric(permanova$`Pr(>F)`[1]),
+    Betadisper_P = as.numeric(dispersion_test$tab$`Pr(>F)`[1])
+  )
+
+  main_plot <- ggplot(
+    score,
+    aes(x = Axis1, y = Axis2, colour = Sample_Type, shape = Control_Type)
+  ) +
+    geom_hline(yintercept = 0, colour = "grey85") +
+    geom_vline(xintercept = 0, colour = "grey85") +
+    geom_point(size = 2.6, alpha = 0.82) +
+    stat_ellipse(aes(group = Sample_Type), linewidth = 0.7, linetype = 2) +
+    scale_colour_manual(values = group_colors) +
+    labs(
+      title = distance_name,
+      x = paste0("PCoA1 (", round(variance[1], 1), "%)"),
+      y = paste0("PCoA2 (", round(variance[2], 1), "%)"),
+      colour = "Sample type",
+      shape = "Control type"
+    ) +
+    guides(colour = guide_legend(nrow = 1), shape = guide_legend(nrow = 2)) +
+    theme(legend.position = "bottom")
+
+  density_score <- score |>
+    dplyr::group_by(Sample_Type) |>
+    dplyr::filter(dplyr::n() > 1) |>
+    dplyr::ungroup()
+
+  x_density <- cowplot::axis_canvas(main_plot, axis = "x") +
+    geom_density(
+      data = density_score,
+      aes(x = Axis1, fill = Sample_Type, colour = Sample_Type),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = group_colors) +
+    scale_colour_manual(values = group_colors)
+
+  y_density <- cowplot::axis_canvas(main_plot, axis = "y", coord_flip = TRUE) +
+    geom_density(
+      data = density_score,
+      aes(x = Axis2, fill = Sample_Type, colour = Sample_Type),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = group_colors) +
+    scale_colour_manual(values = group_colors) +
+    coord_flip()
+
+  plot <- main_plot |>
+    cowplot::insert_xaxis_grob(
+      x_density,
+      grid::unit(0.7, "in"),
+      position = "top"
+    ) |>
+    cowplot::insert_yaxis_grob(
+      y_density,
+      grid::unit(0.7, "in"),
+      position = "right"
+    ) |>
+    cowplot::ggdraw()
+
+  list(result = result, plot = plot, score = score)
+}
+
+beta_sample_ids <- sample_info |>
+  dplyr::filter(Sample_Type != "Mock") |>
+  dplyr::pull(SampleID)
+beta_count <- t(otu_matrix[, beta_sample_ids, drop = FALSE])
+beta_relative <- sweep(beta_count, 1, rowSums(beta_count), "/")
+
+bray_distance <- vegan::vegdist(beta_relative, method = "bray")
+jaccard_distance <- vegan::vegdist(beta_count, method = "jaccard", binary = TRUE)
+
+beta_results <- list(
+  analyse_distance(bray_distance, "Bray–Curtis"),
+  analyse_distance(jaccard_distance, "Jaccard")
+)
+
+beta_table <- purrr::map_dfr(beta_results, "result") |>
+  dplyr::mutate(
+    PERMANOVA_P_adjust_BH = stats::p.adjust(PERMANOVA_P, method = "BH"),
+    Betadisper_P_adjust_BH = stats::p.adjust(Betadisper_P, method = "BH")
+  )
+
+datatable_basic(beta_table, 10) |>
+  DT::formatRound("PERMANOVA_R2", 4) |>
+  DT::formatSignif(
+    c("PERMANOVA_P", "Betadisper_P", "PERMANOVA_P_adjust_BH", "Betadisper_P_adjust_BH"),
+    3
+  )
+```
+
+```{r beta-plots, fig.width=16, fig.height=7.5}
+cowplot::plot_grid(
+  beta_results[[1]]$plot,
+  beta_results[[2]]$plot,
+  labels = c("A", "B"),
+  ncol = 2
+)
+```
+
+## Skin sample별 beta diversity
+
+- Skin library만 분리하여 대상자와 좌/우 포함 site를 동시에 표시함.
+- 탐색적 PERMANOVA는 `Subject + Skin_Site + PCR_Cycle_Group`를 함께 넣어 각 요인의 주변효과를 계산함.
+- 동일 biological unit에서 PCR 조건이 반복되므로 permutation p-value는 확증 검정이 아니라 구조 확인용임.
+
+```{r skin-beta-analysis}
+analyse_skin_distance <- function(distance_object, distance_name) {
+  skin_ids <- sample_info |>
+    dplyr::filter(Sample_Type == "True") |>
+    dplyr::pull(SampleID)
+  distance_matrix <- as.matrix(distance_object)[skin_ids, skin_ids, drop = FALSE]
+  distance_skin <- stats::as.dist(distance_matrix)
+  meta <- sample_info |>
+    dplyr::filter(SampleID %in% skin_ids) |>
+    dplyr::arrange(match(SampleID, skin_ids)) |>
+    dplyr::mutate(
+      Subject = factor(Subject),
+      Skin_Site = factor(Skin_Site),
+      PCR_Cycle_Group = droplevels(PCR_Cycle_Group)
+    ) |>
+    data.frame(check.names = FALSE)
+
+  set.seed(42)
+  permanova <- vegan::adonis2(
+    distance_skin ~ Subject + Skin_Site + PCR_Cycle_Group,
+    data = meta,
+    permutations = 999,
+    by = "margin"
+  )
+  permanova_table <- as.data.frame(permanova) |>
+    tibble::rownames_to_column("Term") |>
+    dplyr::filter(Term %in% c("Subject", "Skin_Site", "PCR_Cycle_Group")) |>
+    dplyr::transmute(
+      Distance = distance_name,
+      Term,
+      Df = as.integer(Df),
+      R2 = as.numeric(R2),
+      F = as.numeric(F),
+      P_value = as.numeric(`Pr(>F)`)
+    )
+
+  pcoa <- stats::cmdscale(distance_skin, k = 2, eig = TRUE, add = TRUE)
+  variance <- pcoa$eig[pcoa$eig > 0] / sum(pcoa$eig[pcoa$eig > 0]) * 100
+  score <- tibble::as_tibble(pcoa$points, rownames = "SampleID") |>
+    dplyr::rename(Axis1 = V1, Axis2 = V2) |>
+    dplyr::left_join(meta, by = "SampleID") |>
+    dplyr::mutate(Distance = distance_name)
+
+  skin_subject_levels <- sort(unique(score$Subject))
+  skin_subject_color <- subject_pair_colors
+  if (!all(skin_subject_levels %in% names(skin_subject_color))) {
+    skin_subject_color <- setNames(
+      scales::hue_pal()(length(skin_subject_levels)),
+      skin_subject_levels
+    )
+  }
+  skin_site_levels <- sort(unique(score$Skin_Site))
+  skin_site_shape <- setNames(rep(0:24, length.out = length(skin_site_levels)), skin_site_levels)
+
+  main_plot <- ggplot(
+    score,
+    aes(x = Axis1, y = Axis2, colour = Subject, shape = Skin_Site)
+  ) +
+    geom_hline(yintercept = 0, colour = "grey85") +
+    geom_vline(xintercept = 0, colour = "grey85") +
+    geom_point(size = 2.8, alpha = 0.84) +
+    stat_ellipse(aes(group = Subject), linewidth = 0.7, linetype = 2) +
+    scale_colour_manual(values = skin_subject_color) +
+    scale_shape_manual(values = skin_site_shape) +
+    labs(
+      title = paste0(distance_name, " — skin samples"),
+      x = paste0("PCoA1 (", round(variance[1], 1), "%)"),
+      y = paste0("PCoA2 (", round(variance[2], 1), "%)"),
+      colour = "Subject",
+      shape = "Skin site"
+    ) +
+    guides(shape = guide_legend(ncol = 2)) +
+    theme(legend.position = "bottom")
+
+  x_density <- cowplot::axis_canvas(main_plot, axis = "x") +
+    geom_density(
+      data = score,
+      aes(x = Axis1, fill = Subject, colour = Subject),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = skin_subject_color) +
+    scale_colour_manual(values = skin_subject_color)
+
+  y_density <- cowplot::axis_canvas(main_plot, axis = "y", coord_flip = TRUE) +
+    geom_density(
+      data = score,
+      aes(x = Axis2, fill = Subject, colour = Subject),
+      alpha = 0.25,
+      linewidth = 0.4
+    ) +
+    scale_fill_manual(values = skin_subject_color) +
+    scale_colour_manual(values = skin_subject_color) +
+    coord_flip()
+
+  plot <- main_plot |>
+    cowplot::insert_xaxis_grob(
+      x_density, grid::unit(0.7, "in"), position = "top"
+    ) |>
+    cowplot::insert_yaxis_grob(
+      y_density, grid::unit(0.7, "in"), position = "right"
+    ) |>
+    cowplot::ggdraw()
+
+  list(result = permanova_table, plot = plot, score = score)
+}
+
+skin_beta_results <- list(
+  analyse_skin_distance(bray_distance, "Bray–Curtis"),
+  analyse_skin_distance(jaccard_distance, "Jaccard")
+)
+
+skin_beta_table <- purrr::map_dfr(skin_beta_results, "result") |>
+  dplyr::group_by(Term) |>
+  dplyr::mutate(P_adjust_BH = stats::p.adjust(P_value, method = "BH")) |>
+  dplyr::ungroup()
+
+datatable_basic(skin_beta_table, 10) |>
+  DT::formatRound(c("R2", "F"), 4) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+
+skin_pcoa_scores <- purrr::map_dfr(skin_beta_results, "score") |>
+  dplyr::select(
+    Distance, SampleID, Subject, Region, Direction, Skin_Site,
+    PCR_Cycle_Group, Axis1, Axis2
+  ) |>
+  dplyr::arrange(Distance, Subject, Skin_Site, PCR_Cycle_Group)
+
+datatable_basic(skin_pcoa_scores, 15) |>
+  DT::formatRound(c("Axis1", "Axis2"), 5)
+```
+
+```{r skin-beta-plots, fig.width=16, fig.height=8.5}
+cowplot::plot_grid(
+  skin_beta_results[[1]]$plot,
+  skin_beta_results[[2]]$plot,
+  labels = c("A", "B"),
+  ncol = 2
+)
+```
+
+- PERMANOVA와 betadisper를 함께 확인해야 centroid 차이와 dispersion 차이를 구분할 수 있음.
+- group과 subject/source가 완전히 분리되어 있어 현재 p-value는 biological replicate 수준의 확증 통계로 해석할 수 없음.
+
+# 4. Taxonomic composition
+
+- taxonomic level: Species
+- 표시 기준: 전체 sample의 TSS relative abundance 평균이 1%를 초과하는 taxa
+- 분석 단위: non-rarefied species count의 sample별 relative abundance
+- taxa 차이: 평균 TSS relative abundance 1% 초과 taxa의 True vs Control library-level Wilcoxon test 및 BH correction
+
+```{r taxonomy-data}
+display_lookup <- taxonomy_matrix |>
+  dplyr::select(FeatureID, Display_Taxon)
+
+relative_matrix <- sweep(otu_matrix, 2, colSums(otu_matrix), "/")
+relative_long <- as.data.frame(t(relative_matrix), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  tidyr::pivot_longer(-SampleID, names_to = "FeatureID", values_to = "Relative_Abundance") |>
+  dplyr::left_join(display_lookup, by = "FeatureID") |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(
+        SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+        Sample_Type, Control_Type, PCR_Cycle_Group, Cycle_1st, Cycle_2nd
+      ),
+    by = "SampleID"
+  )
+
+species_relative <- relative_long |>
+  dplyr::group_by(
+    SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+    Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon
+  ) |>
+  dplyr::summarise(
+    Relative_Abundance = sum(Relative_Abundance),
+    .groups = "drop"
+  )
+
+top_taxa <- species_relative |>
+  dplyr::group_by(Display_Taxon) |>
+  dplyr::summarise(Mean = mean(Relative_Abundance), .groups = "drop") |>
+  dplyr::arrange(dplyr::desc(Mean)) |>
+  dplyr::filter(Mean > 0.01)
+
+composition_data <- species_relative |>
+  dplyr::mutate(
+    Display_Taxon = dplyr::if_else(
+      Display_Taxon %in% top_taxa$Display_Taxon,
+      Display_Taxon,
+      "Others"
+    )
+  ) |>
+  dplyr::group_by(
+    SampleID, Subject, Region, Direction, Skin_Site, Biological_Unit,
+    Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon
+  ) |>
+  dplyr::summarise(Relative_Abundance = sum(Relative_Abundance), .groups = "drop")
+
+composition_summary <- composition_data |>
+  dplyr::group_by(Sample_Type, Control_Type, PCR_Cycle_Group, Display_Taxon) |>
+  dplyr::summarise(Mean_Relative_Abundance = mean(Relative_Abundance), .groups = "drop")
+
+taxon_levels <- c(top_taxa$Display_Taxon, "Others")
+brewer_taxon_pool <- c(
+  RColorBrewer::brewer.pal(12, "Paired"),
+  RColorBrewer::brewer.pal(8, "Dark2"),
+  RColorBrewer::brewer.pal(8, "Accent")
+)
+taxon_colors <- stats::setNames(
+  grDevices::colorRampPalette(brewer_taxon_pool)(length(taxon_levels)),
+  taxon_levels
+)
+taxon_colors["Others"] <- "#D9D9D9"
+
+taxa_tests <- species_relative |>
+  dplyr::filter(Display_Taxon %in% top_taxa$Display_Taxon, Sample_Type != "Mock") |>
+  dplyr::mutate(Sample_Type = droplevels(Sample_Type)) |>
+  dplyr::group_by(Display_Taxon) |>
+  dplyr::summarise(
+    Mean_Control = mean(Relative_Abundance[Sample_Type == "Control"]),
+    Mean_True = mean(Relative_Abundance[Sample_Type == "True"]),
+    Prevalence_Control = mean(Relative_Abundance[Sample_Type == "Control"] > 0),
+    Prevalence_True = mean(Relative_Abundance[Sample_Type == "True"] > 0),
+    P_value = stats::wilcox.test(
+      Relative_Abundance[Sample_Type == "Control"],
+      Relative_Abundance[Sample_Type == "True"],
+      exact = FALSE
+    )$p.value,
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    P_adjust_BH = stats::p.adjust(P_value, method = "BH"),
+    Significant = dplyr::case_when(
+      P_adjust_BH < 0.001 ~ "***",
+      P_adjust_BH < 0.01 ~ "**",
+      P_adjust_BH < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  ) |>
+  dplyr::arrange(P_adjust_BH)
+
+datatable_basic(taxa_tests, max(10, nrow(taxa_tests))) |>
+  DT::formatPercentage(
+    c("Mean_Control", "Mean_True", "Prevalence_Control", "Prevalence_True"),
+    1
+  ) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+## 전체 SampleID별 relative composition과 read count
+
+- 두 그림 모두 x축은 factor형 `PCR_Cycle_Group`이며 `33/8 → 33/10 → 35/8 → 35/10` 순서로 고정함.
+- facet strip은 `Sample type → Subject → Site` 순서로 중첩함.
+- Control의 Subject는 `Control`로 통일하고 Site에는 `Air swab`, `Clean bench swab`, `Empty tube`를 표시함.
+- 두 그림은 동일한 taxa 분류 기준과 색상을 사용함.
+
+```{r overall-sample-composition-data, include=FALSE}
+sample_facet_info <- sample_info |>
+  dplyr::filter(Sample_Type %in% c("Control", "True")) |>
+  dplyr::transmute(
+    SampleID,
+    Sample_Type = droplevels(Sample_Type),
+    Subject_Facet = dplyr::if_else(Sample_Type == "True", as.character(Subject), "Control"),
+    Site_Facet = dplyr::if_else(
+      Sample_Type == "True", as.character(Skin_Site), as.character(Control_Type)
+    ),
+    PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels)
+  ) |>
+  dplyr::arrange(Sample_Type, Subject_Facet, Site_Facet, PCR_Cycle_Group, SampleID)
+
+overall_sample_order <- sample_facet_info$SampleID
+
+overall_relative_composition <- composition_data |>
+  dplyr::filter(Sample_Type %in% c("Control", "True")) |>
+  dplyr::select(SampleID, Display_Taxon, Relative_Abundance) |>
+  dplyr::left_join(sample_facet_info, by = "SampleID") |>
+  dplyr::mutate(
+    SampleID = factor(SampleID, levels = overall_sample_order),
+    Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels))
+  )
+
+asv_count_long <- as.data.frame(t(otu_matrix), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  tidyr::pivot_longer(-SampleID, names_to = "FeatureID", values_to = "Reads") |>
+  dplyr::left_join(display_lookup, by = "FeatureID") |>
+  dplyr::mutate(
+    Display_Taxon = dplyr::if_else(
+      Display_Taxon %in% top_taxa$Display_Taxon, Display_Taxon, "Others"
+    )
+  ) |>
+  dplyr::group_by(SampleID, Display_Taxon) |>
+  dplyr::summarise(Reads = sum(Reads), .groups = "drop")
+
+overall_read_composition <- asv_count_long |>
+  dplyr::left_join(sample_facet_info, by = "SampleID") |>
+  dplyr::filter(!is.na(Sample_Type)) |>
+  dplyr::mutate(
+    SampleID = factor(SampleID, levels = overall_sample_order),
+    Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels))
+  )
+```
+
+```{r overall-relative-composition-plot, fig.width=30, fig.height=8}
+ggplot(
+  overall_relative_composition,
+  aes(PCR_Cycle_Group, Relative_Abundance, fill = Display_Taxon)
+) +
+  geom_col(width = 0.86, colour = "white", linewidth = 0.12) +
+  ggh4x::facet_nested(
+    ~ Sample_Type + Subject_Facet + Site_Facet,
+    scales = "free_x", space = "free_x"
+  ) +
+  scale_y_continuous(labels = scales::label_percent(), expand = c(0, 0)) +
+  scale_fill_manual(values = taxon_colors, drop = FALSE) +
+  labs(
+    title = "Sample-level taxonomic composition — TSS relative abundance",
+    x = "PCR cycle group", y = "Relative abundance", fill = "Species"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 5.8),
+    legend.position = "right"
+  )
+```
+
+```{r overall-read-composition-plot, fig.width=30, fig.height=8}
+ggplot(
+  overall_read_composition,
+  aes(PCR_Cycle_Group, Reads, fill = Display_Taxon)
+) +
+  geom_col(width = 0.86, colour = "white", linewidth = 0.12) +
+  ggh4x::facet_nested(
+    ~ Sample_Type + Subject_Facet + Site_Facet,
+    scales = "free_x", space = "free_x"
+  ) +
+  scale_y_continuous(labels = scales::label_comma(), expand = c(0, 0)) +
+  scale_fill_manual(values = taxon_colors, drop = FALSE) +
+  labs(
+    title = "Sample-level taxonomic composition — raw read count",
+    x = "PCR cycle group", y = "Non-rarefied read count", fill = "Species"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 5.8),
+    legend.position = "right"
+  )
+```
+
+```{r control-composition-plot, fig.width=17, fig.height=10}
+control_composition <- composition_data |>
+  dplyr::filter(Sample_Type == "Control") |>
+  dplyr::mutate(
+    PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels),
+    Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels))
+  )
+
+ggplot(
+  control_composition,
+  aes(x = PCR_Cycle_Group, y = Relative_Abundance, fill = Display_Taxon)
+) +
+  geom_col(width = 0.86, colour = "white", linewidth = 0.15) +
+  facet_wrap(vars(Control_Type, Subject), ncol = 3) +
+  scale_y_continuous(labels = scales::label_percent(), expand = c(0, 0)) +
+  scale_fill_manual(values = taxon_colors, drop = FALSE) +
+  labs(
+    title = "Negative-control taxonomic composition",
+    subtitle = "Displayed taxa: overall mean TSS relative abundance >1%",
+    x = "PCR cycle group",
+    y = "Relative abundance (Species)",
+    fill = "Species"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 55, hjust = 1, size = 7),
+    legend.position = "right"
+  )
+```
+
+## Skin sample별 taxonomic composition
+
+- 아래 stacked bar의 각 막대는 개별 Skin library 한 개이며 평균으로 합치지 않음.
+- 대상자와 좌/우 포함 site를 panel로 분리하고, x축 PCR 조건은 `33/8 → 33/10 → 35/8 → 35/10` 순서로 고정함.
+
+```{r skin-composition-data}
+skin_sample_order <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::arrange(Subject, PCR_Cycle_Group, Skin_Site, SampleID) |>
+  dplyr::pull(SampleID)
+
+skin_composition <- composition_data |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::mutate(
+    SampleID = factor(SampleID, levels = skin_sample_order),
+    Subject = factor(Subject, levels = c("KSY", "PYH")),
+    PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels),
+    Display_Taxon = factor(Display_Taxon, levels = rev(taxon_levels))
+  )
+
+skin_composition_index <- sample_info |>
+  dplyr::filter(Sample_Type == "True") |>
+  dplyr::select(
+    SampleID, Subject, Region, Direction, Skin_Site,
+    PCR_Cycle_Group, Read_Depth, Qubit_ng_uL, Mol_Conc_nM
+  ) |>
+  dplyr::arrange(Subject, PCR_Cycle_Group, Skin_Site, SampleID)
+
+datatable_basic(skin_composition_index, 15) |>
+  DT::formatRound(c("Read_Depth", "Qubit_ng_uL", "Mol_Conc_nM"), 2)
+```
+
+```{r skin-composition-plot, fig.width=18, fig.height=10}
+ggplot(
+  skin_composition,
+  aes(x = PCR_Cycle_Group, y = Relative_Abundance, fill = Display_Taxon)
+) +
+  geom_col(width = 0.86, colour = "white", linewidth = 0.15) +
+  facet_wrap(
+    vars(Subject, Skin_Site),
+    nrow = 2
+  ) +
+  scale_y_continuous(labels = scales::label_percent(), expand = c(0, 0)) +
+  scale_fill_manual(values = taxon_colors, drop = FALSE) +
+  labs(
+    title = "Sample-level fungal composition of skin libraries",
+    subtitle = "Displayed taxa: overall mean TSS relative abundance >1%",
+    x = "PCR cycle group",
+    y = "Relative abundance (Species)",
+    fill = "Species"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 55, hjust = 1, size = 7),
+    legend.position = "right"
+  )
+```
+
+```{r control-heatmap, fig.width=11, fig.height=7}
+control_heatmap <- species_relative |>
+  dplyr::filter(Display_Taxon %in% top_taxa$Display_Taxon) |>
+  dplyr::group_by(Control_Type, PCR_Cycle_Group, Display_Taxon) |>
+  dplyr::summarise(Mean_Relative_Abundance = mean(Relative_Abundance), .groups = "drop") |>
+  dplyr::mutate(
+    Profile = interaction(Control_Type, PCR_Cycle_Group, sep = " / "),
+    Display_Taxon = factor(Display_Taxon, levels = rev(top_taxa$Display_Taxon))
+  )
+
+ggplot(
+  control_heatmap,
+  aes(x = Profile, y = Display_Taxon, fill = Mean_Relative_Abundance)
+) +
+  geom_tile(colour = "white", linewidth = 0.25) +
+  scale_fill_viridis_c(
+    option = "C",
+    trans = "sqrt",
+    labels = scales::label_percent(accuracy = 0.1),
+    guide = guide_colorbar(
+      direction = "vertical",
+      barheight = grid::unit(55, "mm")
+    )
+  ) +
+  labs(
+    x = "Sample/control profile / PCR cycle group",
+    y = "Species",
+    fill = "Mean relative\nabundance"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 55, hjust = 1),
+    legend.position = "right"
+  )
+```
+
+# 5. Control–True 간 통계적 비교
+
+## 동일 PCR 조건에서 Control source 간 ASV 공유: ternary plot
+
+- 동일 PCR 조건에서 각 ASV의 Air swab, Clean bench swab, Empty tube 평균 TSS relative abundance를 계산함.
+- 꼭짓점은 한 control source 특이적 ASV, 변은 두 source 공유 ASV, 중앙은 세 source 공유 ASV를 의미함.
+- 점 색은 Genus, 점 크기는 세 control source에서의 평균 relative abundance 합을 나타냄.
+
+```{r control-ternary-data}
+control_ternary_long <- as.data.frame(t(relative_matrix), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  tidyr::pivot_longer(-SampleID, names_to = "FeatureID", values_to = "Relative_Abundance") |>
+  dplyr::left_join(
+    sample_info |>
+      dplyr::select(SampleID, Sample_Type, Control_Type, PCR_Cycle_Group),
+    by = "SampleID"
+  ) |>
+  dplyr::filter(Sample_Type == "Control") |>
+  dplyr::mutate(
+    PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels),
+    Control_Key = dplyr::recode(
+      as.character(Control_Type),
+      "Air swab" = "Air",
+      "Clean bench swab" = "Clean",
+      "Empty tube" = "Empty"
+    )
+  ) |>
+  dplyr::group_by(PCR_Cycle_Group, Control_Key, FeatureID) |>
+  dplyr::summarise(
+    Mean_Relative_Abundance = mean(Relative_Abundance),
+    .groups = "drop"
+  ) |>
+  tidyr::pivot_wider(
+    names_from = Control_Key,
+    values_from = Mean_Relative_Abundance,
+    values_fill = 0
+  ) |>
+  dplyr::left_join(
+    taxonomy_matrix |>
+      dplyr::transmute(
+        FeatureID,
+        Genus = dplyr::if_else(
+          is.na(Genus) | Genus == "", "Unclassified", stringr::str_replace_all(Genus, "_", " ")
+        )
+      ),
+    by = "FeatureID"
+  ) |>
+  dplyr::mutate(
+    Control_Total = Air + Clean + Empty,
+    Air_Fraction = dplyr::if_else(Control_Total > 0, Air / Control_Total, 0),
+    Clean_Fraction = dplyr::if_else(Control_Total > 0, Clean / Control_Total, 0),
+    Empty_Fraction = dplyr::if_else(Control_Total > 0, Empty / Control_Total, 0),
+    Ternary_X = Empty_Fraction + 0.5 * Air_Fraction,
+    Ternary_Y = sqrt(3) / 2 * Air_Fraction,
+    N_Control_Sources = as.integer(Air > 0) + as.integer(Clean > 0) + as.integer(Empty > 0),
+    Sharing_Pattern = dplyr::case_when(
+      Air > 0 & Clean > 0 & Empty > 0 ~ "Air + Clean + Empty",
+      Air > 0 & Clean > 0 ~ "Air + Clean",
+      Air > 0 & Empty > 0 ~ "Air + Empty",
+      Clean > 0 & Empty > 0 ~ "Clean + Empty",
+      Air > 0 ~ "Air only",
+      Clean > 0 ~ "Clean only",
+      Empty > 0 ~ "Empty only",
+      TRUE ~ "Not detected"
+    )
+  ) |>
+  dplyr::filter(Control_Total > 0)
+
+control_sharing_summary <- control_ternary_long |>
+  dplyr::count(PCR_Cycle_Group, Sharing_Pattern, name = "N_ASVs") |>
+  dplyr::arrange(PCR_Cycle_Group, dplyr::desc(N_ASVs))
+
+genus_levels_ternary <- control_ternary_long |>
+  dplyr::group_by(Genus) |>
+  dplyr::summarise(Abundance = sum(Control_Total), .groups = "drop") |>
+  dplyr::arrange(dplyr::desc(Abundance)) |>
+  dplyr::pull(Genus)
+genus_colors_ternary <- stats::setNames(
+  grDevices::colorRampPalette(c(
+    RColorBrewer::brewer.pal(12, "Paired"),
+    RColorBrewer::brewer.pal(8, "Dark2"),
+    RColorBrewer::brewer.pal(8, "Accent")
+  ))(length(genus_levels_ternary)),
+  genus_levels_ternary
+)
+control_ternary_long <- control_ternary_long |>
+  dplyr::mutate(Genus = factor(Genus, levels = genus_levels_ternary))
+
+datatable_basic(control_sharing_summary, 15)
+
+control_comparison_dir <- params$output_results_dir
+dir.create(control_comparison_dir, recursive = TRUE, showWarnings = FALSE)
+readr::write_csv(
+  control_ternary_long,
+  file.path(control_comparison_dir, "Control_source_ASV_ternary_coordinates.csv")
+)
+readr::write_csv(
+  control_sharing_summary,
+  file.path(control_comparison_dir, "Control_source_ASV_sharing_summary.csv")
+)
+```
+
+```{r control-ternary-plot, fig.width=10.5, fig.height=8, results='asis'}
+ternary_triangle <- tibble::tibble(
+  x = c(0, 1, 0.5, 0),
+  y = c(0, 0, sqrt(3) / 2, 0)
+)
+
+set.seed(261014)
+for (one_cycle in cycle_levels) {
+  one_ternary <- control_ternary_long |>
+    dplyr::filter(PCR_Cycle_Group == one_cycle)
+
+  p_one_ternary <- ggplot(one_ternary, aes(Ternary_X, Ternary_Y)) +
+    geom_path(
+      data = ternary_triangle,
+      aes(x, y),
+      inherit.aes = FALSE,
+      linewidth = 0.65,
+      colour = "black"
+    ) +
+    geom_point(
+      aes(colour = Genus, size = Control_Total),
+      alpha = 0.78,
+      position = position_jitter(width = 0.012, height = 0.010, seed = 261014)
+    ) +
+    annotate("text", x = 0.5, y = sqrt(3) / 2 + 0.055,
+             label = "Air swab", fontface = "bold") +
+    annotate("text", x = -0.03, y = -0.035,
+             label = "Clean bench", hjust = 1, fontface = "bold") +
+    annotate("text", x = 1.03, y = -0.035,
+             label = "Empty tube", hjust = 0, fontface = "bold") +
+    coord_equal(xlim = c(-0.12, 1.12), ylim = c(-0.08, 0.96), clip = "off") +
+    scale_colour_manual(values = genus_colors_ternary, drop = FALSE) +
+    scale_size_continuous(trans = "sqrt", range = c(2.2, 8), guide = "none") +
+    labs(
+      title = paste0("ASV sharing among control sources: ", one_cycle),
+      subtitle = "Mean TSS relative abundance; slight jitter separates overlapping ASVs",
+      colour = "Genus"
+    ) +
+    theme_void(base_family = "Noto Sans CJK KR", base_size = 11) +
+    theme(
+      legend.position = "right",
+      plot.title = element_text(face = "bold")
+    )
+
+  print(p_one_ternary)
+}
+```
+
+## Focal fungal taxa의 ASV 공유 및 read abundance
+
+- 동일 ASV 여부는 동일한 ITSxpress feature table의 exact-sequence FeatureID가 Control과 True 양쪽에서 검출되는지를 기준으로 판정함.
+- 분석 대상은 `Malassezia` genus 전체, species label이 `Alternaria_g`인 ASV, `Cutaneotrichosporon_debeurmannianum` ASV임.
+- read 수는 rarefaction하지 않은 ASV count이며, library 수 차이를 보완하기 위해 prevalence와 group total read fraction도 함께 제시함.
+
+```{r malassezia-asv-data}
+focal_taxa_lookup <- taxonomy_matrix |>
+  dplyr::mutate(
+    Focal_Taxon = dplyr::case_when(
+      Genus == "Malassezia" ~ "Malassezia",
+      Species == "Alternaria_g" ~ "Alternaria_g",
+      Species == "Cutaneotrichosporon_debeurmannianum" ~
+        "Cutaneotrichosporon_debeurmannianum",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  dplyr::filter(!is.na(Focal_Taxon)) |>
+  dplyr::select(FeatureID, Focal_Taxon, Species, Genus, Display_Taxon)
+
+focal_ids <- focal_taxa_lookup$FeatureID
+
+focal_asv <- tibble::tibble(
+  FeatureID = focal_ids,
+  Control_Reads = as.numeric(rowSums(otu_matrix[focal_ids, control_ids, drop = FALSE])),
+  True_Reads = as.numeric(rowSums(otu_matrix[focal_ids, true_ids, drop = FALSE])),
+  Control_Prevalence = rowMeans(otu_matrix[focal_ids, control_ids, drop = FALSE] > 0),
+  True_Prevalence = rowMeans(otu_matrix[focal_ids, true_ids, drop = FALSE] > 0)
+) |>
+  dplyr::mutate(
+    Total_Reads = Control_Reads + True_Reads,
+    Control_Read_Fraction = Control_Reads / sum(phyloseq::sample_sums(phy)[control_ids]),
+    True_Read_Fraction = True_Reads / sum(phyloseq::sample_sums(phy)[true_ids]),
+    Detection = dplyr::case_when(
+      Control_Reads > 0 & True_Reads > 0 ~ "Shared ASV",
+      Control_Reads > 0 ~ "Control only",
+      True_Reads > 0 ~ "True only",
+      TRUE ~ "Not detected"
+    ),
+    Detection = factor(
+      Detection,
+      levels = c("Shared ASV", "Control only", "True only", "Not detected")
+    )
+  ) |>
+  dplyr::left_join(focal_taxa_lookup, by = "FeatureID") |>
+  dplyr::left_join(asv_label_lookup, by = "FeatureID") |>
+  dplyr::arrange(Focal_Taxon, dplyr::desc(Total_Reads))
+
+focal_overlap_summary <- focal_asv |>
+  dplyr::count(Focal_Taxon, Detection, name = "N_ASVs") |>
+  tidyr::complete(Focal_Taxon, Detection, fill = list(N_ASVs = 0L))
+
+datatable_basic(focal_overlap_summary, 15)
+datatable_basic(
+  focal_asv |>
+    dplyr::select(
+      Focal_Taxon, FeatureID, tax_name, Detection, Control_Reads, True_Reads,
+      Control_Prevalence, True_Prevalence,
+      Control_Read_Fraction, True_Read_Fraction
+    ),
+  15
+) |>
+  DT::formatPercentage(
+    c("Control_Prevalence", "True_Prevalence", "Control_Read_Fraction", "True_Read_Fraction"),
+    3
+  ) |>
+  DT::formatRound(c("Control_Reads", "True_Reads"), 0)
+```
+
+```{r malassezia-asv-plots, fig.width=14, fig.height=9, results='asis'}
+focal_detection_colors <- c(
+  "Shared ASV" = "#7570B3",
+  "Control only" = group_colors[["Control"]],
+  "True only" = group_colors[["True"]],
+  "Not detected" = "grey70"
+)
+
+for (one_taxon in unique(focal_asv$Focal_Taxon)) {
+  one_focal <- focal_asv |>
+    dplyr::filter(Focal_Taxon == one_taxon)
+
+  label_focal <- one_focal |>
+    dplyr::slice_max(Total_Reads, n = 10, with_ties = FALSE)
+
+  p_focal_scatter <- ggplot(
+    one_focal,
+    aes(Control_Reads + 1, True_Reads + 1, colour = Detection, size = Total_Reads)
+  ) +
+    geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey55") +
+    geom_point(alpha = 0.78) +
+    ggrepel::geom_text_repel(
+      data = label_focal,
+      aes(label = tax_name),
+      size = 2.7, max.overlaps = Inf, show.legend = FALSE
+    ) +
+    scale_x_log10(labels = scales::label_comma()) +
+    scale_y_log10(labels = scales::label_comma()) +
+    scale_colour_manual(values = focal_detection_colors, drop = FALSE) +
+    scale_size_continuous(range = c(1.8, 8), guide = "none") +
+    labs(
+      title = paste0(one_taxon, " ASV abundance: Control vs True"),
+      x = "Control reads + 1", y = "True reads + 1", colour = "Detection"
+    )
+
+  one_focal_top <- one_focal |>
+    dplyr::slice_max(Total_Reads, n = 25, with_ties = FALSE) |>
+    dplyr::select(tax_name, Control_Reads, True_Reads) |>
+    tidyr::pivot_longer(
+      c(Control_Reads, True_Reads), names_to = "Sample_Group", values_to = "Reads"
+    ) |>
+    dplyr::mutate(
+      Sample_Group = dplyr::recode(
+        Sample_Group, Control_Reads = "Control", True_Reads = "True"
+      ),
+      tax_name = factor(tax_name, levels = rev(unique(tax_name)))
+    )
+
+  p_focal_bar <- ggplot(
+    one_focal_top,
+    aes(tax_name, Reads, fill = Sample_Group)
+  ) +
+    geom_col(position = "dodge", width = 0.72) +
+    coord_flip() +
+    scale_y_log10(labels = scales::label_comma(), oob = scales::squish) +
+    scale_fill_manual(values = group_colors[c("Control", "True")]) +
+    labs(
+      title = paste0(one_taxon, " ASV raw read counts"),
+      x = NULL, y = "Reads (log10 scale)", fill = "Sample group"
+    )
+
+  print(
+    p_focal_scatter / p_focal_bar +
+      patchwork::plot_layout(heights = c(1, 1.4))
+  )
+}
+```
+
+```{r malassezia-interpretation, results='asis'}
+for (taxon_name in unique(focal_asv$Focal_Taxon)) {
+  one_taxon <- focal_asv |> dplyr::filter(Focal_Taxon == taxon_name)
+  cat(paste0(
+    "- ", taxon_name, " ASV ", nrow(one_taxon), "개 중 shared ",
+    sum(one_taxon$Detection == "Shared ASV"), "개, Control-only ",
+    sum(one_taxon$Detection == "Control only"), "개, True-only ",
+    sum(one_taxon$Detection == "True only"), "개임.\n"
+  ))
+}
+cat("- 공유 여부와 별개로 read abundance가 한쪽에 크게 치우칠 수 있으므로 exact read 수와 prevalence를 함께 해석함.")
+```
+
+
+# 6. PCR cycle에 대한 심층 분석
+
+- True와 Control을 분리하여 PCR1 및 PCR2 cycle 증가에 따라 검출 ASV 수와 ASV별 abundance가 어떻게 달라지는지 확인함.
+- ASV별 모델은 `log10(TSS relative abundance + 1e-6)`를 반응값으로 사용함.
+- True에서는 `Subject × Skin site`, Control에서는 control subject/source를 고정효과로 포함하여 biological unit 차이를 보정함.
+- `Combined cycle effect`는 33/8에서 35/10으로 변할 때의 예상 변화인 `2 × PCR1 coefficient + 2 × PCR2 coefficient`로 정의함.
+- 탐색 분석이므로 effect direction과 BH-adjusted p-value를 함께 보고, decontam 또는 filtering 기준으로 직접 사용하지 않음.
+
+## PCR 조건별 detected ASV 수
+
+```{r pcr-cycle-richness-data}
+pcr_sample_asv <- tibble::tibble(
+  SampleID = colnames(otu_matrix),
+  Detected_ASVs = as.integer(colSums(otu_matrix > 0))
+) |>
+  dplyr::left_join(sample_info, by = "SampleID") |>
+  dplyr::filter(Sample_Type %in% c("Control", "True")) |>
+  dplyr::mutate(
+    PCR_Cycle_Group = factor(PCR_Cycle_Group, levels = cycle_levels),
+    Pairing_Unit = dplyr::if_else(
+      Sample_Type == "True", as.character(Biological_Unit), as.character(Subject)
+    )
+  )
+
+pcr_sample_summary <- pcr_sample_asv |>
+  dplyr::group_by(Sample_Type, PCR_Cycle_Group) |>
+  dplyr::summarise(
+    N = dplyr::n(),
+    Mean_Detected_ASVs = mean(Detected_ASVs),
+    Median_Detected_ASVs = median(Detected_ASVs),
+    SD_Detected_ASVs = stats::sd(Detected_ASVs),
+    .groups = "drop"
+  )
+
+datatable_basic(pcr_sample_summary, 10) |>
+  DT::formatRound(c("Mean_Detected_ASVs", "Median_Detected_ASVs", "SD_Detected_ASVs"), 2)
+```
+
+```{r pcr-cycle-richness-plot, fig.width=13, fig.height=6}
+ggplot(
+  pcr_sample_asv,
+  aes(PCR_Cycle_Group, Detected_ASVs, group = Pairing_Unit, colour = Sample_Type)
+) +
+  geom_line(alpha = 0.28, linewidth = 0.45) +
+  geom_point(aes(shape = Subject), size = 2.2, alpha = 0.82) +
+  geom_boxplot(
+    inherit.aes = FALSE,
+    data = pcr_sample_asv,
+    mapping = aes(PCR_Cycle_Group, Detected_ASVs),
+    width = 0.55, outlier.shape = NA, colour = "black", fill = NA
+  ) +
+  facet_wrap(~ Sample_Type, nrow = 1, scales = "free_y") +
+  scale_colour_manual(values = group_colors) +
+  scale_shape_manual(values = subject_shapes) +
+  labs(
+    title = "Detected ASVs across PCR cycle conditions",
+    x = "PCR cycle group", y = "Detected ASVs",
+    colour = "Sample type", shape = "Subject/source"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## PCR cycle 증가 ASV와 sequence length
+
+```{r pcr-asv-effect-analysis}
+pcr_asv_long <- relative_long |>
+  dplyr::filter(Sample_Type %in% c("Control", "True")) |>
+  dplyr::mutate(
+    Cycle_1st = as.numeric(as.character(Cycle_1st)),
+    Cycle_2nd = as.numeric(as.character(Cycle_2nd)),
+    Pairing_Unit = dplyr::if_else(
+      Sample_Type == "True", as.character(Biological_Unit), as.character(Subject)
+    ),
+    Pairing_Unit = factor(Pairing_Unit),
+    Log10_Relative = log10(Relative_Abundance + 1e-6)
+  )
+
+fit_pcr_effect <- function(df) {
+  fit <- try(
+    stats::lm(Log10_Relative ~ Cycle_1st + Cycle_2nd + Pairing_Unit, data = df),
+    silent = TRUE
+  )
+  if (inherits(fit, "try-error")) {
+    return(tibble::tibble(
+      Beta_PCR1 = NA_real_, P_PCR1 = NA_real_,
+      Beta_PCR2 = NA_real_, P_PCR2 = NA_real_
+    ))
+  }
+  coef_table <- summary(fit)$coefficients
+  get_coef <- function(term, column) {
+    if (term %in% rownames(coef_table)) as.numeric(coef_table[term, column]) else NA_real_
+  }
+  tibble::tibble(
+    Beta_PCR1 = get_coef("Cycle_1st", "Estimate"),
+    P_PCR1 = get_coef("Cycle_1st", "Pr(>|t|)"),
+    Beta_PCR2 = get_coef("Cycle_2nd", "Estimate"),
+    P_PCR2 = get_coef("Cycle_2nd", "Pr(>|t|)")
+  )
+}
+
+pcr_asv_effect <- pcr_asv_long |>
+  dplyr::group_by(Sample_Type, FeatureID) |>
+  dplyr::group_modify(~ fit_pcr_effect(.x)) |>
+  dplyr::ungroup() |>
+  dplyr::group_by(Sample_Type) |>
+  dplyr::mutate(
+    Q_PCR1 = stats::p.adjust(P_PCR1, method = "BH"),
+    Q_PCR2 = stats::p.adjust(P_PCR2, method = "BH")
+  ) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(
+    Combined_Cycle_Effect = 2 * Beta_PCR1 + 2 * Beta_PCR2,
+    Effect_Direction = dplyr::case_when(
+      Combined_Cycle_Effect > 0 ~ "Increases with cycles",
+      Combined_Cycle_Effect < 0 ~ "Decreases with cycles",
+      TRUE ~ "No change"
+    )
+  ) |>
+  dplyr::left_join(
+    readr::read_csv(
+      "Results/01_Preprocessing/05a_unresolved_taxa_ASV_metrics.csv",
+      show_col_types = FALSE
+    ) |>
+      dplyr::filter(Method == "ITSxpress") |>
+      dplyr::select(FeatureID, Length_bp),
+    by = "FeatureID"
+  ) |>
+  dplyr::left_join(asv_label_lookup, by = "FeatureID")
+
+pcr_increasing_top <- pcr_asv_effect |>
+  dplyr::filter(is.finite(Combined_Cycle_Effect), Combined_Cycle_Effect > 0) |>
+  dplyr::group_by(Sample_Type) |>
+  dplyr::slice_max(Combined_Cycle_Effect, n = 25, with_ties = FALSE) |>
+  dplyr::ungroup() |>
+  dplyr::arrange(Sample_Type, dplyr::desc(Combined_Cycle_Effect))
+
+safe_spearman <- function(x, y) {
+  keep <- is.finite(x) & is.finite(y)
+  if (sum(keep) < 4 || stats::sd(x[keep]) == 0 || stats::sd(y[keep]) == 0) {
+    return(c(Rho = NA_real_, P_value = NA_real_))
+  }
+  test <- suppressWarnings(stats::cor.test(x[keep], y[keep], method = "spearman", exact = FALSE))
+  c(Rho = unname(test$estimate), P_value = test$p.value)
+}
+
+pcr_length_correlation <- pcr_asv_effect |>
+  dplyr::filter(is.finite(Length_bp), is.finite(Combined_Cycle_Effect)) |>
+  dplyr::group_by(Sample_Type) |>
+  dplyr::group_modify(function(.x, .y) {
+    all_result <- safe_spearman(.x$Length_bp, .x$Combined_Cycle_Effect)
+    positive <- .x |> dplyr::filter(Combined_Cycle_Effect > 0)
+    positive_result <- safe_spearman(positive$Length_bp, positive$Combined_Cycle_Effect)
+    tibble::tibble(
+      ASV_Set = c("All modeled ASVs", "Increasing ASVs"),
+      N_ASVs = c(nrow(.x), nrow(positive)),
+      Spearman_Rho = c(all_result[["Rho"]], positive_result[["Rho"]]),
+      P_value = c(all_result[["P_value"]], positive_result[["P_value"]])
+    )
+  }) |>
+  dplyr::ungroup() |>
+  dplyr::group_by(ASV_Set) |>
+  dplyr::mutate(P_adjust_BH = stats::p.adjust(P_value, method = "BH")) |>
+  dplyr::ungroup()
+
+datatable_basic(pcr_increasing_top, 15) |>
+  DT::formatRound(
+    c("Beta_PCR1", "Beta_PCR2", "Combined_Cycle_Effect", "Q_PCR1", "Q_PCR2"),
+    4
+  )
+datatable_basic(pcr_length_correlation, 10) |>
+  DT::formatRound("Spearman_Rho", 4) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+
+pcr_results_dir <- params$output_results_dir
+dir.create(pcr_results_dir, recursive = TRUE, showWarnings = FALSE)
+readr::write_csv(pcr_asv_effect, file.path(pcr_results_dir, "PCR_cycle_ASV_effects.csv"))
+readr::write_csv(pcr_length_correlation, file.path(pcr_results_dir, "PCR_cycle_ASV_length_correlation.csv"))
+readr::write_csv(focal_asv, file.path(pcr_results_dir, "Focal_taxa_Control_True_ASV_reads.csv"))
+```
+
+```{r pcr-asv-length-scatter, fig.width=14, fig.height=7}
+pcr_label_asv <- pcr_asv_effect |>
+  dplyr::filter(is.finite(Length_bp), is.finite(Combined_Cycle_Effect)) |>
+  dplyr::group_by(Sample_Type) |>
+  dplyr::slice_max(Combined_Cycle_Effect, n = 10, with_ties = FALSE) |>
+  dplyr::ungroup()
+
+ggplot(
+  pcr_asv_effect |>
+    dplyr::filter(is.finite(Length_bp), is.finite(Combined_Cycle_Effect)),
+  aes(Length_bp, Combined_Cycle_Effect, colour = Effect_Direction)
+) +
+  geom_hline(yintercept = 0, linetype = 2, colour = "grey50") +
+  geom_point(alpha = 0.45, size = 1.7) +
+  geom_smooth(method = "lm", se = TRUE, colour = "black", linewidth = 0.7) +
+  ggrepel::geom_text_repel(
+    data = pcr_label_asv,
+    aes(label = tax_name),
+    size = 2.6, max.overlaps = Inf, show.legend = FALSE
+  ) +
+  facet_wrap(~ Sample_Type, nrow = 1) +
+  scale_colour_manual(values = c(
+    "Increases with cycles" = "#D95F02",
+    "Decreases with cycles" = "#1B9E77",
+    "No change" = "grey60"
+  )) +
+  labs(
+    title = "ASV sequence length and PCR-cycle abundance effect",
+    subtitle = "Effect: expected log10 relative-abundance change from PCR 33/8 to 35/10",
+    x = "ASV sequence length (bp)",
+    y = "Combined PCR-cycle effect",
+    colour = "Direction"
+  )
+```
+
+```{r pcr-cycle-interpretation, results='asis'}
+for (sample_group in c("Control", "True")) {
+  one_cor <- pcr_length_correlation |>
+    dplyr::filter(Sample_Type == sample_group, ASV_Set == "Increasing ASVs")
+  increasing_n <- sum(
+    pcr_asv_effect$Sample_Type == sample_group &
+      pcr_asv_effect$Combined_Cycle_Effect > 0,
+    na.rm = TRUE
+  )
+  cat(paste0(
+    "- ", sample_group, "에서 combined PCR-cycle effect가 양수인 ASV는 ",
+    increasing_n, "개임. 증가 ASV 내 length–effect Spearman ρ는 ",
+    round(one_cor$Spearman_Rho, 3), ", BH-adjusted p = ",
+    signif(one_cor$P_adjust_BH, 3), "임.\n"
+  ))
+}
+```
+
+# 7. 결론
+
+```{r conclusion-text, results='asis'}
+alpha_min <- alpha_tests |>
+  dplyr::slice_min(P_adjust_BH, n = 1, with_ties = FALSE)
+beta_min <- beta_table |>
+  dplyr::slice_min(PERMANOVA_P_adjust_BH, n = 1, with_ties = FALSE)
+taxa_sig_n <- sum(taxa_tests$P_adjust_BH < 0.05, na.rm = TRUE)
+
+cat(paste0(
+  "- 총 ", phyloseq::nsamples(phy), "개 library와 ", phyloseq::ntaxa(phy),
+  "개 ASV가 ITSxpress phyloseq object에 포함됨.\n",
+  "- Rarefaction에 의한 sample filtering 없이 전체 ", phyloseq::nsamples(phy),
+  "개 library에서 alpha/beta/taxa를 평가함.\n",
+  "- Skin은 ", sum(sample_info$Sample_Type == "True"),
+  "개 library를 대상자와 좌/우 포함 site별로 유지했으며, ",
+  dplyr::n_distinct(sample_info$Biological_Unit[sample_info$Sample_Type == "True"]),
+  "개 Subject × Site biological unit의 sample-level alpha, beta 및 taxa 결과를 별도 제시함.\n",
+  "- Alpha diversity에서 가장 작은 BH-adjusted p-value는 ", alpha_min$Metric,
+  "의 ", signif(alpha_min$P_adjust_BH, 3), "로 확인됨.\n",
+  "- Beta diversity에서 가장 작은 BH-adjusted PERMANOVA p-value는 ",
+  beta_min$Distance, "의 ", signif(beta_min$PERMANOVA_P_adjust_BH, 3),
+  "이며, subject/source confounding으로 확증적 해석은 제한됨.\n",
+  "- 평균 TSS relative abundance 1% 초과 species 중 library-level True–Control 비교에서 BH-adjusted p < 0.05인 taxon은 ",
+  taxa_sig_n, "개로 확인됨.\n",
+  "- Negative control의 read와 taxonomic profile이 확인되어 후속 decontam 평가가 필요함."
+))
+```
+
+# 8. 한계점 및 향후 분석 예정
+
+- Skin은 2명과 좌/우 포함 9개 해부학적 site로 구성되며, Subject × Site별 결과를 개별 sample 수준으로 제시했지만 대상자 수가 2명뿐이므로 일반화가 제한됨.
+- 동일 source/subject에서 PCR cycle 조건이 반복되어 library-level Wilcoxon 및 PERMANOVA의 독립성 가정이 충족되지 않음.
+- 현재 metadata에 Mock sample이 없어 positive-control recovery 및 expected composition을 평가하지 못함.
+- 본 보고서는 QC20 / maxEE 2,2 / ITSxpress로 고정되어 있어 preprocessing parameter 간 비교를 수행하지 않음.
+- 현재 count는 최종 feature table 단계의 산출물이므로 NC read가 유입 또는 유지된 정확한 pipeline stage를 특정하지 못함.
+- taxonomy는 preprocessing 단계에서 ASV별로 결합된 결과를 사용함. Species 미분류 ASV가 존재하므로 taxonomic resolution과 sequence-level evidence를 함께 확인해야 함.
+- Rarefaction은 observed richness trend 확인에만 사용했으며 sample filtering 또는 diversity 계산 입력으로 사용하지 않음.
+- decontam method, threshold 및 contaminant removal은 적용하지 않음.
+
+향후 분석 우선순위:
+
+1. QC20 / maxEE 2,2 / ITSxpress의 DADA2 및 ITSxpress 단계별 read tracking table을 현재 SampleID와 통합함.
+2. batch balance와 control source 구성을 확인한 후 pooled 또는 batch-stratified decontam 여부 및 method를 결정함.
+3. 승인된 decontam 설정에서 threshold sensitivity와 alpha/beta/taxa before–after 비교를 수행함.

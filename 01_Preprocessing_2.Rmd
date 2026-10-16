@@ -1,0 +1,393 @@
+---
+title: "01-2. ITS2 preprocessing: Single- and paired-end comparison"
+subtitle: "QC20 / maxEE22 — Cutadapt and ITSxpress"
+date: "2026-10-16"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.align = "center", dpi = 160, dev = "ragg_png", out.width = "100%")
+library(dplyr); library(tidyr); library(readr); library(DT); library(ggplot2); library(scales)
+set.seed(42)
+
+analysis_env <- new.env(parent = globalenv())
+sys.source("Results/01_Preprocessing_2/08_four_pipeline_comparison.R", envir = analysis_env)
+list2env(as.list(analysis_env), envir = environment())
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(x, rownames = FALSE, filter = "none", extensions = character(0),
+                options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE))
+}
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0("<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+             font_data, ") format('opentype');font-weight:400;font-style:normal;} ",
+             "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+             ".main-container{max-width:1500px!important;} .section h1{margin-top:36px;}",
+             "</style>"))
+}
+```
+
+# 1. 분석 설계
+
+## 입력과 비교 범위
+
+- 입력은 `q20_ee22_both_full`의 Cutadapt single/paired 및 ITSxpress single/paired DADA2 feature table과 UNITE v10 99% taxonomy임.
+- 네 pipeline 모두에서 공통인 동일 SampleID `r length(common_samples)`개를 사용함.
+- 기존 `01_Preprocessing.Rmd`와 동일하게 taxonomy label을 정리한 뒤 `Kingdom == Fungi`와 zero-sum sample/taxon만 제거함.
+- abundance threshold, singleton 제거, rarefaction 및 decontam은 적용하지 않음.
+- Aitchison은 non-rarefied Species count에 pseudocount 0.5와 CLR을 적용함.
+- 방법 비교는 동일 SampleID 내 paired 분석으로 수행함. PERMANOVA permutation은 SampleID 안에 제한하고, taxa/read/ASV 비교에는 paired Wilcoxon과 BH 보정을 적용함.
+
+비교는 다음 네 쌍으로 제한함.
+
+```{r comparison-spec}
+datatable_basic(comparison_spec, 10)
+```
+
+`Cutadapt Single vs ITSxpress Paired`처럼 trimming 방식과 read 구조가 동시에 바뀌는 교차 조합은 분석하지 않음.
+
+## Sample 구성
+
+```{r sample-summary}
+sample_summary <- metadata |>
+  dplyr::count(Sample_Type, Control_Type, Subject, PCR_Cycle_Group, name = "N") |>
+  dplyr::arrange(Sample_Type, Control_Type, Subject, PCR_Cycle_Group)
+datatable_basic(sample_summary, 15)
+```
+
+# 2. Phyloseq 생성 및 QC
+
+## 전처리 전후 audit
+
+```{r preprocessing-audit}
+datatable_basic(audit, 20) |> DT::formatCurrency("Total_Reads", currency = "", digits = 0, mark = ",")
+```
+
+네 pipeline 모두 83개 sample이 유지됨. 최종 fungal ASV는 Cutadapt Single `r rank_summary$ASV[rank_summary$Method == 'Cutadapt Single']`개, Cutadapt Paired `r rank_summary$ASV[rank_summary$Method == 'Cutadapt Paired']`개, ITSxpress Single `r rank_summary$ASV[rank_summary$Method == 'ITSxpress Single']`개, ITSxpress Paired `r rank_summary$ASV[rank_summary$Method == 'ITSxpress Paired']`개임.
+
+```{r rank-summary}
+datatable_basic(rank_summary, 10)
+```
+
+생성한 phyloseq object:
+
+- [Cutadapt Single RDS](Phyloseq/phy_ITS2_cutadapt_single_q20_ee22_20261016.rds)
+- [Cutadapt Paired RDS](Phyloseq/phy_ITS2_cutadapt_paired_q20_ee22_20261016.rds)
+- [ITSxpress Single RDS](Phyloseq/phy_ITS2_itsxpress_single_q20_ee22_20261016.rds)
+- [ITSxpress Paired RDS](Phyloseq/phy_ITS2_itsxpress_paired_q20_ee22_20261016.rds)
+
+## Read depth와 observed ASV
+
+```{r depth-summary}
+datatable_basic(depth_summary, 20) |>
+  DT::formatRound(c("Q1", "Median", "Q3"), 1) |>
+  DT::formatCurrency(c("Min", "Max"), currency = "", digits = 0, mark = ",")
+```
+
+```{r paired-qc-tests}
+datatable_basic(paired_qc_tests, 20) |>
+  DT::formatRound(c("Median_Method_1", "Median_Method_2", "Median_Ratio_Method_2_to_1"), 3) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+```{r paired-qc-plot, echo=FALSE, out.width='100%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08a_paired_sample_QC.png")
+```
+
+Observed ASV는 rarefaction 통과 여부나 filtering 기준이 아니라, 각 원본 fungal count table에서 sample별 non-zero ASV 수를 그대로 집계한 QC 지표임.
+
+# 3. Aitchison beta diversity
+
+## 네 pipeline 전체 개요
+
+```{r global-pcoa, echo=FALSE, out.width='82%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b0_aitchison_four_pipeline_overview.png")
+```
+
+위 그림은 네 pipeline의 전체 배치를 보는 기술적 개요임. 직접적인 방법 효과 통계는 아래의 사전 지정된 네 paired comparison에서 판단함.
+
+## 4분면 factorial contrast plane
+
+일반 PCoA의 PC1/PC2를 임의로 Single–Paired 또는 ITSxpress–Cutadapt 축이라고 해석할 수는 없음. 따라서 아래 그림은 CLR Species 공간에서 두 방법 대비를 직접 정의한 supervised projection임.
+
+- 가로축: 전체 sample에서 평균적인 `Paired → Single` 조성 변화 방향
+- 세로축: read-mode 방향과 겹치는 성분을 제거한 `Cutadapt → ITSxpress` 조성 변화 방향
+- 옅은 선: 동일 SampleID에서 read mode 또는 trimming 방법이 바뀔 때의 이동
+- 큰 원과 label: 각 pipeline의 centroid
+- 점 shape: control source 또는 Skin subject
+
+```{r factorial-contrast-plane, echo=FALSE, out.width='94%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b5_four_pipeline_factorial_contrast_plane.png")
+```
+
+그림의 왼쪽은 Paired, 오른쪽은 Single, 위쪽은 ITSxpress, 아래쪽은 Cutadapt가 되도록 대비 방향을 고정함. 이는 데이터의 전체 변이를 최대화하는 비지도 PCoA가 아니라, 두 기술 요인의 변화를 읽기 위한 method-effect map임.
+
+### 네 방법 동시 factorial PERMANOVA
+
+```{r factorial-permanova}
+datatable_basic(factorial_permanova, 10) |>
+  DT::formatRound(c("SumOfSqs", "R2", "F"), 4) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+
+datatable_basic(factorial_dispersion, 5) |>
+  DT::formatRound("F_value", 3) |>
+  DT::formatSignif("P_value", 3)
+```
+
+- Trimming 주효과는 R² `r sprintf('%.3f', factorial_permanova$R2[factorial_permanova$Term == 'Trimming'])`, read mode 주효과는 R² `r sprintf('%.3f', factorial_permanova$R2[factorial_permanova$Term == 'Read_Mode'])`임.
+- `Trimming × Read_Mode` 상호작용도 R² `r sprintf('%.3f', factorial_permanova$R2[factorial_permanova$Term == 'Trimming:Read_Mode'])`로 확인됨. 즉 ITSxpress–Cutadapt 차이의 크기 또는 방향이 Single과 Paired에서 완전히 동일하지 않음.
+- 네 pipeline 전체 betadisper p-value는 `r signif(factorial_dispersion$P_value, 3)`이므로, 동시 PERMANOVA의 일부는 group dispersion 차이를 포함할 수 있음. 따라서 effect size와 4분면 이동 패턴을 함께 해석함.
+
+## ASV 단위 2×2 차등풍부도 4분면
+
+위 3.2 그림의 점은 sample profile이므로 ASV 차등풍부도 그림이 아님. 아래 그림은 요청한 대로 **각 점이 하나의 ASV 비교 단위**임.
+
+네 pipeline은 동일 생물학적 서열도 서로 다른 길이와 FeatureID를 만들기 때문에 raw ASV ID를 직접 합치지 않음. 비교 전에 exact identity 또는 100 bp 이상 exact containment로 동일 sequence family를 정의함. 이 매핑은 ASV overlap을 결과로 해석하기 위한 것이 아니라, 네 pipeline에서 동일한 차등풍부도 단위를 확보하기 위한 전처리임.
+
+```{r asv-family-audit}
+datatable_basic(asv_family_audit, 10)
+```
+
+- 가로축: 동일 SampleID에서 계산한 평균 CLR `Paired → Single` 효과
+- 세로축: 동일 SampleID에서 계산한 평균 CLR `Cutadapt → ITSxpress` 효과
+- 각 ASV family마다 83개의 paired contrast를 0과 비교하는 Wilcoxon signed-rank test를 수행함.
+- read mode, trimming 및 interaction을 각각 검정하고 각 contrast에서 전체 `r nrow(asv_da)`개 ASV family에 BH 보정함.
+- abundance/prevalence filtering은 적용하지 않았으며 pseudocount는 기존 Aitchison 분석과 동일한 0.5임.
+
+```{r asv-da-quadrant, echo=FALSE, out.width='100%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08f_ASV_family_four_quadrant.png")
+```
+
+점의 색은 BH 보정 후 유의한 main effect 유형이며, 빈 원은 trimming × read-mode interaction도 BH < 0.05인 ASV family임. 점 크기는 네 pipeline에서의 평균 fungal read fraction임.
+
+그림은 극단값을 제거하거나 축을 자르지 않은 **전체 범위**임. 아래 표의 1%와 99% 분위수도 함께 제시하여, 소수의 매우 큰 효과가 중앙 점군을 압축하는 정도를 확인함.
+
+```{r asv-effect-range}
+datatable_basic(asv_effect_range, 10) |>
+  DT::formatRound(c("Minimum", "P01", "Median", "P99", "Maximum"), 3)
+```
+
+대표 taxonomy는 이제 family 내 read 수만으로 정하지 않고, 먼저 가장 세부적으로 분류된 이름을 선택한 뒤 동일 분류 수준에서 read 수가 큰 ASV를 선택함. 따라서 ITSxpress의 `Fungi_k` 서열과 동일 family로 연결된 Cutadapt의 species-level call이 가려지지 않음. 특히 `ASVfam_0001`에는 Cutadapt Paired의 주요 `Aureobasidium tremulum` ASV가 포함되며, 이 family가 read-mode 최대 효과 부근에 위치함.
+
+```{r aureobasidium-asv-families}
+aureobasidium_families |>
+  dplyr::transmute(
+    ASV_Family, Representative_Taxon, Methods_in_Family, Ambiguous_Family,
+    Mean_Read_Mode_Effect = Mean_Effect_Read_Mode,
+    Mean_Trimming_Effect = Mean_Effect_Trimming,
+    Mean_Interaction = Mean_Effect_Interaction,
+    Q_Read_Mode = P_adjust_BH_Read_Mode,
+    Q_Trimming = P_adjust_BH_Trimming,
+    Q_Interaction = P_adjust_BH_Interaction,
+    Mean_Read_Fraction = Mean_Frequency,
+    Raw_Total_Reads
+  ) |>
+  datatable_basic(12) |>
+  DT::formatRound(c("Mean_Read_Mode_Effect", "Mean_Trimming_Effect", "Mean_Interaction"), 3) |>
+  DT::formatSignif(c("Q_Read_Mode", "Q_Trimming", "Q_Interaction"), 3) |>
+  DT::formatPercentage("Mean_Read_Fraction", 3)
+```
+
+```{r asv-da-summary}
+datatable_basic(asv_da_summary, 12)
+```
+
+```{r asv-da-top-table}
+asv_da |>
+  dplyr::filter(
+    Main_Effect_Significance != "Not significant" |
+      Interaction_Significant
+  ) |>
+  dplyr::arrange(dplyr::desc(Max_Frequency)) |>
+  dplyr::transmute(
+    ASV_Family,
+    Representative_Taxon,
+    Methods_in_Family,
+    Ambiguous_Family,
+    Mean_Read_Mode_Effect = Mean_Effect_Read_Mode,
+    Q_Read_Mode = P_adjust_BH_Read_Mode,
+    Mean_Trimming_Effect = Mean_Effect_Trimming,
+    Q_Trimming = P_adjust_BH_Trimming,
+    Mean_Interaction = Mean_Effect_Interaction,
+    Q_Interaction = P_adjust_BH_Interaction,
+    Mean_Read_Fraction = Mean_Frequency
+  ) |>
+  dplyr::slice_head(n = 30) |>
+  datatable_basic(15) |>
+  DT::formatRound(c("Mean_Read_Mode_Effect", "Mean_Trimming_Effect", "Mean_Interaction"), 3) |>
+  DT::formatSignif(c("Q_Read_Mode", "Q_Trimming", "Q_Interaction"), 3) |>
+  DT::formatPercentage("Mean_Read_Fraction", 3)
+```
+
+`r sum(asv_da$P_adjust_BH_Read_Mode < 0.05)`개 family에서 read-mode 효과, `r sum(asv_da$P_adjust_BH_Trimming < 0.05)`개에서 trimming 효과, `r sum(asv_da$P_adjust_BH_Interaction < 0.05)`개에서 interaction이 확인됨. 이렇게 광범위한 유의성은 생물학적 ASV 변화가 아니라 **동일 library를 서로 다른 trimming/read 구조로 처리하면서 ASV boundary와 count allocation이 체계적으로 바뀐 기술적 differential abundance**를 의미함.
+
+특히 single-pipeline family가 `r sum(family_summary$Methods_in_Family == 1)`개이고, 한 pipeline 내 여러 ASV가 동일 family로 연결된 ambiguous family가 `r sum(family_summary$Ambiguous_Family)`개이므로, 개별 ASV family의 taxonomic 의미보다 effect direction과 abundance가 큰 family를 우선 해석해야 함.
+
+## Paired method effect
+
+```{r beta-statistics}
+datatable_basic(beta_stats, 10) |>
+  DT::formatRound(c("PERMANOVA_R2", "Procrustes_r"), 4) |>
+  DT::formatSignif(c("PERMANOVA_P", "Betadisper_P", "PROTEST_P", "PERMANOVA_P_BH", "Betadisper_P_BH"), 3)
+```
+
+- PERMANOVA는 paired method-location 차이를 평가함.
+- `betadisper`가 유의한 비교는 centroid 이동뿐 아니라 dispersion 차이도 포함할 수 있으므로 순수한 위치 효과로 단정하지 않음.
+- Procrustes correlation은 두 pipeline에서 sample 간 배치 구조가 얼마나 보존되는지를 평가함.
+
+### Cutadapt: Single vs Paired
+
+```{r beta-cutadapt, echo=FALSE, out.width='78%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b1_aitchison_1.png")
+```
+
+### ITSxpress: Single vs Paired
+
+```{r beta-itsxpress, echo=FALSE, out.width='78%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b2_aitchison_2.png")
+```
+
+### Single-end: Cutadapt vs ITSxpress
+
+```{r beta-single, echo=FALSE, out.width='78%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b3_aitchison_3.png")
+```
+
+### Paired-end: Cutadapt vs ITSxpress
+
+```{r beta-paired, echo=FALSE, out.width='78%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08b4_aitchison_4.png")
+```
+
+# 4. Species-level taxa 비교
+
+## Species overlap
+
+```{r species-overlap}
+datatable_basic(taxa_overlap, 10)
+```
+
+## Paired abundance difference
+
+각 점은 sample이나 ASV가 아니라 동일 Species fallback label로 합산한 뒤 83개 sample에서 평균한 taxon임. 각 비교의 상위 14 taxa만 이름을 표시함.
+
+```{r taxa-scatter, echo=FALSE, out.width='100%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08c_species_pairwise_abundance.png")
+```
+
+```{r taxa-tests}
+datatable_basic(taxa_tests, 20) |>
+  DT::formatPercentage(c("Mean_Method_1", "Mean_Method_2", "Mean_Difference_2_minus_1"), 2) |>
+  DT::formatSignif(c("P_value", "P_adjust_BH"), 3)
+```
+
+이 표의 BH 보정은 각 comparison에서 선정된 상위 14 Species 안에서 수행함. 따라서 논문용 전체 differential-abundance 검정이 아니라 preprocessing 방법에 따른 주요 조성 변화의 기술적 비교임.
+
+# 5. Sample별 Species composition
+
+- 각 막대는 개별 SampleID임.
+- 네 그림에 동일한 top Species 목록과 `RColorBrewer` Paired/Dark2 기반 색을 사용함.
+- facet은 Subject/control source와 PCR cycle 조합이며 `nrow = 1`로 가로 배치함.
+- HTML에는 축소 preview를 표시하고 원본은 42-inch wide PNG로 별도 저장함.
+
+## Cutadapt Single
+
+```{r composition-cs, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["Cutadapt Single"]]
+```
+
+[고해상도 PNG 열기](Results/01_Preprocessing_2/08d1_composition_Cutadapt_Single.png)
+
+## Cutadapt Paired
+
+```{r composition-cp, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["Cutadapt Paired"]]
+```
+
+[고해상도 PNG 열기](Results/01_Preprocessing_2/08d2_composition_Cutadapt_Paired.png)
+
+## ITSxpress Single
+
+```{r composition-is, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["ITSxpress Single"]]
+```
+
+[고해상도 PNG 열기](Results/01_Preprocessing_2/08d3_composition_ITSxpress_Single.png)
+
+## ITSxpress Paired
+
+```{r composition-ip, fig.width=21, fig.height=4, out.width='100%'}
+composition_plots[["ITSxpress Paired"]]
+```
+
+[고해상도 PNG 열기](Results/01_Preprocessing_2/08d4_composition_ITSxpress_Paired.png)
+
+# 6. ASV sequence length와 frequency
+
+```{r sequence-summary}
+datatable_basic(sequence_summary, 10) |>
+  DT::formatRound(c("Median_Length", "Q1_Length", "Q3_Length"), 1) |>
+  DT::formatCurrency("Total_Reads", currency = "", digits = 0, mark = ",")
+```
+
+```{r sequence-plots, echo=FALSE, out.width='92%'}
+knitr::include_graphics("Results/01_Preprocessing_2/08e_ASV_sequence_length_frequency.png")
+```
+
+- Single-end ASV의 최대 길이는 Cutadapt `r sequence_summary$Max_Length[sequence_summary$Method == 'Cutadapt Single']` bp, ITSxpress `r sequence_summary$Max_Length[sequence_summary$Method == 'ITSxpress Single']` bp로 read truncation의 직접적인 영향을 받음.
+- 따라서 Single vs Paired에서 ASV identity가 달라지는 것은 예상되는 결과이며, ASV ID 자체를 직접 일치시키기보다 Species-level composition과 동일 sample의 ordination 구조를 주 비교 대상으로 삼음.
+- length density는 ASV 개수뿐 아니라 각 ASV의 fungal read 수로 가중함.
+
+# 7. 종합 요약
+
+```{r conclusion, results='asis'}
+for (i in seq_len(nrow(beta_stats))) {
+  x <- beta_stats[i, ]
+  cat(paste0(
+    "- **", x$Comparison, "**: paired Aitchison PERMANOVA R² = ",
+    sprintf("%.3f", x$PERMANOVA_R2), ", BH p = ", signif(x$PERMANOVA_P_BH, 3),
+    "; betadisper BH p = ", signif(x$Betadisper_P_BH, 3),
+    "; Procrustes r = ", sprintf("%.3f", x$Procrustes_r), ".\n"
+  ))
+}
+```
+
+- 모든 비교에서 동일한 83개 sample과 동일한 fungal/zero-sum 처리 규칙을 사용함.
+- Cutadapt Single은 네 pipeline 중 fungal read와 ASV가 가장 많았지만, 이 차이는 곧바로 생물학적 다양성 증가를 뜻하지 않으며 single-end read structure와 denoising 결과 차이를 포함함.
+- `betadisper`가 유의한 비교에서는 PERMANOVA 차이의 일부가 dispersion 변화에서 유래할 수 있음.
+- 본 보고서는 preprocessing 방법 선택의 기술적 비교이며, alpha/beta biological inference와 decontam 분석은 선택된 phyloseq object를 이용해 다음 Basic analysis에서 수행해야 함.
+
+# 8. 재현 파일
+
+- [전체 분석 R script](Results/01_Preprocessing_2/08_four_pipeline_comparison.R)
+- [전체 중간 object RDS](Results/01_Preprocessing_2/08_four_pipeline_objects.rds)
+- [Beta statistics CSV](Results/01_Preprocessing_2/08e_pairwise_beta_statistics.csv)
+- [Factorial PERMANOVA CSV](Results/01_Preprocessing_2/08i_factorial_PERMANOVA.csv)
+- [4분면 centroid CSV](Results/01_Preprocessing_2/08k_factorial_contrast_centroids.csv)
+- [ASV family mapping audit CSV](Results/01_Preprocessing_2/08l_ASV_family_mapping_audit.csv)
+- [ASV family membership CSV](Results/01_Preprocessing_2/08m_ASV_family_membership.csv)
+- [ASV 2×2 differential-abundance 전체 결과 CSV](Results/01_Preprocessing_2/08n_ASV_family_factorial_DA.csv)
+- [Species paired tests CSV](Results/01_Preprocessing_2/08g_species_paired_tests.csv)
+- [ASV sequence summary CSV](Results/01_Preprocessing_2/08h_ASV_sequence_summary.csv)
+
+## 한계
+
+- rarefaction은 적용하지 않았으며 이 보고서의 Aitchison 분석에는 필요하지 않음.
+- Bray–Curtis/Jaccard, alpha diversity 및 decontam 결과는 본 preprocessing 보고서에서 filtering 기준을 임의로 정하지 않기 위해 수행하지 않음.
+- single-end와 paired-end는 관찰 가능한 서열 길이가 다르므로 ASV 수와 taxonomy resolution 차이를 sequencing depth 차이 하나로만 설명할 수 없음.
+- taxa 검정은 compositional dependency와 반복 PCR 구조를 완전히 모형화한 differential-abundance 분석이 아니라 paired descriptive screen임.

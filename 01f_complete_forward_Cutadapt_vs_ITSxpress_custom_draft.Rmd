@@ -1,0 +1,636 @@
+---
+title: "01f. Complete forward ITS2 preprocessing comparison"
+subtitle: "Cutadapt single-end vs ITSxpress single-end (QC20, maxEE 2; complete forward reads)"
+date: "2026-10-16"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.align = "center", dpi = 160, dev = "ragg_png", out.width = "100%"
+)
+
+library(qiime2R)
+library(phyloseq)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(stringr)
+library(purrr)
+library(vegan)
+library(DT)
+library(scales)
+library(RColorBrewer)
+
+set.seed(42)
+
+root_dir <- "benchmark_results/q20_ee22_both_full_cutadapt_forward"
+results_dir <- file.path("Results", "01f_complete_forward_Cutadapt_vs_ITSxpress")
+dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+dir.create("Phyloseq", showWarnings = FALSE)
+
+method_colors <- c("Cutadapt" = "#0072B2", "ITSxpress" = "#D55E00")
+group_colors <- c("Control" = "#D55E00", "True" = "#0072B2", "Mock" = "#009E73")
+subject_shapes <- c("Control" = 15, "KSY" = 16, "PYH" = 17, "Mock" = 18)
+
+soyeon_theme <- theme_classic(base_family = "Noto Sans CJK KR", base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    strip.background = element_rect(fill = "white", colour = "grey55"),
+    strip.text = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x, rownames = FALSE, filter = "none",
+    options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE)
+  )
+}
+
+get_otu <- function(ps) {
+  x <- as(phyloseq::otu_table(ps), "matrix")
+  if (!phyloseq::taxa_are_rows(ps)) x <- t(x)
+  x
+}
+
+metadata_source_ps <- readRDS(
+  "Phyloseq/phy_ITS2_cutadapt_single_complete_q20_ee2_20261016.rds"
+)
+q2_metadata <- data.frame(phyloseq::sample_data(metadata_source_ps), check.names = FALSE) |>
+  tibble::rownames_to_column("SampleID") |>
+  dplyr::mutate(
+    Sample_Type = dplyr::case_when(
+      stringr::str_detect(Subject, stringr::regex("mock|zymo", ignore_case = TRUE)) ~ "Mock",
+      stringr::str_detect(Subject, stringr::regex("^(ASwab|CSwab|ETube)", ignore_case = TRUE)) ~ "Control",
+      TRUE ~ "True"
+    ),
+    Control_Type = dplyr::case_when(
+      stringr::str_detect(Subject, stringr::regex("^ASwab", ignore_case = TRUE)) ~ "Air swab",
+      stringr::str_detect(Subject, stringr::regex("^CSwab", ignore_case = TRUE)) ~ "Clean bench swab",
+      stringr::str_detect(Subject, stringr::regex("^ETube", ignore_case = TRUE)) ~ "Empty tube",
+      Sample_Type == "Mock" ~ "Mock",
+      TRUE ~ "Skin sample"
+    ),
+    Subject_Display = dplyr::case_when(
+      Sample_Type == "Control" ~ "Control",
+      Sample_Type == "Mock" ~ "Mock",
+      TRUE ~ as.character(Subject)
+    ),
+    Site_Display = dplyr::case_when(
+      Sample_Type == "True" ~ as.character(Region),
+      TRUE ~ as.character(Control_Type)
+    ),
+    Sample_Type = factor(as.character(Sample_Type), levels = c("Control", "True", "Mock")),
+    PCR_Cycle_Group = factor(
+      PCR_Cycle_Group,
+      levels = c(
+        "PCR1_33__PCR2_8", "PCR1_33__PCR2_10",
+        "PCR1_35__PCR2_8", "PCR1_35__PCR2_10"
+      )
+    )
+  )
+
+tax_clean <- function(ps) {
+  tax <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+  tax[] <- lapply(tax, function(x) {
+    x <- stringr::str_replace(as.character(x), "^[dkpcofgs]__", "")
+    x[is.na(x) | x %in% c("", "__", "NA", "uncultured", "Unassigned")] <- ""
+    x
+  })
+  for (i in seq_len(nrow(tax))) {
+    if (tax$Species[i] != "") {
+      tax$Species[i] <- stringr::str_replace_all(tax$Species[i], " ", "_")
+    } else if (tax$Phylum[i] == "") {
+      tax[i, 2:7] <- paste0(tax$Kingdom[i], "_k")
+    } else if (tax$Class[i] == "") {
+      tax[i, 3:7] <- paste0(tax$Phylum[i], "_p")
+    } else if (tax$Order[i] == "") {
+      tax[i, 4:7] <- paste0(tax$Class[i], "_c")
+    } else if (tax$Family[i] == "") {
+      tax[i, 5:7] <- paste0(tax$Order[i], "_o")
+    } else if (tax$Genus[i] == "") {
+      tax[i, 6:7] <- paste0(tax$Family[i], "_f")
+    } else {
+      tax$Species[i] <- paste0(tax$Genus[i], "_g")
+    }
+  }
+  phyloseq::tax_table(ps) <- phyloseq::tax_table(as.matrix(tax))
+  ps
+}
+
+make_phyloseq <- function(method) {
+  table_path <- file.path(root_dir, "dada2", tolower(method), "single", "table.qza")
+  taxonomy_path <- file.path(
+    root_dir, "taxonomy", tolower(method), "single",
+    "unite_v10_99_full", "taxonomy.tsv"
+  )
+  count_matrix <- qiime2R::read_qza(table_path)[["data"]]
+  taxonomy_input <- readr::read_tsv(taxonomy_path, show_col_types = FALSE)
+  taxonomy_split <- stringr::str_split_fixed(taxonomy_input$Taxon, ";", 8)
+  taxonomy_matrix <- taxonomy_split[, 1:7, drop = FALSE]
+  colnames(taxonomy_matrix) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+  rownames(taxonomy_matrix) <- taxonomy_input$`Feature ID`
+  missing_taxonomy <- setdiff(rownames(count_matrix), rownames(taxonomy_matrix))
+  if (length(missing_taxonomy) > 0) {
+    missing_matrix <- matrix("", nrow = length(missing_taxonomy), ncol = 7,
+                             dimnames = list(missing_taxonomy, colnames(taxonomy_matrix)))
+    taxonomy_matrix <- rbind(taxonomy_matrix, missing_matrix)
+  }
+  metadata_frame <- q2_metadata |>
+    dplyr::filter(SampleID %in% colnames(count_matrix)) |>
+    dplyr::arrange(match(SampleID, colnames(count_matrix))) |>
+    tibble::column_to_rownames("SampleID") |>
+    data.frame(check.names = FALSE)
+  count_matrix <- count_matrix[, rownames(metadata_frame), drop = FALSE]
+  taxonomy_matrix <- taxonomy_matrix[rownames(count_matrix), , drop = FALSE]
+  phy_raw <- phyloseq::phyloseq(
+    phyloseq::otu_table(count_matrix, taxa_are_rows = TRUE),
+    phyloseq::tax_table(taxonomy_matrix),
+    phyloseq::sample_data(metadata_frame)
+  )
+  phy_taxclean <- tax_clean(phy_raw)
+  kingdom <- as.character(phyloseq::tax_table(phy_taxclean)[, "Kingdom"])
+  phy_fungi <- phyloseq::prune_taxa(kingdom == "Fungi", phy_taxclean)
+  phy_final <- phyloseq::prune_samples(phyloseq::sample_sums(phy_fungi) > 0, phy_fungi)
+  phy_final <- phyloseq::prune_taxa(phyloseq::taxa_sums(phy_final) > 0, phy_final)
+  audit <- tibble::tibble(
+    Method = method,
+    Stage = c("Imported ASV table", "Taxonomy cleaned", "Kingdom == Fungi retained", "Zero-sum removed"),
+    Samples = c(nsamples(phy_raw), nsamples(phy_taxclean), nsamples(phy_fungi), nsamples(phy_final)),
+    ASVs = c(ntaxa(phy_raw), ntaxa(phy_taxclean), ntaxa(phy_fungi), ntaxa(phy_final)),
+    Reads = c(sum(sample_sums(phy_raw)), sum(sample_sums(phy_taxclean)),
+              sum(sample_sums(phy_fungi)), sum(sample_sums(phy_final)))
+  )
+  list(raw = phy_raw, cleaned = phy_final, audit = audit)
+}
+
+cutadapt_result <- make_phyloseq("Cutadapt")
+itsxpress_result <- make_phyloseq("ITSxpress")
+phy_cutadapt <- cutadapt_result$cleaned
+phy_itsxpress <- itsxpress_result$cleaned
+
+saveRDS(phy_cutadapt, "Phyloseq/phy_ITS2_cutadapt_single_complete_q20_ee2_20261016.rds")
+saveRDS(phy_itsxpress, "Phyloseq/phy_ITS2_itsxpress_single_complete_q20_ee2_20261016.rds")
+
+get_species_count <- function(ps) {
+  otu <- get_otu(ps)
+  tax <- data.frame(phyloseq::tax_table(ps), check.names = FALSE)
+  label <- dplyr::case_when(
+    tax$Species != "" ~ stringr::str_replace_all(tax$Species, "_", " "),
+    tax$Genus != "" ~ paste0(tax$Genus, " sp."),
+    tax$Family != "" ~ paste0(tax$Family, " (unclassified)"),
+    TRUE ~ "Unclassified fungi"
+  )
+  rowsum(otu, group = label, reorder = FALSE)
+}
+
+cut_species <- get_species_count(phy_cutadapt)
+its_species <- get_species_count(phy_itsxpress)
+```
+
+```{r embedded-font, results='asis'}
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data, ") format('opentype');font-weight:400;font-style:normal;}",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1500px!important;}</style>"
+  ))
+}
+```
+
+# 분석 범위
+
+- 동일한 83개 library의 **완전한 forward read**를 사용함.
+- Cutadapt single-end와 ITSxpress single-end를 비교함.
+- QC20, DADA2 maxEE 2 조건은 동일하며 ITS 경계 처리만 다름.
+- rarefaction으로 library를 제거하지 않았으며, Aitchison 분석은 비희소화 count에 pseudocount 0.5를 적용함.
+- UNITE 기반 `Kingdom == Fungi` 필터 전후를 모두 기록함.
+
+실제 QIIME 2 provenance를 확인한 결과 ITSxpress는 `region = ITS2`, `taxa = F`(Fungi), `cluster_id = 1`로 실행되었고, 이후 DADA2 single-end는 `max_ee = 2`, `trunc_len = 0`으로 실행되었다. 따라서 아래의 큰 read 감소는 `taxa = All`을 사용해서 생긴 현상이 아니다.
+
+# Import 및 taxonomy 처리
+
+```{r audit-table}
+audit_table <- dplyr::bind_rows(cutadapt_result$audit, itsxpress_result$audit)
+readr::write_csv(audit_table, file.path(results_dir, "01_import_taxonomy_audit.csv"))
+datatable_basic(audit_table, 10) |>
+  DT::formatRound("Reads", 0)
+```
+
+```{r kingdom-table}
+kingdom_summary <- function(x, method) {
+  otu <- get_otu(x$raw)
+  tax <- data.frame(tax_table(x$raw), check.names = FALSE)
+  tibble::tibble(
+    Method = method,
+    Kingdom = dplyr::if_else(is.na(tax$Kingdom) | tax$Kingdom == "", "Unassigned", as.character(tax$Kingdom)),
+    ASVs = rowSums(otu > 0),
+    Reads = rowSums(otu)
+  ) |>
+    dplyr::group_by(Method, Kingdom) |>
+    dplyr::summarise(ASVs = dplyr::n(), Reads = sum(Reads), .groups = "drop")
+}
+kingdom_table <- dplyr::bind_rows(
+  kingdom_summary(cutadapt_result, "Cutadapt"),
+  kingdom_summary(itsxpress_result, "ITSxpress")
+)
+readr::write_csv(kingdom_table, file.path(results_dir, "02_kingdom_summary_before_filter.csv"))
+datatable_basic(kingdom_table, 10) |>
+  DT::formatRound("Reads", 0)
+```
+
+# Sample-level read recovery와 alpha summary
+
+```{r sample-qc-data}
+sample_qc <- dplyr::bind_rows(
+  tibble::tibble(
+    SampleID = sample_names(phy_cutadapt), Method = "Cutadapt",
+    Read_Count = as.numeric(sample_sums(phy_cutadapt)),
+    Observed_ASV = as.numeric(estimate_richness(phy_cutadapt, measures = "Observed")$Observed),
+    Shannon = as.numeric(estimate_richness(phy_cutadapt, measures = "Shannon")$Shannon)
+  ),
+  tibble::tibble(
+    SampleID = sample_names(phy_itsxpress), Method = "ITSxpress",
+    Read_Count = as.numeric(sample_sums(phy_itsxpress)),
+    Observed_ASV = as.numeric(estimate_richness(phy_itsxpress, measures = "Observed")$Observed),
+    Shannon = as.numeric(estimate_richness(phy_itsxpress, measures = "Shannon")$Shannon)
+  )
+) |>
+  dplyr::left_join(q2_metadata, by = "SampleID") |>
+  dplyr::mutate(Method = factor(Method, levels = c("Cutadapt", "ITSxpress")))
+
+sample_wide <- sample_qc |>
+  dplyr::select(SampleID, Method, Read_Count, Observed_ASV, Shannon) |>
+  tidyr::pivot_wider(names_from = Method, values_from = c(Read_Count, Observed_ASV, Shannon)) |>
+  dplyr::left_join(q2_metadata, by = "SampleID") |>
+  dplyr::mutate(
+    Read_Recovery = Read_Count_ITSxpress / pmax(Read_Count_Cutadapt, 1),
+    ASV_Recovery = Observed_ASV_ITSxpress / pmax(Observed_ASV_Cutadapt, 1)
+  )
+
+readr::write_csv(sample_wide, file.path(results_dir, "03_sample_level_recovery.csv"))
+datatable_basic(sample_wide |>
+                  dplyr::select(SampleID, Subject_Display, Site_Display, Sample_Type,
+                                Read_Count_Cutadapt, Read_Count_ITSxpress, Read_Recovery,
+                                Observed_ASV_Cutadapt, Observed_ASV_ITSxpress, ASV_Recovery), 15) |>
+  DT::formatRound(c("Read_Recovery", "ASV_Recovery"), 3)
+```
+
+```{r sample-read-plot, fig.width=12, fig.height=7}
+p_reads <- ggplot(sample_qc, aes(x = Method, y = Read_Count + 1, colour = Sample_Type,
+                                group = SampleID)) +
+  geom_line(alpha = 0.25, colour = "grey65") +
+  geom_point(aes(shape = Subject_Display), size = 2.1, alpha = 0.8) +
+  scale_y_log10(labels = scales::label_number()) +
+  scale_colour_manual(values = group_colors, drop = FALSE) +
+  scale_shape_manual(values = subject_shapes, drop = FALSE) +
+  facet_wrap(~Sample_Type, scales = "free_y", nrow = 1) +
+  labs(title = "Complete forward: paired library read recovery",
+       x = NULL, y = "Fungal reads + 1 (log10)") +
+  soyeon_theme
+ggsave(file.path(results_dir, "03_sample_read_recovery.png"), p_reads,
+       width = 12, height = 7, dpi = 300)
+p_reads
+```
+
+# Aitchison PCoA 및 paired method effect
+
+```{r pcoa-data}
+common_samples <- intersect(colnames(cut_species), colnames(its_species))
+all_species <- union(rownames(cut_species), rownames(its_species))
+align_matrix <- function(x, taxa, samples) {
+  out <- matrix(0, nrow = length(taxa), ncol = length(samples),
+                dimnames = list(taxa, samples))
+  out[rownames(x), colnames(x)] <- x
+  out
+}
+cut_aligned <- align_matrix(cut_species, all_species, common_samples)
+its_aligned <- align_matrix(its_species, all_species, common_samples)
+clr_rows <- function(x, pseudocount = 0.5) {
+  lx <- log(x + pseudocount)
+  lx - rowMeans(lx)
+}
+cut_clr <- clr_rows(t(cut_aligned))
+its_clr <- clr_rows(t(its_aligned))
+combined_clr <- rbind(cut_clr, its_clr)
+rownames(combined_clr) <- c(paste0("Cutadapt__", common_samples),
+                           paste0("ITSxpress__", common_samples))
+
+pcoa <- cmdscale(dist(combined_clr), k = 2, eig = TRUE, add = TRUE)
+variance <- round(100 * pcoa$eig[1:2] / sum(pcoa$eig[pcoa$eig > 0]), 1)
+pcoa_points <- data.frame(pcoa$points, check.names = FALSE)
+colnames(pcoa_points)[1:2] <- c("Axis1", "Axis2")
+pcoa_df <- pcoa_points |>
+  tibble::rownames_to_column("RowID") |>
+  dplyr::mutate(
+    Method = ifelse(stringr::str_starts(RowID, "Cutadapt__"), "Cutadapt", "ITSxpress"),
+    SampleID = stringr::str_remove(RowID, "^(Cutadapt|ITSxpress)__")
+  ) |>
+  dplyr::left_join(q2_metadata, by = "SampleID") |>
+  dplyr::mutate(Method = factor(Method, levels = c("Cutadapt", "ITSxpress")))
+
+set.seed(42)
+method_permanova <- vegan::adonis2(
+  dist(combined_clr) ~ Method,
+  data = pcoa_df,
+  permutations = 999,
+  strata = pcoa_df$SampleID
+)
+dispersion <- vegan::betadisper(dist(combined_clr), pcoa_df$Method)
+set.seed(42)
+dispersion_test <- vegan::permutest(dispersion, permutations = 999)
+
+method_stats <- tibble::tibble(
+  Test = c("Paired PERMANOVA", "betadisper permutation test"),
+  Statistic = c(method_permanova$F[1], dispersion_test$tab[1, "F"]),
+  P_value = c(method_permanova$`Pr(>F)`[1], dispersion_test$tab[1, "Pr(>F)"]),
+  R2 = c(method_permanova$R2[1], NA_real_)
+)
+readr::write_csv(method_stats, file.path(results_dir, "04_aitchison_method_tests.csv"))
+datatable_basic(method_stats, 10) |>
+  DT::formatRound(c("Statistic", "P_value", "R2"), 4)
+```
+
+```{r pcoa-plot, fig.width=12, fig.height=8}
+p_pcoa <- ggplot(pcoa_df, aes(x = Axis1, y = Axis2)) +
+  geom_line(aes(group = SampleID), colour = "grey70", alpha = 0.45) +
+  geom_point(aes(fill = Method, shape = Subject_Display), size = 3.1,
+             colour = "grey20", stroke = 0.4) +
+  scale_fill_manual(values = method_colors) +
+  scale_shape_manual(values = subject_shapes, drop = FALSE) +
+  facet_wrap(~Sample_Type, nrow = 1) +
+  labs(
+    title = "Complete-forward Cutadapt vs ITSxpress — Aitchison PCoA",
+    subtitle = "Line connects the same SampleID; shape distinguishes subject/control",
+    x = paste0("PCoA1 (", variance[1], "%)"),
+    y = paste0("PCoA2 (", variance[2], "%)")
+  ) + soyeon_theme + theme(axis.text.x = element_text(angle = 0))
+ggsave(file.path(results_dir, "04_aitchison_PCoA.png"), p_pcoa,
+       width = 12, height = 8, dpi = 300)
+p_pcoa
+```
+
+# Species overlap 및 paired abundance difference
+
+```{r species-comparison}
+relative_long <- function(x, method) {
+  sweep(x, 2, pmax(colSums(x), 1), "/") |>
+    data.frame(check.names = FALSE) |>
+    tibble::rownames_to_column("Species") |>
+    tidyr::pivot_longer(-Species, names_to = "SampleID", values_to = "Relative_Abundance") |>
+    dplyr::mutate(Method = method)
+}
+species_relative <- dplyr::bind_rows(
+  relative_long(cut_aligned, "Cutadapt"),
+  relative_long(its_aligned, "ITSxpress")
+)
+species_means <- species_relative |>
+  dplyr::group_by(Species, Method) |>
+  dplyr::summarise(Mean = mean(Relative_Abundance), .groups = "drop") |>
+  tidyr::pivot_wider(names_from = Method, values_from = Mean, values_fill = 0) |>
+  dplyr::mutate(Combined_Mean = (Cutadapt + ITSxpress) / 2)
+
+top_species <- species_means |>
+  dplyr::slice_max(Combined_Mean, n = 20, with_ties = FALSE) |>
+  dplyr::pull(Species)
+
+species_tests <- species_relative |>
+  dplyr::filter(Species %in% top_species) |>
+  dplyr::select(Species, SampleID, Method, Relative_Abundance) |>
+  tidyr::pivot_wider(names_from = Method, values_from = Relative_Abundance, values_fill = 0) |>
+  dplyr::group_by(Species) |>
+  dplyr::summarise(
+    Mean_Cutadapt = mean(Cutadapt), Mean_ITSxpress = mean(ITSxpress),
+    Mean_Difference = mean(ITSxpress - Cutadapt),
+    P_value = if (all(Cutadapt == ITSxpress)) 1 else
+      stats::wilcox.test(ITSxpress, Cutadapt, paired = TRUE, exact = FALSE)$p.value,
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(BH_q = p.adjust(P_value, method = "BH")) |>
+  dplyr::arrange(BH_q)
+
+overlap_table <- tibble::tibble(
+  Metric = c("Cutadapt detected Species", "ITSxpress detected Species", "Shared Species",
+             "Cutadapt only", "ITSxpress only"),
+  N = c(sum(rowSums(cut_aligned) > 0), sum(rowSums(its_aligned) > 0),
+        sum(rowSums(cut_aligned) > 0 & rowSums(its_aligned) > 0),
+        sum(rowSums(cut_aligned) > 0 & rowSums(its_aligned) == 0),
+        sum(rowSums(cut_aligned) == 0 & rowSums(its_aligned) > 0))
+)
+readr::write_csv(overlap_table, file.path(results_dir, "05_species_overlap.csv"))
+readr::write_csv(species_tests, file.path(results_dir, "05_species_paired_wilcoxon.csv"))
+datatable_basic(overlap_table, 10)
+datatable_basic(species_tests, 20) |>
+  DT::formatPercentage(c("Mean_Cutadapt", "Mean_ITSxpress", "Mean_Difference"), 2) |>
+  DT::formatRound(c("P_value", "BH_q"), 4)
+```
+
+```{r species-scatter, fig.width=10, fig.height=8}
+p_species <- ggplot(species_means, aes(x = Cutadapt + 1e-6, y = ITSxpress + 1e-6)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey50") +
+  geom_point(aes(size = Combined_Mean), colour = "#542788", alpha = 0.7) +
+  ggrepel::geom_text_repel(
+    data = species_means |> dplyr::filter(Species %in% top_species),
+    aes(label = Species), size = 3, max.overlaps = Inf
+  ) +
+  scale_x_log10(labels = scales::label_percent()) +
+  scale_y_log10(labels = scales::label_percent()) +
+  scale_size_continuous(labels = scales::label_percent()) +
+  labs(title = "Mean Species abundance: Cutadapt vs ITSxpress",
+       x = "Cutadapt mean relative abundance + 1e-6",
+       y = "ITSxpress mean relative abundance + 1e-6", size = "Combined mean") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 0))
+ggsave(file.path(results_dir, "05_species_mean_scatter.png"), p_species,
+       width = 10, height = 8, dpi = 300)
+p_species
+```
+
+# Sample별 Species composition
+
+```{r composition, fig.width=16, fig.height=10}
+display_species <- species_means |>
+  dplyr::filter(Combined_Mean > 0.01) |>
+  dplyr::pull(Species)
+composition <- species_relative |>
+  dplyr::mutate(Taxon = ifelse(Species %in% display_species, Species, "Other")) |>
+  dplyr::group_by(Method, SampleID, Taxon) |>
+  dplyr::summarise(Relative_Abundance = sum(Relative_Abundance), .groups = "drop") |>
+  dplyr::left_join(q2_metadata, by = "SampleID") |>
+  dplyr::mutate(Method = factor(Method, levels = c("Cutadapt", "ITSxpress")))
+
+pal <- c(
+  setNames(colorRampPalette(c(brewer.pal(12, "Paired"), brewer.pal(8, "Dark2"),
+                              brewer.pal(8, "Accent")))(length(display_species)), display_species),
+  Other = "grey85"
+)
+p_comp <- ggplot(composition, aes(x = SampleID, y = Relative_Abundance, fill = Taxon)) +
+  geom_col(width = 0.9) +
+  scale_fill_manual(values = pal, breaks = c(display_species, "Other")) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  facet_grid(Method + Sample_Type ~ ., scales = "free_x", space = "free_x") +
+  labs(title = "Complete-forward sample-level Species composition",
+       subtitle = "Legend threshold: combined mean relative abundance >1%",
+       x = "SampleID", y = "Relative abundance") +
+  soyeon_theme + theme(axis.text.x = element_text(size = 6, angle = 90, vjust = 0.5),
+                       legend.text = element_text(size = 8))
+ggsave(file.path(results_dir, "06_sample_species_composition.png"), p_comp,
+       width = 20, height = 12, dpi = 300, limitsize = FALSE)
+p_comp
+```
+
+# ASV sequence length와 frequency 비교
+
+```{r sequence-data}
+read_sequences <- function(method) {
+  seqs <- qiime2R::read_qza(file.path(root_dir, "dada2", tolower(method), "single", "repseq.qza"))[["data"]]
+  seq_chr <- as.character(seqs)
+  ids <- names(seqs)
+  if (is.null(ids) || any(ids == "")) ids <- rownames(get_otu(if (method == "Cutadapt") phy_cutadapt else phy_itsxpress))
+  counts <- rowSums(get_otu(if (method == "Cutadapt") phy_cutadapt else phy_itsxpress))
+  tibble::tibble(
+    Method = method, FeatureID = ids, Sequence = seq_chr,
+    Length_bp = nchar(seq_chr), Total_Reads = as.numeric(counts[ids])
+  )
+}
+sequence_table <- dplyr::bind_rows(read_sequences("Cutadapt"), read_sequences("ITSxpress"))
+readr::write_csv(sequence_table, file.path(results_dir, "07_ASV_sequences_length_frequency.csv"))
+```
+
+```{r length-frequency-plot, fig.width=12, fig.height=7}
+p_len <- ggplot(sequence_table, aes(x = Length_bp, weight = Total_Reads, fill = Method)) +
+  geom_histogram(position = "identity", alpha = 0.55, bins = 60) +
+  scale_fill_manual(values = method_colors) +
+  scale_y_log10(labels = scales::label_number()) +
+  facet_wrap(~Method, nrow = 1, scales = "free_y") +
+  labs(title = "Read-weighted ASV length distribution",
+       x = "ASV sequence length (bp)", y = "Read-weighted frequency (log10)") +
+  soyeon_theme
+ggsave(file.path(results_dir, "07_ASV_length_frequency.png"), p_len,
+       width = 12, height = 7, dpi = 300)
+p_len
+```
+
+# Cutadapt–ITSxpress 서열 containment
+
+```{r containment}
+cut_seq <- sequence_table |> dplyr::filter(Method == "Cutadapt")
+its_seq <- sequence_table |> dplyr::filter(Method == "ITSxpress")
+
+best_match <- purrr::map_dfr(seq_len(nrow(its_seq)), function(i) {
+  hit <- which(vapply(cut_seq$Sequence, function(x) grepl(its_seq$Sequence[i], x, fixed = TRUE), logical(1)))
+  if (length(hit) == 0) {
+    return(tibble::tibble(
+      ITSxpress_FeatureID = its_seq$FeatureID[i], ITSxpress_Length = its_seq$Length_bp[i],
+      ITSxpress_Reads = its_seq$Total_Reads[i], Cutadapt_FeatureID = NA_character_,
+      Cutadapt_Length = NA_integer_, Cutadapt_Reads = NA_real_, Match = "No exact containment"
+    ))
+  }
+  j <- hit[which.max(cut_seq$Total_Reads[hit])]
+  tibble::tibble(
+    ITSxpress_FeatureID = its_seq$FeatureID[i], ITSxpress_Length = its_seq$Length_bp[i],
+    ITSxpress_Reads = its_seq$Total_Reads[i], Cutadapt_FeatureID = cut_seq$FeatureID[j],
+    Cutadapt_Length = cut_seq$Length_bp[j], Cutadapt_Reads = cut_seq$Total_Reads[j],
+    Match = ifelse(its_seq$Sequence[i] == cut_seq$Sequence[j], "Exact identical", "ITSxpress within Cutadapt")
+  )
+})
+
+containment_summary <- best_match |>
+  dplyr::count(Match, name = "ITSxpress_ASVs") |>
+  dplyr::mutate(Read_Sum = purrr::map_dbl(Match, ~sum(best_match$ITSxpress_Reads[best_match$Match == .x])))
+readr::write_csv(best_match, file.path(results_dir, "08_ASV_exact_containment_pairs.csv"))
+readr::write_csv(containment_summary, file.path(results_dir, "08_ASV_containment_summary.csv"))
+datatable_basic(containment_summary, 10) |>
+  DT::formatRound("Read_Sum", 0)
+```
+
+```{r matched-frequency, fig.width=10, fig.height=8}
+p_match <- best_match |>
+  dplyr::filter(!is.na(Cutadapt_FeatureID)) |>
+  ggplot(aes(x = Cutadapt_Reads + 1, y = ITSxpress_Reads + 1, colour = Match)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey50") +
+  geom_point(alpha = 0.75, size = 2.2) +
+  scale_x_log10(labels = scales::label_number()) +
+  scale_y_log10(labels = scales::label_number()) +
+  scale_colour_brewer(palette = "Dark2") +
+  labs(title = "Sequence-matched ASV read frequency",
+       x = "Cutadapt total reads + 1", y = "ITSxpress total reads + 1") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 0))
+ggsave(file.path(results_dir, "08_matched_ASV_frequency.png"), p_match,
+       width = 10, height = 8, dpi = 300)
+p_match
+```
+
+# BLAST-confirmed Raphanus ASV의 ITSxpress 잔존 여부
+
+```{r raphanus-check}
+raphanus_id <- "5c8f111a2f4a8e9e41a1cb58ebc985f6"
+raphanus_row <- cut_seq |> dplyr::filter(FeatureID == raphanus_id)
+raphanus_sequence <- raphanus_row$Sequence[1]
+raphanus_matches <- its_seq |>
+  dplyr::filter(
+    Sequence == raphanus_sequence |
+      vapply(Sequence, function(x) grepl(x, raphanus_sequence, fixed = TRUE), logical(1))
+  ) |>
+  dplyr::mutate(Cutadapt_FeatureID = raphanus_id)
+
+raphanus_summary <- tibble::tibble(
+  Item = c("Cutadapt ASV total reads", "Cutadapt ASV length", "ITSxpress exact/contained ASVs", "ITSxpress matched reads"),
+  Value = c(
+    ifelse(nrow(raphanus_row) == 0, 0, raphanus_row$Total_Reads[1]),
+    ifelse(nrow(raphanus_row) == 0, NA, raphanus_row$Length_bp[1]),
+    nrow(raphanus_matches), sum(raphanus_matches$Total_Reads)
+  )
+)
+readr::write_csv(raphanus_summary, file.path(results_dir, "09_Raphanus_ASV_ITSxpress_check.csv"))
+readr::write_csv(raphanus_matches, file.path(results_dir, "09_Raphanus_ASV_ITSxpress_matches.csv"))
+datatable_basic(raphanus_summary, 10) |>
+  DT::formatRound("Value", 0)
+```
+
+이 표는 NCBI nt에서 *Raphanus sativus*와 281/281 bp, 100% identity로 확인된 Cutadapt ASV가 fungal ITS HMM 기반 ITSxpress 결과에 동일 또는 내부 서열 형태로 남았는지를 직접 확인한다. ITSxpress 결과에 없을 경우에는 `--taxa Fungi` 단계가 이 비표적 식물 ITS를 제거한 결과와 일치한다. 단, ITSxpress는 taxonomy classifier 자체가 아니므로 모든 비진균 서열 제거를 보장하지 않는다.
+
+# 요약
+
+```{r dynamic-summary, results='asis'}
+cat(paste0(
+  "- Cutadapt: **", ntaxa(phy_cutadapt), " fungal ASVs / ",
+  scales::comma(sum(sample_sums(phy_cutadapt))), " reads**.\n",
+  "- ITSxpress: **", ntaxa(phy_itsxpress), " fungal ASVs / ",
+  scales::comma(sum(sample_sums(phy_itsxpress))), " reads**.\n",
+  "- 공통 SampleID: **", length(common_samples), "개**.\n",
+  "- ITSxpress/Cutadapt sample read recovery median: **",
+  scales::percent(median(sample_wide$Read_Recovery, na.rm = TRUE), accuracy = 0.1), "**.\n",
+  "- paired Aitchison PERMANOVA: R² = **", round(method_permanova$R2[1], 4),
+  "**, p = **", signif(method_permanova$`Pr(>F)`[1], 3), "**.\n",
+  "- BLAST-confirmed Raphanus ASV와 exact/containment 관계인 ITSxpress ASV: **",
+  nrow(raphanus_matches), "개**.\n"
+))
+```
+
+본 비교는 library 처리 방법의 기술적 차이를 평가한다. 동일 피부 시료에서 반복 PCR된 library들은 독립적인 생물학적 표본이 아니므로, 여기의 paired method test를 대상자 수준의 생물학적 효과로 해석하지 않는다.
+
+## 보수적 해석
+
+- ITSxpress는 Cutadapt read의 일부를 단순히 정리한 수준이 아니라, 전체 read의 작은 부분만 남긴 강한 선택 단계로 작동했다. sample별 ITSxpress/Cutadapt read recovery 중앙값은 약 6%이다.
+- ITSxpress ASV 211개 중 176개는 Cutadapt ASV 내부에 정확히 포함되어, 동일 원서열의 ITS 내부 구간을 추출했다는 점은 확인된다. 그러나 35개는 exact containment로 연결되지 않았다.
+- BLAST에서 *Raphanus sativus*로 확인된 281-bp Cutadapt ASV(68,588 reads)는 ITSxpress 결과에 exact/containment 형태로 남지 않았다. fungal HMM이 해당 비표적 식물 ITS를 제거한 결과와 일치한다.
+- 동시에 Cutadapt에서 풍부했던 *Malassezia restricta*, *M. globosa*, *Aureobasidium tremulum*은 현재 ITSxpress taxonomy에서 거의 또는 전혀 재현되지 않았다. 그러므로 이번 ITSxpress 결과를 곧바로 “더 정확한 피부 진균 조성”으로 채택하면 안 된다.
+- 완전한 forward read가 ITS2와 양쪽 보존 flank를 충분히 포괄하지 못한 taxon에서는 ITSxpress HMM 경계 탐지가 실패할 수 있다. ITSxpress ASV 길이 중앙값도 Cutadapt 281 bp 대비 148 bp로 짧다. 따라서 Malassezia 소실은 생물학적 부재가 아니라 경계 인식 및 길이 선택 편향일 가능성을 우선 점검해야 한다.
+- Aitchison PERMANOVA와 betadisper가 모두 유의하므로, PCoA의 method 차이는 centroid 이동만이 아니라 dispersion 차이도 함께 포함한다. 이를 순수한 조성 변화로 단정하지 않는다.

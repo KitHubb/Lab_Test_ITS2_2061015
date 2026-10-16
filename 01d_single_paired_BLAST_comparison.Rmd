@@ -1,0 +1,477 @@
+---
+title: "01d. ITS2 single-end, paired-end 및 BLAST 통합 비교"
+subtitle: "QC20 / maxEE 2,2 — Cutadapt와 ITSxpress"
+date: "2026-10-16"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    self_contained: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.align = "center", dpi = 180, dev = "ragg_png", out.width = "100%"
+)
+suppressPackageStartupMessages({
+  library(phyloseq)
+  library(dplyr)
+  library(tidyr)
+  library(readr)
+  library(stringr)
+  library(ggplot2)
+  library(scales)
+  library(DT)
+  library(patchwork)
+})
+set.seed(42)
+
+source_dir <- file.path("Results", "01_Preprocessing_2")
+blast_dir <- file.path("Results", "01_Preprocessing")
+out_dir <- file.path("Results", "01d_Single_Paired_BLAST_comparison")
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+
+method_levels <- c(
+  "Cutadapt Single", "Cutadapt Paired",
+  "ITSxpress Single", "ITSxpress Paired"
+)
+method_colors <- c(
+  "Cutadapt Single" = "#1F78B4",
+  "Cutadapt Paired" = "#A6CEE3",
+  "ITSxpress Single" = "#E31A1C",
+  "ITSxpress Paired" = "#FB9A99"
+)
+
+soyeon_theme <- theme_classic(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(color = "grey30"),
+    axis.title = element_text(face = "bold"),
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(face = "bold"),
+    legend.title = element_text(face = "bold"),
+    panel.border = element_rect(fill = NA, color = "black", linewidth = 0.45)
+  )
+
+datatable_basic <- function(x, page_length = 10) {
+  DT::datatable(
+    x, rownames = FALSE, filter = "none",
+    options = list(dom = "tp", pageLength = page_length, autoWidth = TRUE,
+                   scrollX = TRUE)
+  )
+}
+
+read_csv_checked <- function(path) {
+  if (!file.exists(path)) stop("Required file not found: ", path)
+  readr::read_csv(path, show_col_types = FALSE)
+}
+
+rds_paths <- c(
+  "Cutadapt Single" = "Phyloseq/phy_ITS2_cutadapt_single_q20_ee22_20261016.rds",
+  "Cutadapt Paired" = "Phyloseq/phy_ITS2_cutadapt_paired_q20_ee22_20261016.rds",
+  "ITSxpress Single" = "Phyloseq/phy_ITS2_itsxpress_single_q20_ee22_20261016.rds",
+  "ITSxpress Paired" = "Phyloseq/phy_ITS2_itsxpress_paired_q20_ee22_20261016.rds"
+)
+if (!all(file.exists(rds_paths))) {
+  stop("Four validated phyloseq objects are required before rendering this report.")
+}
+ps_list <- lapply(rds_paths, readRDS)
+
+audit <- read_csv_checked(file.path(source_dir, "08a_preprocessing_audit.csv"))
+rank_summary <- read_csv_checked(file.path(source_dir, "08b_taxonomy_rank_summary.csv"))
+depth_summary <- read_csv_checked(file.path(source_dir, "08c_depth_summary.csv"))
+paired_qc <- read_csv_checked(file.path(source_dir, "08d_paired_QC_tests.csv"))
+beta_pairwise <- read_csv_checked(file.path(source_dir, "08e_pairwise_beta_statistics.csv"))
+factorial_permanova <- read_csv_checked(file.path(source_dir, "08i_factorial_PERMANOVA.csv"))
+species_overlap <- read_csv_checked(file.path(source_dir, "08f_species_overlap.csv"))
+species_tests <- read_csv_checked(file.path(source_dir, "08g_species_paired_tests.csv"))
+asv_summary <- read_csv_checked(file.path(source_dir, "08h_ASV_sequence_summary.csv"))
+family_audit <- read_csv_checked(file.path(source_dir, "08l_ASV_family_mapping_audit.csv"))
+family_membership <- read_csv_checked(file.path(source_dir, "08m_ASV_family_membership.csv"))
+aureo_family <- read_csv_checked(file.path(source_dir, "08q_Aureobasidium_ASV_families.csv"))
+blast <- read_csv_checked(file.path(blast_dir, "Aureobasidium_tremulum_BLAST_summary.csv"))
+
+sample_qc <- bind_rows(lapply(names(ps_list), function(method) {
+  ps <- ps_list[[method]]
+  otu <- as(otu_table(ps), "matrix")
+  if (taxa_are_rows(ps)) otu <- t(otu)
+  md <- data.frame(sample_data(ps), check.names = FALSE)
+  tibble(
+    SampleID = sample_names(ps), Method = method,
+    Read_Depth = as.numeric(sample_sums(ps)),
+    Observed_ASV = as.integer(rowSums(otu > 0)),
+    Sample_Type = as.character(md$Sample_Type)
+  )
+})) |>
+  mutate(Method = factor(Method, levels = method_levels))
+
+font_path <- "C:/Windows/Fonts/NotoSansCJKkr-Regular.otf"
+```
+
+```{r embedded-font, results='asis'}
+if (file.exists(font_path) && requireNamespace("base64enc", quietly = TRUE)) {
+  font_data <- base64enc::base64encode(font_path)
+  cat(paste0(
+    "<style>@font-face{font-family:'Noto Sans CJK KR';src:url(data:font/otf;base64,",
+    font_data, ") format('opentype');font-weight:400;font-style:normal;}",
+    "body,table,.dataTables_wrapper,svg text{font-family:'Noto Sans CJK KR',sans-serif!important;}",
+    ".main-container{max-width:1550px!important;}",
+    ".callout{border-left:5px solid #2C7FB8;background:#F3F8FC;padding:14px 18px;margin:18px 0;}",
+    ".warn{border-left-color:#E67E22;background:#FFF8F0;}",
+    "</style>"
+  ))
+}
+```
+
+# 1. 분석 질문과 범위
+
+본 보고서는 동일한 83개 library를 네 preprocessing pipeline으로 처리한 결과와
+`Aureobasidium` 대표 서열의 NCBI BLAST 결과를 한 보고서에서 연결한다.
+
+1. Single-end와 paired-end 중 어느 쪽이 read와 ASV를 더 많이 보존하는가?
+2. Cutadapt와 ITSxpress 차이가 read mode에 따라 달라지는가?
+3. 네 pipeline의 community structure와 species profile은 어느 정도 일치하는가?
+4. Cutadapt에서 `Aureobasidium tremulum`으로 분류된 우점 ASV가 single-end와 BLAST에서는 어떻게 보이는가?
+
+<div class="callout">
+이 보고서는 전처리 방법 비교이다. Rarefaction, abundance filtering 및 decontam은 적용하지 않았으며,
+BLAST hit는 taxonomy 검증에 사용했을 뿐 새로운 ASV 제거 기준으로 사용하지 않았다.
+</div>
+
+## 비교 설계
+
+| Trimming | Single-end | Paired-end |
+|---|---|---|
+| Cutadapt | Cutadapt Single | Cutadapt Paired |
+| ITSxpress | ITSxpress Single | ITSxpress Paired |
+
+- Primary comparison: 동일 trimming 내 Single vs Paired
+- Orthogonal comparison: 동일 read mode 내 Cutadapt vs ITSxpress
+- BLAST validation: Cutadapt 303-bp 대표 ASV와 동일 read pattern에서 얻은 155-bp ITS2 core
+- 모든 통계는 동일 SampleID를 연결한 기술적 pipeline 비교이며 독립 biological group 검정이 아니다.
+
+# 2. 입력 자료 및 전처리 audit
+
+```{r audit-table}
+datatable_basic(audit, 16)
+```
+
+네 pipeline 모두 83개 library가 유지되었으며, `Kingdom == Fungi`와 zero-sum 제거 외에
+추가 ASV abundance threshold는 적용하지 않았다.
+
+## 최종 ASV와 read 수
+
+```{r endpoint-summary}
+endpoint_summary <- audit |>
+  filter(Stage == "Zero-sum samples/taxa removed") |>
+  transmute(Method = factor(Method, levels = method_levels), Samples, ASVs = Taxa,
+            Total_Reads)
+
+datatable_basic(endpoint_summary, 10) |>
+  DT::formatRound(c("ASVs", "Total_Reads"), 0)
+```
+
+```{r endpoint-plot, fig.width=12, fig.height=5.5}
+p_reads <- endpoint_summary |>
+  ggplot(aes(Method, Total_Reads, fill = Method)) +
+  geom_col(width = 0.68, color = "black", linewidth = 0.3) +
+  geom_text(aes(label = comma(Total_Reads)), vjust = -0.4, size = 4) +
+  scale_fill_manual(values = method_colors, guide = "none") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.12))) +
+  labs(x = NULL, y = "Total fungal reads", title = "전체 fungal read 보존") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 18, hjust = 1))
+
+p_asv <- endpoint_summary |>
+  ggplot(aes(Method, ASVs, fill = Method)) +
+  geom_col(width = 0.68, color = "black", linewidth = 0.3) +
+  geom_text(aes(label = comma(ASVs)), vjust = -0.4, size = 4) +
+  scale_fill_manual(values = method_colors, guide = "none") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.12))) +
+  labs(x = NULL, y = "Fungal ASVs", title = "최종 ASV 수") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 18, hjust = 1))
+
+overview_plot <- p_reads + p_asv
+ggsave(file.path(out_dir, "01_total_reads_and_ASVs.png"), overview_plot,
+       width = 12, height = 5.5, dpi = 300)
+overview_plot
+```
+
+Cutadapt Single이 read와 ASV를 가장 많이 보존하였다. ITSxpress에서는 Single과 Paired의
+ASV 수가 유사하지만, Paired에서 총 read가 크게 감소하였다.
+
+# 3. Sample별 read depth와 observed ASV
+
+```{r sample-qc-plot, fig.width=13, fig.height=7}
+qc_long <- sample_qc |>
+  pivot_longer(c(Read_Depth, Observed_ASV), names_to = "Metric", values_to = "Value") |>
+  mutate(Metric = recode(Metric, Read_Depth = "Read count", Observed_ASV = "Observed ASV"))
+
+qc_plot <- ggplot(qc_long, aes(Method, Value, fill = Method)) +
+  geom_boxplot(width = 0.62, outlier.shape = NA, color = "black") +
+  geom_point(aes(shape = Sample_Type), position = position_jitter(width = 0.12),
+             size = 1.7, alpha = 0.65) +
+  facet_wrap(~Metric, scales = "free_y", nrow = 1) +
+  scale_fill_manual(values = method_colors, guide = "none") +
+  scale_y_continuous(labels = comma) +
+  labs(x = NULL, y = NULL, shape = "Sample type",
+       title = "동일 library의 read count와 observed ASV") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 18, hjust = 1))
+ggsave(file.path(out_dir, "02_sample_read_and_observed_ASV.png"), qc_plot,
+       width = 13, height = 7, dpi = 300)
+qc_plot
+```
+
+## Paired pipeline comparison
+
+```{r paired-qc-table}
+paired_qc_show <- paired_qc |>
+  mutate(across(starts_with("Median"), ~round(.x, 3)),
+         P_value = signif(P_value, 3), P_adjust_BH = signif(P_adjust_BH, 3))
+datatable_basic(paired_qc_show, 12)
+```
+
+Wilcoxon p-value는 pipeline이 동일 sample 전체에 일관되게 적용되었는지를 나타낸다.
+효과의 실제 크기는 `Median_Ratio_Method_2_to_1`과 원자료 분포로 판단해야 한다.
+
+# 4. ASV sequence length와 taxonomy resolution
+
+```{r asv-summary-table}
+datatable_basic(asv_summary, 10)
+```
+
+- Cutadapt Single의 중앙 길이는 281 bp, Cutadapt Paired는 335 bp였다.
+- ITSxpress Single의 중앙 길이는 172 bp, ITSxpress Paired는 191 bp였다.
+- ITSxpress는 ITS2 core를 추출하므로 Cutadapt보다 짧은 것이 예상되는 결과이다.
+- Single-end는 read 길이 상한 때문에 길이 분포가 좁으며, paired-end는 더 긴 amplicon을 표현할 수 있다.
+
+```{r taxonomy-resolution}
+datatable_basic(rank_summary, 10)
+```
+
+Species label 수만으로 분류 정확도를 판단할 수는 없다. 동일 서열이 database 또는 trimming 범위에
+따라 다른 label을 받을 수 있으므로 ASV sequence family와 BLAST 결과를 함께 확인하였다.
+
+# 5. Aitchison community structure
+
+```{r aitchison-overview, fig.width=14, fig.height=10}
+knitr::include_graphics(file.path(source_dir, "08b0_aitchison_four_pipeline_overview.png"))
+```
+
+## 2×2 factorial PERMANOVA
+
+```{r factorial-permanova-table}
+datatable_basic(factorial_permanova, 10) |>
+  DT::formatSignif(c("R2", "F", "P_value", "P_adjust_BH"), 4)
+```
+
+Trimming, read mode 및 interaction은 모두 permutation p=0.001이었으나, 설명력은 각각
+약 5.8%, 1.8%, 1.4%였다. p-value뿐 아니라 작은 R²를 함께 해석해야 한다.
+
+## 사전 지정 pairwise comparison
+
+```{r pairwise-beta-table}
+datatable_basic(beta_pairwise, 10) |>
+  DT::formatSignif(c("PERMANOVA_R2", "PERMANOVA_P", "Betadisper_P",
+                     "Procrustes_r", "PROTEST_P", "PERMANOVA_P_BH",
+                     "Betadisper_P_BH"), 4)
+```
+
+Procrustes correlation은 모두 높아 전반적인 sample 배치는 보존되었다. 다만 Cutadapt
+Single–Paired와 paired-end Cutadapt–ITSxpress 비교에서는 betadisper도 차이를 보여,
+PERMANOVA를 centroid 차이만으로 단정하면 안 된다.
+
+# 6. Species 검출 및 abundance 비교
+
+## Species overlap
+
+```{r species-overlap-table}
+datatable_basic(species_overlap, 10)
+```
+
+ITSxpress Single과 Paired는 569개 species label을 공유하여 read mode 간 overlap이 가장 컸다.
+반면 Cutadapt Single은 Paired보다 더 많은 species label을 검출하였다. 이는 single-end가 무조건
+더 정확하다는 의미가 아니라 read retention, ASV 분할 및 taxonomy assignment가 함께 변한 결과이다.
+
+## 주요 paired abundance difference
+
+```{r paired-species-figure, fig.width=14, fig.height=9}
+knitr::include_graphics(file.path(source_dir, "08c_species_pairwise_abundance.png"))
+```
+
+```{r paired-species-table}
+species_top <- species_tests |>
+  arrange(P_adjust_BH, desc(abs(Mean_Difference_2_minus_1))) |>
+  group_by(Comparison) |>
+  slice_head(n = 10) |>
+  ungroup()
+datatable_basic(species_top, 12) |>
+  DT::formatSignif(c("Mean_Method_1", "Mean_Method_2", "Mean_Difference_2_minus_1",
+                     "P_value", "P_adjust_BH"), 4)
+```
+
+# 7. Sample별 species composition
+
+아래 그림은 동일 sample을 네 pipeline으로 처리했을 때의 TSS relative composition을 보여준다.
+색은 동일 taxon에 대해 유지되며, 방법별 read depth 차이와 별개로 조성 이동을 확인하기 위한 그림이다.
+
+```{r composition-plots, fig.width=16, fig.height=22}
+knitr::include_graphics(file.path(source_dir, c(
+  "08d1_composition_Cutadapt_Single.png",
+  "08d2_composition_Cutadapt_Paired.png",
+  "08d3_composition_ITSxpress_Single.png",
+  "08d4_composition_ITSxpress_Paired.png"
+)))
+```
+
+# 8. ASV sequence family 비교
+
+서로 다른 pipeline에서는 동일 생물학적 서열 구간이라도 ASV ID가 달라진다. 따라서 exact ASV ID가
+아니라, 긴 서열 내부에 짧은 서열이 정확히 포함되는 관계를 이용해 sequence family를 구성하였다.
+
+```{r family-audit-table}
+datatable_basic(family_audit, 10)
+```
+
+총 5,578개 pipeline-specific ASV가 2,136개 sequence family로 묶였고, 이 중 1,379개 family가
+둘 이상의 pipeline에 존재하였다. 195개 family는 한 pipeline 안에서 복수 ASV가 연결되는 ambiguous
+family이므로, 개별 ASV의 1:1 대응으로 해석하지 않았다.
+
+```{r family-quadrant, fig.width=12, fig.height=8}
+knitr::include_graphics(file.path(source_dir, "08f_ASV_family_four_quadrant.png"))
+```
+
+# 9. Aureobasidium-like family: Single/Paired와 BLAST 통합 검증
+
+## 네 pipeline에서의 회수
+
+```{r aureobasidium-family-data}
+aureo_members <- family_membership |>
+  filter(ASV_Family == "ASVfam_0001") |>
+  group_by(Method) |>
+  summarise(
+    ASVs = n(), Total_Reads = sum(Total_Reads),
+    Length_Range_bp = paste0(min(Length_bp), "–", max(Length_bp)),
+    Taxonomy = paste(sort(unique(Taxon_Label)), collapse = "; "),
+    .groups = "drop"
+  ) |>
+  complete(Method = method_levels,
+           fill = list(ASVs = 0, Total_Reads = 0,
+                       Length_Range_bp = "Not detected", Taxonomy = "Not detected")) |>
+  mutate(Method = factor(Method, levels = method_levels)) |>
+  arrange(Method)
+
+write_csv(aureo_members, file.path(out_dir, "Aureobasidium_family_pipeline_summary.csv"))
+datatable_basic(aureo_members, 10)
+```
+
+```{r aureobasidium-family-plot, fig.width=11, fig.height=6}
+aureo_plot <- aureo_members |>
+  ggplot(aes(Method, Total_Reads, fill = Method)) +
+  geom_col(width = 0.65, color = "black", linewidth = 0.35) +
+  geom_text(aes(label = comma(Total_Reads)), vjust = -0.45, size = 4.2) +
+  scale_fill_manual(values = method_colors, guide = "none") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.13))) +
+  labs(x = NULL, y = "Raw reads",
+       title = "Aureobasidium-like ASV family의 pipeline별 회수",
+       subtitle = "Exact-containment sequence family ASVfam_0001") +
+  soyeon_theme + theme(axis.text.x = element_text(angle = 18, hjust = 1))
+ggsave(file.path(out_dir, "03_Aureobasidium_family_pipeline_recovery.png"), aureo_plot,
+       width = 11, height = 6, dpi = 300)
+aureo_plot
+```
+
+이 family는 Cutadapt Single 398,919 reads, Cutadapt Paired 389,448 reads 및 ITSxpress Single
+403,343 reads로 강하게 회수되었지만 ITSxpress Paired에서는 검출되지 않았다. 특히 ITSxpress
+Single에서는 동일 family가 `Fungi_k`로 분류되어, taxonomy label만 비교하면 이 대응 관계를 놓치게 된다.
+
+따라서 기존 Aureobasidium 소실은 ITSxpress trimming 자체의 보편적 실패라기보다,
+**ITSxpress 결과를 paired-end DADA2로 처리할 때 한쪽 mate가 지나치게 짧아지는 문제**와 일치한다.
+
+## NCBI BLAST 결과
+
+```{r blast-table}
+blast_show <- blast |>
+  mutate(
+    Query = recode(
+      Query,
+      Cutadapt_f30607bbd4906c862987bc7bbfaf77ce_full = "Cutadapt full ASV",
+      ITSxpress_trimmed_core_from_same_read_pattern = "ITSxpress-trimmed core"
+    )
+  )
+datatable_basic(blast_show, 10)
+```
+
+```{r blast-plot, fig.width=11, fig.height=5.5}
+blast_plot <- blast_show |>
+  mutate(Query = factor(Query, levels = c("Cutadapt full ASV", "ITSxpress-trimmed core"))) |>
+  ggplot(aes(Scientific_name, Query_length_bp, fill = Query)) +
+  geom_col(position = position_dodge(width = 0.75), width = 0.65,
+           color = "black", linewidth = 0.3) +
+  geom_text(aes(label = paste0(Percent_identity, "% identity\n",
+                               Query_cover_percent, "% cover")),
+            position = position_dodge(width = 0.75), vjust = -0.35, size = 3.8) +
+  scale_fill_manual(values = c("Cutadapt full ASV" = "#1F78B4",
+                               "ITSxpress-trimmed core" = "#E31A1C")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.22))) +
+  labs(x = NULL, y = "Query length (bp)", fill = "Query",
+       title = "Full ASV와 trimmed ITS2 core의 BLAST top hits") +
+  soyeon_theme
+ggsave(file.path(out_dir, "04_Aureobasidium_BLAST_hits.png"), blast_plot,
+       width = 11, height = 5.5, dpi = 300)
+blast_plot
+```
+
+303-bp full ASV와 155-bp ITS2 core 모두 `A. pullulans` 및 `A. melanogenum`에 대해
+100% query cover와 100% identity를 보였다. 따라서 trimming 후에도 Aureobasidium 수준의
+동정 신호는 유지되지만, 이 서열만으로 `A. tremulum`을 유일한 species로 확정할 수 없다.
+
+<div class="callout warn">
+보고서와 논문에서는 이 family를 <b>Aureobasidium-like ASV</b>, <b>Aureobasidium spp.</b>,
+또는 <b>A. pullulans/melanogenum complex</b>로 보수적으로 기술하는 것이 적절하다.
+UNITE의 <i>A. tremulum</i> label은 classifier 결과로 별도 병기할 수 있다.
+</div>
+
+# 10. 통합 결론
+
+1. **Read retention:** Single-end가 두 trimming 방법 모두에서 paired-end보다 더 많은 read를 보존하였다.
+2. **ASV richness:** Cutadapt Single이 가장 많은 ASV를 검출하였다. ITSxpress Single과 Paired의 전체 ASV 수는 비슷했지만 sample별 read depth는 Paired가 낮았다.
+3. **Community structure:** 네 pipeline의 전체 sample 배치는 높은 Procrustes correlation으로 대체로 유지되었지만, trimming과 read mode 모두 작은 규모의 조성 변화를 만들었다.
+4. **Taxonomy:** ITSxpress는 짧은 ITS2 core를 제공하여 일부 분류를 개선할 수 있지만, 같은 sequence family가 `Fungi_k`처럼 낮은 rank로 남기도 하므로 label만으로 pipeline을 비교하면 안 된다.
+5. **Aureobasidium:** 우점 family는 Cutadapt Single/Paired와 ITSxpress Single에서 거의 동일한 규모로 회수되고 ITSxpress Paired에서만 소실되었다. 이는 paired ITSxpress–DADA2 처리의 구조적 손실을 강하게 지지한다.
+6. **BLAST:** Full ASV와 trimmed core 모두 Aureobasidium을 지지하지만 species-level hit가 여러 종에서 동률이므로 `A. tremulum` 종 수준 결론은 보류해야 한다.
+
+## 권장 분석 위치
+
+- **Main biological analysis:** 현재 계획대로 QC20/maxEE22의 ITSxpress 결과를 사용할 경우, paired 결과만으로 결론 내리기 전에 ITSxpress Single을 sensitivity analysis로 함께 제시한다.
+- **Aureobasidium 관련 결과:** ITSxpress Paired의 0 또는 낮은 abundance를 biological absence로 해석하지 않는다.
+- **Taxonomic 검증:** 주요 결론을 좌우하는 ASV는 classifier label과 BLAST/sequence-family evidence를 함께 보고한다.
+- **Decontam:** 본 비교에서는 실행하지 않았다. 추후 decontam threshold를 정할 때 pipeline-specific dropout을 contaminant evidence로 오인하지 않아야 한다.
+
+# 11. 재현 파일
+
+- 입력 phyloseq: `Phyloseq/phy_ITS2_*_q20_ee22_20261016.rds`
+- 네 pipeline 원 비교: `Results/01_Preprocessing_2/`
+- BLAST summary: `Results/01_Preprocessing/Aureobasidium_tremulum_BLAST_summary.csv`
+- 본 보고서 산출물: `Results/01d_Single_Paired_BLAST_comparison/`
+
+```{r output-inventory}
+output_inventory <- tibble(
+  File = list.files(out_dir, full.names = FALSE),
+  Type = tools::file_ext(File)
+)
+datatable_basic(output_inventory, 10)
+```
+
+# 12. 한계
+
+- Single-end와 paired-end는 동일 biological library의 기술적 재처리 결과이므로 독립 표본이 아니다.
+- Exact-containment family는 서로 다른 길이의 ASV를 연결하는 실용적 방법이지만, ambiguous family는 1:1 ASV 대응이 아니다.
+- BLAST 결과는 대표 Aureobasidium family에 한정되며 전체 ASV의 species annotation을 재분류한 결과가 아니다.
+- BLAST top hit의 100% identity가 species 고유성을 보장하지 않는다. 동일 ITS2 서열을 공유하는 종이 존재할 수 있다.
+- 본 보고서는 preprocessing 비교이며 True–Control 오염 판정이나 decontam threshold를 결정하지 않는다.
