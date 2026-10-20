@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 390" role="img" aria-labelledby="title desc">
+  <title id="title">문헌과 본 ITS2 분석의 maxEE 결과 비교</title>
+  <desc id="desc">선행 16S V4 mock 연구에서는 maxEE를 1에서 3으로 완화할 때 DADA2 read retention이 증가했다. 본 ITS2 시험에서는 maxEE 2/2와 8/8의 주요 군집 및 종 신호가 비슷했다.</desc>
+  <rect width="1000" height="390" fill="#f7fafc"/>
+  <rect x="30" y="30" width="455" height="330" rx="14" fill="white" stroke="#d7e2e9"/>
+  <rect x="515" y="30" width="455" height="330" rx="14" fill="white" stroke="#d7e2e9"/>
+  <text x="55" y="75" font-family="Arial, sans-serif" font-size="23" font-weight="bold" fill="#17324d">선행 연구: 16S V4 mock</text>
+  <text x="55" y="105" font-family="Arial, sans-serif" font-size="16" fill="#526779">Nayman et al. 2023, Fig. 5a</text>
+  <text x="55" y="150" font-family="Arial, sans-serif" font-size="19" fill="#17324d">DADA2 maxEE 완화</text>
+  <rect x="75" y="190" width="105" height="46" rx="8" fill="#d7e8f7"/>
+  <text x="105" y="220" font-family="Arial, sans-serif" font-size="19" fill="#17324d">1</text>
+  <path d="M205 213 H322" stroke="#1673a7" stroke-width="7" stroke-linecap="round"/>
+  <path d="M322 213 l-16 -12 v24 z" fill="#1673a7"/>
+  <rect x="347" y="190" width="105" height="46" rx="8" fill="#acd5ed"/>
+  <text x="385" y="220" font-family="Arial, sans-serif" font-size="19" fill="#17324d">3</text>
+  <text x="75" y="280" font-family="Arial, sans-serif" font-size="18" fill="#17324d">read retention 증가</text>
+  <text x="75" y="309" font-family="Arial, sans-serif" font-size="14" fill="#526779">논문은 0–3 구간의 증가를 보고</text>
+  <text x="540" y="75" font-family="Arial, sans-serif" font-size="23" font-weight="bold" fill="#17324d">본 분석: 피부 진균 ITS2</text>
+  <text x="540" y="105" font-family="Arial, sans-serif" font-size="16" fill="#526779">ITSxpress paired, QC20</text>
+  <text x="540" y="150" font-family="Arial, sans-serif" font-size="19" fill="#17324d">DADA2 maxEE 비교</text>
+  <rect x="560" y="190" width="115" height="46" rx="8" fill="#e8e4f4"/>
+  <text x="598" y="220" font-family="Arial, sans-serif" font-size="18" fill="#3f3565">2/2</text>
+  <path d="M700 213 H817" stroke="#7358a3" stroke-width="7" stroke-linecap="round"/>
+  <path d="M817 213 l-16 -12 v24 z" fill="#7358a3"/>
+  <rect x="842" y="190" width="105" height="46" rx="8" fill="#d2c8e9"/>
+  <text x="870" y="220" font-family="Arial, sans-serif" font-size="18" fill="#3f3565">8/8</text>
+  <text x="560" y="280" font-family="Arial, sans-serif" font-size="18" fill="#17324d">주요 군집·종 신호는 비슷함</text>
+  <text x="560" y="309" font-family="Arial, sans-serif" font-size="14" fill="#526779">8/8 전용 ASV는 주로 극저빈도</text>
+  <text x="500" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#526779">서로 다른 생물학적 대상과 지표의 방향만 나란히 표시한 개념도 · 수치 축 없음</text>
+</svg>

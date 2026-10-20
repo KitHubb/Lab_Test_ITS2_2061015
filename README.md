@@ -1,208 +1,225 @@
-# Lab Test ITS2 PCR-cycle analysis
+# Human skin ITS2 시험 분석 결과 보고서
 
-연구실에서 수행한 human skin ITS2 시험 데이터의 전처리 조건, 음성대조군 오염 양상, PCR cycle 효과 및 taxonomy 안정성을 점검하는 프로젝트이다.
+> 분석 상태: 전처리·분류법의 기술적 비교 완료; 오염원 및 생물학적 차이의 최종 검증 진행 중. 별도 표시가 없는 수치는 저장소의 QC20 분석 기준.
 
-> 연구 진행 기록과 상세 메모: [Notion — Test ITS2 PCR cycle](https://app.notion.com/p/wait-a-minute/Test-ITS2-PCR-cycle-3fa27c45489880daa08ccb8613bd9fb8?source=copy_link)
+## 목차
 
-## 연구 질문
+1. [데이터셋](#1-데이터셋)
+2. [실험 및 분석 방법](#2-실험-및-분석-방법)
+3. [결과](#3-결과)
+   - [3.1 Cutadapt와 ITSxpress: paired-end](#31-cutadapt와-itsxpress의-paired-end-결과)
+   - [3.2 maxEE 2/2와 8/8](#32-maxee-22와-88의-비교)
+   - [3.3 Paired-end와 single-end](#33-paired-end와-single-end의-비교)
+   - [3.4 시험용 single과 complete forward-only](#34-시험용-single과-complete-forward-only의-비교)
+   - [3.5 Complete forward-only에서 Cutadapt와 ITSxpress](#35-complete-forward-only에서-cutadapt와-itsxpress의-비교)
+   - [3.6 Complete forward-only에서 ITSx와 ITSxpress](#36-complete-forward-only에서-itsx와-itsxpress의-비교)
+   - [3.7 *Aureobasidium* 상세 결과](#37-aureobasidium-상세-결과)
+4. [현재 결론과 남은 검증](#4-현재-결론과-남은-검증)
+5. [참고문헌과 분석 파일](#5-참고문헌과-분석-파일)
 
-이 프로젝트는 다음 질문에서 시작되었다.
+## 1. 데이터셋
 
-1. 현재 연구실 workflow로 피부 진균 ITS2 데이터를 안정적으로 얻을 수 있는가?
-2. True skin sample과 negative control의 alpha diversity, beta diversity 및 taxonomic composition은 어떻게 다른가?
-3. Air swab, clean-bench swab, empty-tube control에는 어떤 오염 profile이 존재하는가?
-4. PCR 조건과 DNA 농도에 따라 검출 ASV와 잠재적 contaminant가 어떻게 변하는가?
-5. Cutadapt와 ITSxpress, paired-end와 single-end, DADA2 `maxEE` 설정이 결과에 미치는 영향은 무엇인가?
-6. Negative control의 read 수가 적지 않은 이유가 실제 환경·시약 오염인지, PCR 증폭인지, trimming 및 분류 과정의 산물인지 구분할 수 있는가?
+- 대상: 사람 피부 ITS2 amplicon 시험 데이터. 전처리 방법, 음성대조군 신호, PCR 조건 및 taxonomy 안정성 점검.
+- 비교 단위: 동일한 **83개 library**를 Cutadapt/ITSxpress × paired/single 네 조합으로 재처리함. 83은 독립적인 생물학적 표본 수가 아닌 분석 library 수.
 
-## 데이터와 비교 조건
+| 구분 | 내용 | 해석 단위 |
+| --- | --- | --- |
+| True sample | 사람 피부 swab; 대상자와 피부 부위를 구분 | 같은 biological sample의 PCR 조건 반복을 고려 |
+| Negative control | Air swab, clean-bench swab, empty-tube control | control source별 read와 ASV identity를 따로 확인 |
+| Mock | Mock community | 전처리와 분류 결과를 점검하는 보조 자료 |
 
-- True sample: human skin sample
-  - 대상자와 skin site를 구분하여 해석
-  - 동일 biological sample에 여러 PCR condition이 존재
-- Controls
-  - Air swab
-  - Clean-bench swab
-  - Empty-tube control
-- 주요 preprocessing 비교
-  - QC20 및 QC30
-  - DADA2 `maxEE 2/2`, `4/4`, `8/8`
-  - Cutadapt primer trimming
-  - ITSxpress ITS2 extraction
-  - Paired-end 및 forward single-end
+- 연구 질문: 피부 진균 ITS2의 안정적 회수 여부; True와 control의 군집·다양성 차이; PCR 조건·DNA 농도의 영향; Cutadapt·ITSxpress·ITSx·분류 DB에 따른 결과 변화.
+- 현재 범위: **전처리와 taxonomy에 따른 기술적 차이** 중심. Negative control의 높은 read 수만으로 오염원이나 실험 실패를 확정할 수 없음.
 
-Rarefaction curve는 library depth의 충분성과 다양성 포화 추이를 확인하는 용도이다. 임의의 rarefaction cutoff로 sample을 사전 제거하지 않으며, taxonomic composition은 rarefied table이 아닌 raw count 또는 total-sum-scaled relative abundance를 사용한다.
+## 2. 실험 및 분석 방법
 
-## 지금까지의 분석 과정과 고민
+### 2.1 PCR 조건과 시료 구조
 
-### 1. Cutadapt와 ITSxpress의 결과가 예상보다 크게 달랐다
+- PCR 조건: 1차 PCR **33/35 cycle** × 2차 PCR **8/10 cycle**의 네 조합(`33+8`, `33+10`, `35+8`, `35+10`).
+- 반복 구조: 같은 피부 시료의 여러 PCR 조건이 포함됨. 조건 간 결과를 독립 표본으로 취급하지 않음.
+- 추적 변수: Qubit DNA 농도, 대상자, 피부 부위, control type.
+- Wet-lab 정보: 저장소에서 확인된 조건만 기재함. 프라이머 서열·장비·추출 protocol 등은 추가 확인 필요.
 
-처음에는 ITSxpress가 보존된 rRNA flank를 제거하고 ITS2만 남기므로 taxonomy resolution을 높일 것으로 기대했다. 실제로 일부 Cutadapt ASV 안에 더 짧은 ITSxpress ASV가 정확히 포함되는 `exact containment` 관계가 확인되었다.
+### 2.2 전처리와 분류 비교
 
-그러나 read mode와 입력 구성에 따라 ITSxpress의 결과가 크게 달라졌다.
+| 비교 축 | 조건 | 이 보고서에서 구분하는 의미 |
+| --- | --- | --- |
+| Trimming/ITS 추출 | Cutadapt primer trimming, ITSxpress ITS2 extraction, ITSx post-ASV extraction | ITSx는 이미 생성된 Cutadapt ASV에 적용하므로 ITSxpress의 raw-read 전처리 통과율과 직접 같지 않음 |
+| Read mode | Paired-end, 시험용 single-end, complete forward-only | complete forward-only는 forward read만 사용해 처음부터 완료한 별도 workflow |
+| DADA2 filtering | paired `maxEE 2/2`·`8/8`; forward-only `maxEE 2` | maxEE 비교에서는 ITSxpress paired와 QC20을 고정 |
+| Taxonomy | UNITE v10 99% fungi-only, UNITE v10 dynamic all-eukaryotes | 비교 DB는 분류 대상 범위와 clustering 방법이 함께 다름 |
 
-- 초기 single/paired 비교에서는 Aureobasidium-like family가 Cutadapt single, Cutadapt paired 및 ITSxpress single에서 회수되었지만 ITSxpress paired에서 주로 소실되었다.
-- complete-forward 비교에서는 Cutadapt가 약 1,186,913 reads와 1,855 ASVs를 보존한 반면 ITSxpress는 약 115,907 reads와 211 ASVs만 보존했다.
-- complete-forward sample별 ITSxpress/Cutadapt read recovery 중앙값은 약 6%였다.
-- 이 과정에서 식물 유래로 확인된 ASV뿐 아니라 `Malassezia restricta`, `M. globosa`, `Aureobasidium` 계열 신호도 함께 크게 줄었다.
+- 평가 항목: read retention, 최종 ASV 수, ASV 길이, taxonomic label, 상대풍부도 및 raw read count.
+- Beta diversity: Aitchison distance 및 PCoA 중심 평가.
+- Taxonomic composition: raw count 또는 total-sum-scaled 상대풍부도 사용. Rarefied table은 조성 분석에 사용하지 않음.
+- Rarefaction curve: library depth 점검에 사용. 임의의 cutoff를 적용한 사전 sample 제거는 수행하지 않음.
+- 주요 ASV 종명: classifier label과 서열·BLAST 근거를 함께 대조함.
 
-따라서 ITSxpress 통과 여부를 곧바로 “진짜 진균 여부”로 해석할 수 없다. 현재 증거는 incomplete 또는 특정 구조의 forward read에서 ITSxpress HMM boundary 인식이 taxon- 및 sequence-dependent selection을 일으킬 가능성을 시사한다.
+## 3. 결과
 
-### 2. Fungi_k와 Ascomycota_p는 단순한 짧은 ASV 문제가 아니었다
+### 3.1 Cutadapt와 ITSxpress의 paired-end 결과
 
-Cutadapt에서 `Fungi_k` 또는 `Ascomycota_p`까지만 분류된 ASV와 ITSxpress ASV를 비교한 결과, ITSxpress 서열이 더 긴 Cutadapt ASV의 내부에 완전히 동일하게 포함되는 사례가 확인되었다.
+- 초기 가설: ITSxpress가 rRNA flank를 제거하고 ITS2 core를 제공해 종 수준 분류를 개선할 가능성.
+- 서열 관계: 일부 짧은 ITSxpress ASV가 긴 Cutadapt ASV 내부에 정확히 포함됨(**exact containment**).
+- 주요 관찰: *Aureobasidium*-like sequence family가 Cutadapt paired에서 회수되었으나 ITSxpress paired에서 주로 소실됨.
+- 해석: 다른 read mode에서 같은 family가 확인됨. ITSxpress paired의 미검출을 생물학적 부재로 해석할 수 없음.
 
-이때 Cutadapt에만 남아 있는 외부 구간을 처음에는 primer 잔존 또는 반복서열로 의심했다. 하지만 서열 구조만으로는 다음을 구분할 수 없다.
+- 추가 관찰: `Fungi_k` 또는 `Ascomycota_p`로만 분류된 Cutadapt ASV와 ITSxpress ASV에서 동일한 내부 서열 확인.
+- 미해결: Cutadapt에만 남은 구간의 정체(5.8S/28S flank, primer 잔존, 비표적 amplicon 등)는 서열 구조만으로 확정 불가. [paired 전처리 분석](01_Preprocessing.Rmd) 및 [ASV 정렬](01c_Fungi_k_Ascomycota_p_sequence_alignment.Rmd) 참조.
 
-- 실제 5.8S/28S flank
-- 제거되지 않은 primer 또는 primer-adjacent sequence
-- low-complexity/repetitive sequence
-- 비표적 진핵생물 amplicon
+### 3.2 maxEE 2/2와 8/8의 비교
 
-따라서 raw read boundary, primer 위치, reference alignment 및 BLAST를 함께 확인해야 한다.
+- 비교 조건: QC20·ITSxpress paired-end 고정; DADA2 `maxEE 2/2` 대 `8/8`.
+- 관찰: 전체 군집 배치와 주요 species profile이 거의 동일함. `8/8` 전용 ASV는 대부분 극저빈도·단일 sample ASV이며 새로운 주요 species 신호를 형성하지 않음.
+- 해석: 본 데이터의 큰 Cutadapt–ITSxpress 차이를 `maxEE` 설정만으로 설명하기 어려움. 다른 ITS2 데이터로 일반화하기는 어려움. [전체 분석](01_ITSxpress_maxEE22_vs_maxEE88.Rmd) 참조.
 
-### 3. `Aureobasidium tremulum` 표기는 보수적으로 수정해야 한다
+- 문헌 비교: Nayman 등(2023)의 **세균 16S V4 mock community** 분석. 엄격한 filtering에서 read 손실 증가; DADA2 계열의 `maxEE` 1→3 완화에서 read retention이 약 80.5%까지 증가함([원문 Fig. 5a](https://doi.org/10.1099/jmm.0.001756)).
+- 그림 해석: 문헌의 read-retention 경향과 본 ITS2의 주요 군집·종 신호 안정성을 **재도식화**함. 대상·`maxEE` 범위·평가 지표가 달라 직접적인 반박 관계로 해석할 수 없음.
 
-Cutadapt에서 `Aureobasidium tremulum`으로 분류된 ASV가 특히 한 대상자의 True sample에서 많이 관찰되었고, 농도와 양의 상관관계를 보이는 탐색적 결과가 있었다.
+![문헌의 maxEE-read retention 결과와 본 ITS2 분석의 관찰을 비교한 개념도](Results/01g_single_UNITE_database_comparison/figures/maxee_literature_comparison.svg)
 
-대표 full ASV와 ITS2 core의 BLAST는 모두 `Aureobasidium`을 지지했다. 하지만 여러 종이 동일한 query coverage와 identity로 동률이었기 때문에 현재 근거로 `A. tremulum` 종 수준을 확정할 수 없다.
+*그림 1. 좌측: Nayman 등(2023) Fig. 5a의 DADA2 read-retention 증가 경향 재도식화. 우측: 본 ITSxpress paired 분석의 `2/2` 대 `8/8`에서 주요 군집·종 신호 변화가 작음. 서로 다른 지표의 수치 비교가 아닌 방향 비교.*
 
-현재 권장 표현은 다음과 같다.
+### 3.3 Paired-end와 single-end의 비교
 
-- `Aureobasidium-like ASV`
-- `Aureobasidium spp.`
-- `Aureobasidium-associated sequence family`
+- 설계: 동일 **83개 library**의 Cutadapt paired/single × ITSxpress paired/single 네 pipeline 비교.
+- Read·ASV: 두 trimming 방법 모두 single-end에서 read 보존량이 더 많음. Cutadapt single의 ASV 수가 가장 많음.
+- 군집: 전체 sample 배치는 대체로 유지되나 trimming과 read mode에 따른 소규모 조성 변화 확인.
+- *Aureobasidium*-like family: Cutadapt paired·single과 ITSxpress single에서 회수; ITSxpress paired에서 주로 소실. ITSxpress 후 한 mate가 짧아져 paired DADA2 처리에서 탈락할 가능성과 일치함.
+- 분석 단위: 동일 library의 기술적 재처리 결과이며 독립 표본이 아님. [네 pipeline 비교 및 BLAST 보고서](01d_single_paired_BLAST_comparison.Rmd) 참조.
 
-특정 대상자에서의 증가가 실제 피부 mycobiome 차이인지, DNA 농도/PCR 증폭 효과인지, 또는 trimming·분류 편향인지는 아직 해결되지 않았다.
+### 3.4 시험용 single과 complete forward-only의 비교
 
-### 4. KSY sample에서는 Malassezia 신호가 `Fungi_k`로 남았을 가능성을 의심했다
+- 비교: **시험용 Cutadapt single** 대 **complete forward-only Cutadapt**. Sample별 read depth, 최종 ASV 수, exact-ASV 공유율 및 taxonomy 해상도 점검.
+- Complete forward-only: forward read만 입력해 전체 workflow 재처리; single-end `maxEE 2` 사용. 이전 파일명 `ee22`는 paired workflow 표기에서 유래함.
+- 해석 범위: 시험용 결과와 complete workflow의 일치도를 확인하는 QC. 생물학적 다양성의 집단 간 검정 결과가 아님. [complete single-end QC 보고서](01e_complete_single_end_preprocessing.Rmd) 참조.
 
-KSY 피부 sample에서는 예상했던 Malassezia가 genus/species 수준으로 충분히 분류되지 않는 대신 고풍부 `Fungi_k` ASV가 관찰되었다. 따라서 일부 Malassezia 서열이 낮은 taxonomic rank에서 멈춰 `Fungi_k`로 표시되었을 가능성을 먼저 의심했다.
+### 3.5 Complete forward-only에서 Cutadapt와 ITSxpress의 비교
 
-다만 실제 서열 확인 결과, 대표적인 281-bp `Fungi_k` ASV `5c8f111a2f4a8e9e41a1cb58ebc985f6`는 BLAST에서 281/281 bp, 100% identity로 `Raphanus sativus`를 지지했다. 따라서 적어도 이 ASV는 미분류 Malassezia가 아니라 식물 유래 off-target sequence이다.
+- 비교: 동일 83개 sample의 complete forward-only 처리.
+- 보존량: Cutadapt 약 **1,186,913 reads·1,855 ASV**; ITSxpress 약 **115,907 reads·211 ASV**. Sample별 ITSxpress/Cutadapt read-depth 비율 중앙값 약 **6%**.
+- Taxon 변화: 식물 유래 ASV뿐 아니라 *Malassezia restricta*, *M. globosa*, *Aureobasidium* 계열 신호도 ITSxpress에서 크게 감소함.
+- 해석: ITSxpress 통과 여부만으로 진균 여부를 판정할 수 없음. Cutadapt의 높은 read·ASV 수를 생물학적 다양성 증가로 해석할 수 없음. [complete forward 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.Rmd) 참조.
 
-이 결과가 KSY의 모든 `Fungi_k` ASV가 Raphanus라는 뜻은 아니다. 다른 `Fungi_k` ASV 중에는 reference 또는 서열 구간의 한계로 Malassezia가 낮은 rank에 머문 경우가 있을 수 있으므로, KSY에서 풍부한 `Fungi_k` ASV를 개별적으로 BLAST하고 broad-eukaryote classifier 결과와 대조해야 한다.
+- 분류 DB 비교: 두 처리 방법에 fungi-only DB와 all-eukaryote DB를 각각 적용함. All-eukaryote DB에서 Cutadapt의 비진균 off-target 탐지 가능. ITSxpress 단계에서 소실된 read의 복구는 불가.
 
-### 5. maxEE 2/2와 8/8은 핵심 차이를 설명하지 못했다
+- 그림 출처: [01g 렌더된 HTML](01g_single_UNITE_database_comparison.html)에 내장된 분석 그림을 개별 파일로 추출함.
+- DB 변경의 의미: 같은 ASV count의 kingdom·rank·taxon label 변화. Raw-read 전처리 단계의 read 제거와 구분 필요.
 
-ITSxpress paired 결과에서 `maxEE 2/2`와 `8/8`을 비교했을 때 전체 community structure와 주요 species profile은 거의 같았다. `maxEE 8/8`에서만 나타나는 ASV는 대부분 극저빈도·단일 sample ASV였고 새로운 주요 species signal을 만들지 않았다.
+![All-euk DB의 kingdom별 상대풍부도](Results/01g_single_UNITE_database_comparison/figures/01_kingdom_relative_abundance.png)
 
-따라서 현재 관찰되는 Cutadapt–ITSxpress 차이와 주요 taxon 소실은 `maxEE` 설정만으로 설명하기 어렵다.
+*그림 2. All-euk DB의 kingdom별 상대풍부도. ASV fraction과 read fraction을 함께 평가함.*
 
-### 6. 분석 단위와 시각화 원칙을 정리했다
+![DB 변경 후 rank별 ASV label 변화](Results/01g_single_UNITE_database_comparison/figures/02_rank_change_asv.png)
 
-- Skin sample은 대상자와 site를 함께 고려한다.
-- PCR condition은 지정된 순서의 factor로 유지한다.
-- Alpha diversity는 Observed ASV, Shannon 및 read count를 서로 다른 plot으로 제시한다.
-- Alpha diversity의 대상자별 panel은 서로 다른 row에 배치한다.
-- Beta diversity는 Aitchison distance와 PCoA를 중심으로 보고 paired method effect를 함께 평가한다.
-- Taxonomic composition은 relative abundance와 raw read count를 모두 확인한다.
-- Heatmap annotation은 필요한 변수만 사용하고 중복 정보를 늘리지 않는다.
-- ASV length `<=100 bp` 분석은 누적 abundance가 100 이하인 ASV와 구분한다.
-- Focal taxon 및 control-source ternary plot은 겹치지 않도록 taxon/조건별로 분리한다.
+*그림 3. DB 변경에 따른 kingdom·phylum·genus label 변화 ASV 비율. 분류 해상도의 우열 지표로 직접 사용 불가.*
 
-## 현재까지 비교적 확실한 결론
+| | UNITE 99% fungi-only | UNITE dynamic all-eukaryotes |
+| --- | --- | --- |
+| Cutadapt complete-forward | ![Cutadapt fungi-only phylum 조성](Results/01g_single_UNITE_database_comparison/figures/03_cutadapt_fungi_phylum.png) | ![Cutadapt all-euk phylum 조성](Results/01g_single_UNITE_database_comparison/figures/04_cutadapt_all_euk_phylum.png) |
+| ITSxpress complete-forward | ![ITSxpress fungi-only phylum 조성](Results/01g_single_UNITE_database_comparison/figures/05_itsxpress_fungi_phylum.png) | ![ITSxpress all-euk phylum 조성](Results/01g_single_UNITE_database_comparison/figures/06_itsxpress_all_euk_phylum.png) |
 
-1. Preprocessing 방법은 read retention, ASV 수 및 taxonomic label에 큰 영향을 준다.
-2. `maxEE 2/2`와 `8/8` 차이는 Cutadapt–ITSxpress 차이에 비해 작다.
-3. ITSxpress paired 결과에서 특정 fungal signal의 소실을 biological absence로 해석하면 안 된다.
-4. complete-forward에서도 ITSxpress가 매우 많은 read를 제거했으므로 ITSxpress 결과만을 primary community profile로 사용하는 것은 위험하다.
-5. Cutadapt는 진균 read를 더 많이 보존하지만 식물 등 non-fungal off-target도 포함할 수 있다.
-6. `Raphanus sativus` ASV의 존재는 non-fungal sequence를 별도로 분류하고 제거해야 함을 보여준다.
-7. classifier의 species label만으로 중요한 ASV의 종을 확정하지 말고, sequence family와 BLAST 근거를 함께 확인해야 한다.
-8. Control에서 read가 검출되는 사실만으로 contamination source나 실험 실패를 확정할 수 없다. Control type, 농도, PCR condition 및 ASV identity를 함께 봐야 한다.
+*그림 4. 방법 × DB별 phylum 조성. Fungi-only와 all-euk DB는 reference 범위와 clustering scheme이 동시에 다름.*
 
-## 아직 풀리지 않은 문제
+| Cutadapt: DB 전후 species-level PCoA | ITSxpress: DB 전후 species-level PCoA |
+| --- | --- |
+| ![Cutadapt의 DB별 Bray–Curtis와 Jaccard PCoA](Results/01g_single_UNITE_database_comparison/figures/11_cutadapt_db_pcoa.png) | ![ITSxpress의 DB별 Bray–Curtis와 Jaccard PCoA](Results/01g_single_UNITE_database_comparison/figures/12_itsxpress_db_pcoa.png) |
 
-### Biological question
+*그림 5. 같은 SampleID를 연결한 DB별 Bray–Curtis·Jaccard PCoA. Species label 변경에 따른 이동을 database sensitivity로 해석함.*
 
-- 특정 대상자의 True sample에서 Aureobasidium-like ASV가 증가한 이유는 무엇인가?
-- 관찰된 농도 상관성이 biomass 효과인지 PCR amplification 효과인지 구분 가능한가?
-- Control과 True에서 검출되는 Malassezia/Cutaneotrichosporon 계열이 동일 ASV인가, 또는 근연하지만 다른 ASV인가?
-- Air swab, clean-bench swab 및 empty-tube control 사이에 반복적으로 공유되는 core contaminant가 존재하는가?
-- Negative control의 높은 read 수는 환경 채취, extraction, PCR, index hopping/cross-talk 중 어느 단계와 더 일치하는가?
+![같은 sample의 DB별 fungal read 변화](Results/01g_single_UNITE_database_comparison/figures/14_fungal_read_paired_db.png)
 
-### Bioinformatic question
+*그림 6. DB 변경에 따른 sample별 fungal read 분류 변화. 동일 ASV의 kingdom 재분류 결과이며 전처리 단계에서 소실된 read의 복구량이 아님.*
 
-- 초기 ITSxpress single에서는 회수된 Aureobasidium-like signal이 complete-forward ITSxpress에서는 다시 크게 감소한 이유는 무엇인가?
-- ITSxpress가 인식하지 못하는 ASV에는 공통적인 길이, flank, GC, low-complexity 또는 primer-boundary pattern이 있는가?
-- Cutadapt-only Malassezia와 Aureobasidium ASV는 BLAST와 broad-eukaryote taxonomy에서도 진균으로 지지되는가?
-- UNITE classifier의 species label과 NCBI nt BLAST가 불일치하는 ASV를 어떤 보수적 규칙으로 처리할 것인가?
-- Paired-end merge/trim 실패와 single-end 정보 손실 중 어느 쪽이 community distortion에 더 큰 영향을 주는가?
+| Cutadapt의 감소 상위 sample | ITSxpress의 감소 상위 sample |
+| --- | --- |
+| ![Cutadapt 감소 상위 sample의 kingdom 조성](Results/01g_single_UNITE_database_comparison/figures/15_cutadapt_top_loss_samples.png) | ![ITSxpress 감소 상위 sample의 kingdom 조성](Results/01g_single_UNITE_database_comparison/figures/16_itsxpress_top_loss_samples.png) |
 
-## 다음 분석 계획
+*그림 7. Fungal fraction 감소 상위 sample의 DB별 kingdom 조성. 두 방법의 ASV pool과 read depth가 서로 다름.*
 
-### 우선순위 1: broad-eukaryote taxonomy 재분류
+![PCR 조건과 sample type별 fungal fraction](Results/01g_single_UNITE_database_comparison/figures/17_fungal_fraction_by_pcr_sample.png)
 
-Cutadapt complete-forward DADA2 ASV를 primary 대상으로 유지하고, UNITE+INSD All Eukaryotes classifier로 전체 ASV를 재분류한다.
+*그림 8. PCR 조건·sample type별 fungal fraction. DB 전후 차이는 read의 kingdom 재분류에 해당함.*
 
-권장 pretrained classifier:
+### 3.6 Complete forward-only에서 ITSx와 ITSxpress의 비교
 
-```text
-UNITE v10.0 2025-02-19
-dynamic clustering
-all eukaryotes
-scikit-learn 1.4.2
-unite_ver10_dynamic_all_19.02.2025-Q2-2024.10.qza
-```
+- ITSx 1.1.3 적용 대상: **Cutadapt–DADA2로 이미 생성된 1,855개 ASV**. ITS2 경계와 추출 서열 감사.
+- 기본 설정 대 `--partial 50`: ASV ID·추출 서열·taxonomy를 대조함. 이번 실행에서 추가 회수 또는 재분류 효과 없음.
+- Count 정의: ITSx의 ‘회수 read’는 추출된 ASV에 연결된 **기존 count**. DADA2 이전 raw FASTQ를 처리하는 ITSxpress의 통과 read 수와 동일 단계의 생존율로 비교할 수 없음.
 
-QIIME 2 2024.10, 2025.4, 2025.7 및 2025.10 계열에서 호환성을 확인한 뒤 사용한다. 식물·동물 등 확실한 non-fungal ASV를 별도 flag하고, 곧바로 삭제하기 전에 abundance와 sample distribution을 audit한다.
+- 경계 판정: ITSx 출력 FASTA의 서열 존재만으로 완전한 LSU 경계 검출을 보장할 수 없음.
+- 추가 확인: ASV별 경계 상태와 제거 구간을 점검하고 reference alignment·BLAST로 구간의 성격 확인 필요. [ITSx ASV audit](01g_single_UNITE_database_comparison.Rmd) 참조.
 
-### 우선순위 2: high-impact ASV batch BLAST
+![ITSx의 ASV 및 원래 read count 연결 회수율](Results/01g_single_UNITE_database_comparison/figures/18_itsx_asv_recovery.png)
 
-다음 ASV를 우선 검증한다.
+*그림 9. Cutadapt–DADA2 ASV에 ITSx를 사후 적용한 뒤의 ASV 및 기존 count 연결 회수율.*
 
-- Cutadapt-only 고풍부 ASV
-- `Fungi_k`, `Ascomycota_p` 및 species 미분류 ASV
-- True 또는 특정 대상자에서 우점하는 ASV
-- Control에서 반복 검출되는 ASV
-- Cutadapt와 ITSxpress의 차이를 크게 만드는 ASV
+![ITSx 경계 상태와 ASV 길이 변화](Results/01g_single_UNITE_database_comparison/figures/19_itsx_boundary_length.png)
 
-평가 항목은 query coverage, percent identity, alignment length, top-hit 간 동률 여부 및 fungal/non-fungal 일관성이다. BLAST top hit 하나만으로 species를 확정하지 않는다.
+*그림 10. ITSx 추출 전후 길이·경계 상태. ITS2 출력만으로 LSU anchor 완전성 판정 불가.*
 
-### 우선순위 3: ITSxpress loss mechanism 분석
+| UNITE 99% fungi-only에서 ITSx 전후 | UNITE dynamic all-euk에서 ITSx 전후 |
+| --- | --- |
+| ![Fungi-only DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/20_itsx_genus_composition_a.png) | ![All-euk DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/21_itsx_genus_composition_b.png) |
 
-- ASV length와 ITSxpress recovery의 관계
-- GC content와 recovery의 관계
-- left/right flank 길이와 recovery의 관계
-- low-complexity 및 homopolymer pattern
-- primer/partial-primer match
-- taxon별 recovery fraction
-- raw read에서 실제 boundary 위치
+*그림 11. 원래 Cutadapt·ITSx 기본·partial50의 sample별 genus 조성. 분모는 원래 Cutadapt read 수로 고정; 미추출 부분은 `No ITS2 output`으로 표시함.*
 
-### 우선순위 4: Control–True 및 contamination 분석
+### 3.7 *Aureobasidium* 상세 결과
 
-- Control type별 prevalence와 raw abundance
-- True 대비 Control enrichment
-- DNA concentration을 이용한 decontam frequency method
-- Control label을 이용한 prevalence method
-- 두 방법 및 threshold에 따른 contaminant call sensitivity
-- 동일 PCR option 안에서 세 control source의 ASV sharing과 ternary profile
-- contaminant 제거 전후 alpha, Aitchison beta 및 taxonomic composition 비교
+#### 3.7.1 전처리 방법과 DB별 검출·조성
+- 초기 네 pipeline: 우점 *Aureobasidium*-like family가 Cutadapt single·paired와 ITSxpress single에서 비슷한 규모로 회수됨; ITSxpress paired에서 주로 소실됨.
+- Complete forward-only: ITSxpress에서 해당 신호가 다시 크게 감소함. Single-end 사용만으로 안정적인 회수가 보장되지는 않음.
+- 생물학적 해석: 특정 대상자의 피부 시료에서 높은 풍부도와 DNA 농도의 양의 관계가 탐색적으로 관찰됨. Biomass·PCR 증폭·전처리 편향의 기여는 미확정.
 
-반복 PCR 조건과 대상자 구조를 무시한 단순 독립검정은 피하고, 결과는 exploratory/sensitivity analysis로 구분한다.
+- DB별 label: fungi-only와 all-eukaryote DB가 같은 ASV에 서로 다른 rank·이름을 부여할 수 있음.
+- *Aureobasidium* 후보: all-euk DB에서도 Fungi로 유지되는 신호 존재. Broad reference 적용만으로 제외할 근거 없음. Species label의 confidence만으로 종 동정 불가. [DB 비교 보고서](01g_single_UNITE_database_comparison.Rmd) 참조.
 
-### 우선순위 5: 최종 primary/sensitivity dataset 결정
+- 그림 범위: 방법 × DB별 **전체 fungal genus 조성**. *Aureobasidium*의 변화는 전체 조성 속에서 해석하며, 서로 다른 ASV pool의 1:1 대응으로 취급하지 않음.
 
-현재 잠정안은 다음과 같다.
+| | UNITE 99% fungi-only | UNITE dynamic all-eukaryotes |
+| --- | --- | --- |
+| Cutadapt complete-forward | ![Cutadapt fungi-only의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/07_cutadapt_fungi_genus.png) | ![Cutadapt all-euk의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/08_cutadapt_all_euk_genus.png) |
+| ITSxpress complete-forward | ![ITSxpress fungi-only의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/09_itsxpress_fungi_genus.png) | ![ITSxpress all-euk의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/10_itsxpress_all_euk_genus.png) |
 
-- Primary: Cutadapt primer-trimmed complete-forward → DADA2
-- Taxonomy cleanup: UNITE+INSD All Eukaryotes + 주요 ASV BLAST
-- Sensitivity: ITSxpress single/paired 결과
-- Taxonomic composition: raw count 및 TSS relative abundance
-- Alpha/Beta: 명시적인 library-depth 검토 후 수행
-- Contamination: 제거 전후 결과를 함께 제시
+*그림 12. 방법·DB별 전체 fungal genus 조성. [원본 HTML](01g_single_UNITE_database_comparison.html)의 네 패널. DB 범위와 clustering scheme이 동시에 달라 분류명 변경의 원인을 단일 요인으로 분리할 수 없음.*
 
-## 저장소 구성
+![DB별 QIIME classifier confidence 분포](Results/01g_single_UNITE_database_comparison/figures/13_classifier_confidence.png)
 
-- `01_*.Rmd`: preprocessing, method comparison, sequence/BLAST 검증
-- `02_*.Rmd`: basic ecological analysis 및 Control–True 비교
-- `Results/**.R`: 재현 가능한 진단 분석 코드
-- `benchmark_results/**/versions*.yml`: workflow software version 기록
-- `Lab_Test_ITS2_2061015.Rproj`: RStudio project 설정
+*그림 13. 전체 ASV의 DB별 classifier confidence. 서로 다른 rank의 confidence를 종 동정 정확도로 직접 비교할 수 없음.*
 
-## 데이터 공개 범위
+#### 3.7.2 BLAST 및 서열 정렬
 
-이 저장소에는 분석 코드와 환경 기록만 포함한다. Raw FASTQ, QIIME 2 artifact, phyloseq object, sample-level metadata, 렌더된 HTML 및 분석 산출물은 포함하지 않는다. 연구가 진행 중이고 human-derived sample 정보를 포함하므로 현재 저장소는 private 운영을 권장한다.
+- BLAST 대상: 대표 Cutadapt full ASV **303 bp**와 같은 read pattern의 ITSxpress core **155 bp**. 두 서열 모두 *Aureobasidium* 속을 지지함.
+- 종 수준: *A. pullulans*와 *A. melanogenum*이 각각 query coverage **100%**, identity **100%**로 동률. Classifier의 `A. tremulum` 종명 확정 불가.
+- 권장 표기: **Aureobasidium-like ASV**, *Aureobasidium* spp., *Aureobasidium*-associated sequence family. [BLAST 요약표](Results/01_Preprocessing/Aureobasidium_tremulum_BLAST_summary.csv) 참조.
 
-공개 전에는 절대경로, 대상자 식별 가능 정보, 중간 해석 및 불필요한 초안을 다시 점검하고, 익명화된 예제 metadata와 재현 방법을 별도로 제공한다.
+- ITSx 추출 후 **남은 구간**은 원서열과 100% 일치함. 분류 변화는 남은 염기의 오류보다 입력 구간 변화와 부합함.
+- 100% identity의 범위: 남은 구간에 한정됨. 제거된 flank의 정체와 종 동정은 별도 검증 필요.
+
+![Aureobasidium 후보 ASV의 원서열과 ITSx 추출 구간 유사성](Results/01g_single_UNITE_database_comparison/figures/23_aureobasidium_sequence_similarity.png)
+
+*그림 14. 후보 ASV의 원서열·제거된 5′ 구간·남은 ITS2 구간 비교. [원본 HTML](01g_single_UNITE_database_comparison.html)에서 추출함. Reference 기반 종 동정 또는 계통수 분석은 아님.*
+
+#### 3.7.3 QIIME Naive Bayes와 BLAST 근거의 대조
+
+- 비교 자료: complete-forward Cutadapt **1,855 ASV**, ITSxpress **211 ASV**의 batch BLAST와 QIIME Naive Bayes(NB) classifier 결과.
+- 후보 구성: Cutadapt *Aureobasidium* 후보 10개, ITSxpress 후보 9개. **서로 다른 ASV pool**이며 1:1 대응 불가.
+- 그림 축: BLAST `percent identity × query coverage / 100`; QIIME 최종 분류 confidence. 서로 다른 rank의 confidence를 종 동정 정확도로 직접 비교할 수 없음. BLAST 값이 없는 점이 반드시 no-hit을 뜻하지는 않음.
+
+![Aureobasidium 후보의 QIIME confidence와 BLAST 일치도](Results/01g_single_UNITE_database_comparison/figures/22_aureobasidium_qiime_blast.png)
+
+*그림 15. 후보 ASV의 QIIME 최종 분류 confidence와 BLAST coverage-weighted identity. [원본 HTML](01g_single_UNITE_database_comparison.html)에서 추출함. 상충하는 label은 ASV별 coverage·identity·동률 top hit에 따라 보수적으로 표기함.*
+
+## 4. 현재 결론과 남은 검증
+
+- 전처리 방법과 read mode에 따라 read retention, ASV 수 및 taxonomic label이 크게 달라짐. 본 데이터의 `maxEE 2/2` 대 `8/8` 차이는 상대적으로 작음.
+- 잠정 주 분석 경로: **Cutadapt primer-trimmed complete forward-only → DADA2**. ITSxpress single/paired 결과는 방법 민감도 확인에 사용.
+- 비진균 off-target: KSY의 고풍부 `Fungi_k` ASV `5c8f111a2f4a8e9e41a1cb58ebc985f6`가 BLAST에서 **281/281 bp, 100% identity**로 *Raphanus sativus*를 지지함. All-euk DB의 분류도 일치함. KSY의 모든 `Fungi_k`에 적용되는 결론은 아님.
+- All-euk DB의 non-fungal·unassigned ASV: 우선 감사 목록으로 사용. 기존 fungi-only 99% DB와 dynamic all-euk DB는 **scope와 clustering이 동시에 다름**. 순수 scope 효과 확인을 위해 clustering을 맞춘 추가 비교 필요.
+- 남은 검증: control source별 반복 ASV, 농도·PCR 조건을 이용한 오염 분석, 주요 ASV batch BLAST, fungal filtering 전후 alpha/beta diversity 비교. 오염원 및 생물학적 차이의 최종 판정은 보류.
+
+## 5. 참고문헌과 분석 파일
+
+- Nayman EI, Schwartz BA, Polanco FC, et al. *Microbiome depiction through user-adapted bioinformatic pipelines and parameters.* Journal of Medical Microbiology. 2023;72:001756. [doi:10.1099/jmm.0.001756](https://doi.org/10.1099/jmm.0.001756). **16S V4 mock community**의 Fig. 5a를 3.2절에서 비교 목적으로 재도식화함. 원문은 [CC BY](https://www.microbiologyresearch.org/content/journal/jmm/10.1099/jmm.0.001756) 공개 논문.
+- [maxEE 비교](01_ITSxpress_maxEE22_vs_maxEE88.Rmd) · [single/paired 및 BLAST](01d_single_paired_BLAST_comparison.Rmd) · [시험용/complete single](01e_complete_single_end_preprocessing.Rmd) · [complete forward 방법 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.Rmd) · [DB·ITSx 감사와 렌더된 HTML](01g_single_UNITE_database_comparison.html).
+- 저장소에 분석 코드, 일부 처리 객체 및 산출물 포함. Raw FASTQ와 sample-level metadata의 포함 여부·공개 범위는 별도 확인 필요. 사람 유래 시료와 중간 해석의 공유 범위는 연구팀 기준에 따라 결정.

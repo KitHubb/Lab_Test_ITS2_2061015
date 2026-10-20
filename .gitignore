@@ -36,3 +36,6 @@ blast_results/
 *.temp
 Thumbs.db
 .DS_Store
+
+# Figures extracted from the tracked 01g HTML for README
+!Results/01g_single_UNITE_database_comparison/figures/**
