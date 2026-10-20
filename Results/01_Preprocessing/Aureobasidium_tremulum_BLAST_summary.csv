@@ -1,0 +1,5 @@
+Query,Query_length_bp,Accession,Scientific_name,Query_cover_percent,Percent_identity,E_value,NCBI_BLAST_RID
+Cutadapt_f30607bbd4906c862987bc7bbfaf77ce_full,303,MT102824.1,Aureobasidium pullulans,100,100,2e-154,D3324MYM014
+Cutadapt_f30607bbd4906c862987bc7bbfaf77ce_full,303,PV707144.1,Aureobasidium melanogenum,100,100,2e-154,D3324MYM014
+ITSxpress_trimmed_core_from_same_read_pattern,155,MT102824.1,Aureobasidium pullulans,100,100,2e-72,D3324MYM014
+ITSxpress_trimmed_core_from_same_read_pattern,155,PV707144.1,Aureobasidium melanogenum,100,100,2e-72,D3324MYM014

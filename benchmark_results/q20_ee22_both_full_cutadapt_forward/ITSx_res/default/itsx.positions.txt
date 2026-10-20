@@ -1,0 +1,1207 @@
+10e25f6b435d5136e1565c0b20a20cfc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+12d20fad470c6affa26d6895f43000f1	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ace1b8ea4c84244ffb46ca9206a7ffd2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+56cde9dad210ca88948812759d9c1daa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b4f38aaf269ff08535fc440b5e8e52f8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c2a7fdfe2fe65b140bf51c3748c82022	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4252890f1bf435cc2064cc3f47afbf82	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ae85a18a3a031bdb0db343cfd8bdbc5b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a0f77fd7f5acd0530251a061bcda1580	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+27eb983193184aec87025b9e67df4e1a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a299ef28e148515b0b27ccd380b2cf42	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+0c9c1e81b99b6953aef0bba439a5b8e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a4b1994f8714f8bebd723ae726005c29	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b230b719fb1c30ca97300e48d8d64b34	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+d326b380cc65ba5fcb0110b9901e2be0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ab8079947142caec856b7e8ec636fa29	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8bb732544d0a5b7f3ac46e248a11f5ed	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+92d2a92371204d249afcc4b268ae8206	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f53ce9aac8c1ee408ffa2806012f68c0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cfbcd7196808b8b0b5ca10c8020a0354	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9b8170ba44543a7d9487e93a4bc62835	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+26c986cf22acac8ba846c5a737a4d3ce	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2b03be7d6838072f55e3a0eef8e5e0db	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+27f886d62f4b6151784b45a9ebc851a2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4279cf1efa5dac471be45387a86da23f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6f96ef1dde91f1161e1f3efc9908fccc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1da6ca90c10abd80308780bee1104dbc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8ec217db22c975c397172581f5c7566e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+abea094be142176709e365a7caada69b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+43a721406932bf7858111447920ed639	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8ddba1a4bd7d3d2db731ce7775f64f6a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+be77e583f69fc3c8c4e27813087d2b11	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+23e73a62f62217170acc34afdcec46e8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a4eb7efccc9dd65ee3a1a5fdf0472b0b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+56d4e175afea2e994cb3eeda14bd4e55	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6a34578acdfa470ec17b3cc3cf5536b8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e49c61a7181805ee66f700988a3d0a9a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1d06fc0009a399befdcea3a5828ca0e0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1858d943635b1c505ed093677fdb96e3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+84fe91e24eb06972574cbe26a390c08e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8bbec3ba6bcd681215fbd4249e79d170	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8c707734e4bd5cfc2f816d96dbd5cbaa	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+7e6b5af78b8cbf1e98975d4f25c174cf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+792df1fe82797c3c475fe53a9523808d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+578823d59712b35001b5fac2fc3320d9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3ddfc129f55d93db5c82399977b9f195	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+55059fff31582f08c7a3e3ec9b4e26e9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+208885db647396d50c4f96e70d3cc476	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+851cb3cdc516007c71a6b4ed4fe462ff	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4bdf731cb75ea5e2fecb18e753b23377	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+666d6f6a807b8264b74977df4927e09e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4f27e5f0f5fc9ae4c10efed6b9b550b0	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+611b9c649a0703ca1922da0f2784d0a3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+eea46a0f4e4911454cbad0f958defc5c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0d4379bb5004abf92eb6ed49760f4582	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2c5274d963a63f969c9ba9bd68c41a75	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+35c8d39e9fa4a96bfe57b96b7cee36eb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+c2f7821dbe534d19f73c341dd0172f38	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c6aaed1353b84cafdeed638d956ede40	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+a84500612f7c2be3a986377889c8c366	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9b15aee9d3109d591f10cf3a452b8002	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+361a74d4f20686a417ea332fee2cf8ad	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+acdd937e7d4a35a1437760d165010406	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fcfaba4ed7b6bffb229a092e899ec4d0	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+099ff337e66750c543d4978e6c4cbaab	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+aacf766cd29665c574306983fc23ee52	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2977fa04aee9b4d54bd29bc751d1c5e8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+efbfadc4011f0997324cc89ed2d8bba1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8f99f8bc8abe9a317df53dbc188ccad6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+786da9561725344f81c6868b157bc8d9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ae08f345f53bf32df9c22e713cffeb48	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d26947f2b207d1ad84487801db2967a9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+79ea6679cf666964e572310190a7f45d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+8921bbcd327294ddf31d3ee2be149a0a	231 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 97-191	LSU: 192-231	Broken or partial sequence, only partial 5.8S! 
+7ed10c36127c9f843dbd5b66dc38e8f6	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1a81afd5624ed8aa48fe43619c84a9f3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-241	LSU: 242-281	Broken or partial sequence, only partial 5.8S! 
+f2b59ab181b85b19d29718098093186e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+021872a47087b30b36a026235007949c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+543321177fde787f325114ff2ac2816a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+750686cdcf5657b6c5ecf659111c0358	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1141b57fa374edbe4bd30bebb88d7626	215 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 103-175	LSU: 176-215	Broken or partial sequence, only partial 5.8S! 
+4effdf18a69431c6b4f025509d319126	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+640e7845c28f9adc30b73175582b7f6e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+def44debdcf9a8adc408bc638d5781a4	218 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 101-178	LSU: 179-218	Broken or partial sequence, only partial 5.8S! 
+f3ef1f3f2086895764d76dd8a7a4aab3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d40ece368998150be90c923c1062bea1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c3256a02642060e7c0f074c46e59d400	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4926c75561705b03df2be28a7626cfee	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-246	LSU: 247-281	Broken or partial sequence, only partial 5.8S! 
+3f3d7a0ab3d63292985af56b5c6ea900	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+637e391488df32ee1a9645abf8596460	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f1fbbb596d5b3dfc125aa888af1e0638	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+43e3f4f92b6e6023d00612d5345e817b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+47d03b6bb045ce4257e44fb633fa53ea	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eca19aca8afe37add7d2c0a389fdf628	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bb5eb28ae66912113e996e0a7a5426f7	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+63e4327d8319b224216cea2e5403270e	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e48822a0aa049e63ea36c9746e94be4c	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a61ae844151cffba453c48872cd70b86	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-277	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+65fabe49476f2ffbd3da8dd065a62e1b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fa1b4a8cd1c18a2672fe05e922d29a9d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-258	LSU: 259-281	Broken or partial sequence, only partial 5.8S! 
+1ab9a4ee5bce2708991c3c5820306df3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+490be1e2088dcf3f37f561544ba62bee	245 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-205	LSU: 206-245	Broken or partial sequence, only partial 5.8S! 
+3bfa92476cc05fd6c57650c07c88cf10	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a322fd481852ca956cee0754776003b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+12f8067c1c87c22128a6cec4b166c119	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+84a27122537e22b36eace0ffb79a3e29	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e777e40053299f73bf3d40758b19eed4	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+46962ac5eca6f894aca3325745555431	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1a84e694bf10042249871b8a922cbd4a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f4afe240949d086bdb5a35eae85889a4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4a21a66045af35d654ad3e67fe858b3b	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+076721e93647a0aec877753555733203	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3f9dcb2aefee759889a5f2aced55486b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d3c38ee213dd34d55abba3d4d26c0429	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d678ca037cd1f345ac9207fe9dd210d5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9abd586f048ba325c7a4735a623416be	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1bf2e2ba707d1a6db9fc6307a803972c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6b86974923ea0b769597edf992a637a9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c24bbafa9e0356af3b5911071c174d0b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-246	LSU: 247-281	Broken or partial sequence, only partial 5.8S! 
+edaa1ab1267fb3af597125ab992c0d5b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ea7b0d70e53c6fe529489342cdc81ecf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+abc1b9d0c9575cc661b0ce71f149c4ed	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9706f1b35d442313361ff117574d39cd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-258	LSU: 259-281	Broken or partial sequence, only partial 5.8S! 
+c946283db87e5621d491d3ab17f8a3d8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7d14ebef50475d01fe70db6a37d17008	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+23b7513f1eaac17116e6a02a40cf34d8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a193e16ba2289114585fe80bfb22015e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+947fbc3a44c651c57d9d0d84437bee66	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bc75b48de7a73c2a82d5e5b2652c93aa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ab33cd0967f6f639233ffb6a904afcca	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+72f8aee885445d4121dbf3a4e843905a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+53620dae5dbb80ceb13ef87452d97458	155 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-155	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+abebe55e288f2a904fe61fb0df76170c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7464ae8d9220a9a53fc9772da443cff4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+96dabef5bc8b72283cbf7e13b37a5897	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+33d8517816650fd9ec398fec66b57f03	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dc57683ff88cba79293c059acfd49aa0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+df6b966dcaef41597e01451e3e07c072	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+60372bae9f364437f30a26d035b1e3e4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b8ce373308c0ec7478519c0fd7e6bb2e	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+74bd0fe8bbb5e5c79241260e55f94fb9	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cde7590a57b9f4ec68e329047e181f82	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c3a979615324f1bd3b2def1f68d800e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+80566eb33e50e2efe60974abf7da98a1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a4743859ce773b643df61787155c16ce	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40dddf2263168286cb47c6041c9d16ef	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+24b28e4a037bf75b61b665534673c42a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3b451e5b1fb268540a17a931d3b91a0a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1b2c57774c7ab836d6e7cf0307bf3920	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+1d27ad0d8e40feff6b2b0013969110e2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+111fdf9c01356ecf43f13261a3a2fe37	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ccddc3887df65979ca72f690bc06d39b	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e7b23781dca968183a34e424ba6f6ec7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c29d046cb6e553624157145d577323b3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+94205798c564155cf197cbe11288d1e2	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c918a78bfce237062898f5134d69afb8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9ae87acecfba321382ada0dc89f6beac	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+14e76d88977230ed9a40453a2993d7d3	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+92c0c8dc51b8ecbcc6dc2efe2f22b947	231 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 102-191	LSU: 192-231	Broken or partial sequence, only partial 5.8S! 
+f97aa94baa3c7970f3ea9c44f01fc5e6	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+158b27efb1a3d576bc4e1fee914da9e3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+11e4b9d1ae964f8665e1f966daaa4f02	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f082af69868ba8038dbf07cdd1ce47d7	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+256c6f55b1fd72da07de88e06b35cc52	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a5a35aa625449ebb13af59cdace08115	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dfcb037768c775e7f88b0b022a849a96	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f6ff17822f0aeecc17d065cd2896630b	247 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-207	LSU: 208-247	Broken or partial sequence, only partial 5.8S! 
+716dc6f2c80a39fbc5d760c7bf623f87	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7c4bab9e7b305a4f9767f88a16822ad7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6db9a03e20458624619114eff2467c9e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+0e873027e125c715cca5355b9c487336	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+22df957bb00eb3f7cb59c4bf576b20e3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5ad9c8bb0878334431592a9cdd401372	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+19ff1f1f191e2dc1d200136d108908ec	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+acde9127debd8452e3799cd1b3c06f1e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c28f863b36361431017b601f4b13fa9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ef8b7b4b7fb9518131ac05869337ba58	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+71213485a058df10e0a88aab149ee672	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bcbf2668a9406433ebe36ae8acbc3f5b	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3c23e7a8616ec88dfb6861638401f4c0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9ec40bd477cf27a562b74c09973ac239	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b88d642409e5da39408b448e308a7878	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7c32b1b645c216ff18291cbb0e5d65be	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+94f469b7290e9ee9e2b7f83387e5e525	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+376562246f796f81e3af3d5611b02a6f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7525bb37870a72d0fd2154c40663fb41	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff6c93e50477fc014b32475319ca7e92	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+90121f4cd457cae1b933e6a9c9d55e56	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f740137696fbe06687b226ee5e44db69	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dc65958a01362897a0c5f5eb0734255e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b7c68cf605c1102ca921abc795632b3f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d6dcb23064fe32e5b875a3c2f5970546	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2cd7335e043728f59e2303c6c73d1ecf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+25acf1a7ebe0a0116644ec710e0f907a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b46b17599c3ad771647ded13bc08b8c4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fe932bfa38dfa476d4837a082092788c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5c8c33930c66fb80b685f87267be4057	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+74691e17a7abbf42e25cbac604e92b85	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6f96c5d5100109174dfbdab0f4f2dc4e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d1f08112fdac5d0f8e07f95ee13ec58	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+ee2124468b6550c6d9816a19c1b479ab	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+af4382e0b2f39efcb07be0b1b8f22888	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8ba5629f0371af7ce27590555efb9b2c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+807a4b451dc71c228be3de0bf071e8a7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+fda4729399e495d1653aa3873ccac94f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+71729fbb616319b38936c661c8a8013a	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+404f93474f5649703d4d63cd8a0b946a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87f8054a8ce60fa5226e351afebb42f9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cc87e621563b187ee377685a5165b923	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+565866b7017f79b57d525e0752848d4e	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3a8af29fc4481c27f6d23f2b0b7ad515	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1841176cb9159f5802e0decea4e44d3f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ea9d8aece36b7dd04511c853d2b4b1b2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+18ed20f1fcb5c9ed496373ea14ce546f	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0f87a1547f827aa1e8f44a583c68fb40	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9c33f1bada786baf75b4d2275013a042	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77818daafac5303824a5b2064293c31f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7898cc1446b3d08a08cd6e4d297f245d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0301d9d8dcc1ff1f74c1aedd6ed1df4b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0356238ab59c8fe31d9545ae6dfc3a01	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-258	LSU: 259-281	Broken or partial sequence, only partial 5.8S! 
+7daf72c6a2159f2f8a07f21de274b231	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+b6f250bd79c97d28850c931bfca7f585	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+79da2dcbe6df7746cecf0baaaad5b6aa	215 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 103-175	LSU: 176-215	Broken or partial sequence, only partial 5.8S! 
+228fe3c1f4b808d4ec32fad8bda52632	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+39d018959484048e14ffa4ee0373148a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-241	LSU: 242-281	Broken or partial sequence, only partial 5.8S! 
+740f032c6c43f315ad86bc533da7993e	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c0cb84e13663134e110b4723e65abb76	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e23e891536ca6a552092eaf562ae060f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+01fafc7c347dd58b9917f4b704ce8b99	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+93a15f25825266d13fa5a2bc91609482	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ef67cff89f9ef15427c6dcadedfa99a7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fb00ff0f20e87be8ed5b2bdb01967add	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ed70ef498b6d6d046a08d4d4d55c8c86	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+219966b37eb34aaef5219668457e9d48	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+19bb1aacabbbce96858996920e0d20cd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+aacfdbb14901f982ae771bce7922b8c1	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+36581ccc6ccb7dc1fbb1716b5d065813	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd852422cff85bea65a367ff74e4b6af	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bb1eef4a38021577652d69cda145f617	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+16fefbc800851daccb2d315a6ff2e474	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4ed51f4bb881298b07118f219cbeed8c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+71183d6067be727ba4686746acce9a70	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e8dd6513062fa74a12bf2cc63bc92b87	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d0b6c08e430b3044093af30e28f84343	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e96a52f5ecae2d7540fe54046c7a067f	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0047c877a83894a1fa9e9621944d2bf1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+09eaebd11aaa03f54059f500f9f6f39a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+7ff7fdadd0421abfeb52a2656f53e215	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+67027e808e8fa2f9a8f7c2be90cb14d2	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+37e333645448db5bc9381e8e7973df4a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+ba6f793295d34627d81138da8062ea4a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0e98808b22f20139880836027e1faa4c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a7c6803eeddfba76b23bf5e66a9eee74	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+460fa60eefef6e9c1e5977cf56bdaa1f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b16b0d3613bb2b0d2bee35d8acec8641	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+af291a66b18fd8bfb68f75f6f3830264	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0b16a8024531b48bad0fc1754e227e19	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c84c03b175f586e73b359ff558778660	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+365172e7ce57aaf214bb9c5183642ecc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+422b92ab1286f56e3d61a785e7f5ee77	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3a449c2a6e8b5bfea0f9a490c24df9ad	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fbbb4d41584daae5503c6a96551d85b3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dc50d198fc6585ac03b828a2ca12866c	205 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-165	LSU: 166-205	Broken or partial sequence, only partial 5.8S! 
+9dcdd52b3ebe4a6934d62a0b39e5f853	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9806fbeaacf7cac304ae7c0bedfa424c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd00b866a732c9f7b976b4c70ae463b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4846df368f86ee2b0a4daa80d9d5fd72	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+583800b6ad7d3cc8be1129d4b5224e05	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-255	LSU: 256-281	Broken or partial sequence, only partial 5.8S! 
+642d32cdc0d7ca73f99fe7fa1a6d7574	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+44606f740af8cf3beb7bab517389e2cc	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+166f5b63f294875618b5864f38c03e18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1f80b8f68adf55182971eb518c533942	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7d659e3899fcdf7a7f2188f90fd8b5d7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+38be8e626b65dcfa187b9e08a1757ead	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2f52af92b82525d472fbbce39fb70c17	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+91a142df9ba3a0ab3d8661c50c0c23dd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+903b9ee608a4d89c756e5b430ec9742a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-255	LSU: 256-281	Broken or partial sequence, only partial 5.8S! 
+280f947d99193366ae6ca378c24d1167	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c9a6791ce84b3779e2901e4f5382fb9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9e0674d99a2c14c3a1e78bbb19db4f2d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+796797c2ba268a9c262cceb8362b8825	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+670f6d7127184ec908d0f3c7cd9ac6c6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6a6526fd300ffe309f8eb50256c4bc9b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62d30750198cf61d0860ff875b1a50d9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e6362a0b88858cc72989ccd063d5de87	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+acc770e0eca9ccca206c797d97cd428d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bcc77b3e961bc3642fada3fd1acbfdf8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+92e87878a2c3c30efc4b12c3a3b3a257	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87ff77c9a7948f9514d0a382cd64a024	205 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-165	LSU: 166-205	Broken or partial sequence, only partial 5.8S! 
+193f05087b65f21bcb8ef2f3a49cee84	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+301fb052937340235e7a792b2c9c9387	205 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-165	LSU: 166-205	Broken or partial sequence, only partial 5.8S! 
+5a8b6658fa110866f0366fc98e3c4387	176 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 81-176	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9e2ad99e80222f9f3dab6c6c517a6305	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d98dd07f5aaf5bdfa08ac2debd97ae03	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+27963bb08fa167b5a45ab4c3770af979	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+41cce4390341d1094425c01a83410a15	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+310b4ca0f3be5a506cb8ef106f2db054	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47e14d374724c55ef0940a38a1b26189	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+0f3426f2d987cdffdbc313c168f9ff93	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dbe9f515eb8b0fdcb69a01fca68f3459	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c41e7545f59549468754d940030d58fe	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f6bdf3534fd294f9c712ab72c683cd22	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+725b2f437d2730c57e849015a97fce11	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fc6a6b76a96f8417d568e89949206366	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87a8cbf492ebe3f7da11c6738daeefac	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2b6da9ff522fbafb51bae0d58cba2b87	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bf39d4acd3cee69c1adb2d6c335dad8d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5f4ee69c0b0a7f8b778fa294a483f864	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+fb228833a28486986785f99437097fe7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3ea106d92ef0a11fd696870ebf8c3083	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+45940d3fa6a731fde493e3d5ff363c0b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+ab5e855506354dbea181d399d437d540	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dd8fdadc66a420df781f7908e26ba5aa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6af0802b24d82a44bb753b241f913062	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e8ff789c043f1122158b2cadb1a06680	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+28a29c3dc2db270f294997a7a6a8f5da	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ecb2b166a1e7f307511e3af1a9b9af21	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8f10c6f39e7a02f2ad0675d8035c1340	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+403196c508bd597a5af895c17e193823	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8abe4de700d78c9db1bba7d7a0011aa6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5782b8ccf0b575d3a59f393614ad8525	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+2858fa9681bf3e1ae2d6e02bc73865c5	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3195d56588c71da567d608740564cbf2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87e1a1ea8dd7abc4ba730827fa5baf6a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fb3d4191bcbfeaea0b446eb3bc49ccf8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ec133fbd4112f558dacff3b8d4f03af8	274 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-274	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6efcb62374c90b6743e0767710494020	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77e9c73d5856b0db441ff6814baee161	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-246	LSU: 247-281	Broken or partial sequence, only partial 5.8S! 
+c0369cd0d0c329244c1afb11106756fa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d414ace369668c905feede207cae7c68	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+65f7c4a033570153539fb609ef8eea5b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9a97c9534978035f52f925b311c02060	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47b73018b510afd938b24ad907d3525a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5c9e8398c5612760724cd5438ed0ed89	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1be1125dee21a54650244e7e50648137	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7c890d4d00a42bd02b6c531e729da888	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+26fa7c04bb01f836975d931155d17b83	231 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 102-191	LSU: 192-231	Broken or partial sequence, only partial 5.8S! 
+9c9979ac2c20b2a8613ad4d9e184ca0b	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-248	LSU: 249-278	Broken or partial sequence, only partial 5.8S! 
+7d4340517a592032f5ad91775247c23b	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-237	LSU: 238-277	Broken or partial sequence, only partial 5.8S! 
+b442aade8b64adf8f2d6426a67500bb5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b883475e628bfe390be98b1d4d28035e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ac64af6eb2bf37c193553fcb41b00dd4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+539208a7702d138093bec685de4b0c66	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+669bf43e279d395c96df982556257869	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+832d7c5e2e08740b3ab1169af4449c29	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a8c21385b1c6ad17c8fd97a72d0c6555	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8fce26443daba33ac6a46f315ec57d64	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62beb3f7a29be782bd670f49b761d179	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+68385e736633adc29dcfba4cc9733908	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40c5b7fd31cec6dc9cefe228b0101ea0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+65bf02b8ab44594621e7d3774741497b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f44cee334149448481f71b773591fd1a	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+57e436ee58d91b553f324701d5cfc63c	245 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-205	LSU: 206-245	Broken or partial sequence, only partial 5.8S! 
+36dbef3c48f913cf7dea963948455836	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ec91517ced11e2a3ccd4ed7e4b4e4b95	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e4c5018012b0114df039fc72510e1551	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8d12eb988019d02f6d38c4b00e58901b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+42ecc873fd04c9b35fa0391a7ea4211b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bfbd8e976228a77e3c2cc33e28662b92	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+23a421dc95b4ac0a7e69890000790188	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ead5e33c2d85af9d2203ba9ea2231895	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5131340176085c258b1ee5ab90097290	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c209585d57d5b8aa7911db2bbc9f4ce8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0dd491c734bb085bfa82038275495b50	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e081365a2bb20a840f56d034d0490601	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b85972da319706c11b5021363f127cb7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2b7dde6528d39d215a3f0cf57068176d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eaf027872e9e15b3d514db930ed49d6a	205 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-165	LSU: 166-205	Broken or partial sequence, only partial 5.8S! 
+851e237ef4de8f27831d3951bc7ebbbb	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+798d109fb975353455be0f4fe192a99c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9695844512ece17de04bbec9be32f342	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d01cab69c2096f021b375d406c397e7b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4c6eae0b54d55a86a69431ab01313630	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+01b31127bb8fe4153a2db21409dd9218	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8d90042b7f58935b516a393589fac7fb	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f3f4a660ee24a05bb1b115f34d369b98	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0df3c9449ba1a641303d13acf7519f3d	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5bbfe12f793b9c2850eff3d4945e8dfb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4b2b3d7abba9d3ff74310d1ae5efc00a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7a007a79fa016e80b5be53ceffe02513	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3455363a25023055736c27dbbeb9e974	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+07d9c271644f8f1b087dd421f2590b66	247 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-207	LSU: 208-247	Broken or partial sequence, only partial 5.8S! 
+fed974290da7d8ee90b73bd65872c3d3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+700dfc727dd677763e33647a6e108a60	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+19c3a93c058d31249ae850ff5db2a17d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+66b4d1deb6b2d4a7761359af6a433afc	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ef4cd78cdb84289540add53a6ca06df2	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff9fb7db34f182f4790a6b396834053f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40e0634942aedab91c741cb7a4c6e324	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fa2d7f5f6eebd5c84f7afab8c36ad0b1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3272e6d104aef1046ad00b893470e5c0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c9c5a3263257f453975205807b2a5f60	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+63188c746642cad86d4a8d39e7a0bc32	178 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 81-178	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e84721092c9e0f28e6fc27bc91fa1090	205 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-165	LSU: 166-205	Broken or partial sequence, only partial 5.8S! 
+ac9ef4dd241fa2031a1efb3c5a596c23	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f6cac2b67e7f454b3b5467200ea07d24	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5112d314ef011c6c40a517a971d39377	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+446abb0c22fde31e47a6e65e18240dc8	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-248	LSU: 249-278	Broken or partial sequence, only partial 5.8S! 
+b74d4a78b6b0632bae7288c839dbc427	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+617d0390b76640e1ce4ea6180adef82b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1ebc38a275660cc483f61122913e7b3d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+764fb6619fcaa56ad27e754834984d27	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ffa456f058a245471e9f3d32fe2226be	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+48d685aa91f7ee4c769c4bdf4a208959	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+54b40ad3e7b4138448d0981713ec6b0b	264 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-224	LSU: 225-264	Broken or partial sequence, only partial 5.8S! 
+ec76ad67029ead526159f5d08df4f1c7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+31871321d3887c4c95c0433faac1b3cc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c5134d80e447e680007189b19a8030a9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+33e6f963b51515f2cd670b67cf0c7563	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f5246bbe600de33d577e653513589022	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6b8161f32a184701cc2141466615ef58	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8815e6d8ab958e96cc1b7e42063038d8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+295146e799f15b45b19171f3add6c50e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d373ea7c7dace9971a0718a0ac3d06b8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+289ae7f4ed34db67fb3323092cdc086f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d8b9a286720e35bdb70a2d78ad7efcd2	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2cd4f6e2a1165a770e3b8217239d8e57	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+522ff42eb5ea57f7acca9a046e353abf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ebc923e489b2c354866bf4daa621ea81	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8b8cd031b4c304c82f71cfe02928e279	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ea2a2209a6884c3b05885104ed10d6d3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+73d61394f25f2220fb3a6c1f173a0698	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5c02c5cf9dc05b2a561e970c5c187b6e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f9d1baa965cdbbbc9e783d93eb9e484f	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b31523d7b1c8ec7f6ca1da2768653f66	264 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-224	LSU: 225-264	Broken or partial sequence, only partial 5.8S! 
+d8cb7325014bdfe1fcf1c223420306f8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+36cb195fe89d5e9fa9938a62c3afbb3a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4bcb527eb3d7938b44fc9106c1e4d16c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3549ccaa01c57f8bd500df7bdc467d19	218 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 101-178	LSU: 179-218	Broken or partial sequence, only partial 5.8S! 
+75c64f5477e919d682b270ec23b9b5a4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+6b62facc49d91ad1246ed486bab340a4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2b057cc4dc977d015dadda3d54295013	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-248	LSU: 249-278	Broken or partial sequence, only partial 5.8S! 
+e51af2b442270f29dab5358c5130ddc3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47f915b87d60a5a3c6ea8d4f37d74262	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47ac32fb79ba1696d3cad3765b74a3a5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2c48b6beb26b6904a3dee14174531aa6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ee4488c5f006a0ae550ab6323a404e29	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6c33e71e199e3e7c7599448dc88847c3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+16e2eb65fbe39a9380bf50ee732207a5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f97acba2f60c61cce75e5b6f24cd585c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3110f90437af1e2c44640efb70f9f2cb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cff5a629cfa7373eaa2c651e9ac5fb80	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+06973b29d12d5ccc357da5783082affc	218 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-218	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6853f70d9ca9e583e5ce0453a979b2ae	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6b61b8ae707ad36e10c00e515eabde06	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+8bb67761c3dbba4c0c99cc7d662625d7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7f4d532a64743d30b5c6fd7db1a0ce83	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ea4851cc8aae33dd4f93978135ca5ef2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0e9a7e15e1a9a97bd286e8c1ed79774f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+b23848bb6f52dabafb7aa3e9b993bef1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+85dbfeca01089865a9654956ec4856b9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+79d3588251a3735f88fe8004ebc53193	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-258	LSU: 259-281	Broken or partial sequence, only partial 5.8S! 
+893b6440ea1db270a6adb3a2654c8bf4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4dcf6ac8fdb37a57c244ec73a4452dc3	155 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-155	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b45561845e81f75ddabb58d0b8cce56d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9b1c537aaf02fd941f37b390d130a8c2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+271d67590b040252bfbb11ea71511864	178 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 81-178	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ce0fc09b7ff62ef02b2ae8af7dd9183d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c0a869fbe9e3adf23a69618712898ab1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+edc374a02041e1b115ca8a9f1efb42e2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd4ae42e90a3b57d6843f23532a9d064	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+432a14ab8c913ce6407eb963ef477f15	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3dcb5a12bf9a21fb83127654502ae088	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+895aff88ee07695c8992d19ea3a922e9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+89217a541eb648d5c56fee8761f3dc4f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1cee25f251805aed16c5a279cfbcd060	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d9f488ba4d854d2c7d78ef9c7480abc2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6785a90efa9b13d3d0b43a2381152a63	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bed6a92ebfc20044cf97a84a84ffa20b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+adf499f58135187160ef07afa064e3be	138 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-138	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4ba64fe0f155ae04664f174d669ac436	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+55cfe3d4d0baf2dd46ed30fe2978f2a9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bff53a66faa622f08b8822b018b85e88	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ce74db4ed9d09d1f7627df8940f27444	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a9a444922cc4d506877ca999ccc37301	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2207fbd131e6396e7007287ae21bed64	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2a6a0cc23882241626ed8fa19907c829	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+519667eb340692dbb0056b8b95993b95	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ee01decddebdeb8e226132ea759075bd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f95746a86f4c834486ed610e2513e919	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c636b691f0885ae7b1b83817bfabb55e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d83d57f7d4fc17ba5263f07bc79e43b9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+55d9acfb1f8e8de59074842738dc880f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+263c4d1bc9e15f62f9e8375f80477dd3	252 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 48-212	LSU: 213-252	Broken or partial sequence, only partial 5.8S! 
+0308b938862a60c3caa5a996c5d10417	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e3500003f32b487eed6584e0849eb250	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+23020961c77cc3dd1772b3ae1cd7aa70	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0ef213a360807572b90c2421f73e5e03	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4c5d03922e0d7bd90b4ee03ed10647f5	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+22cb871b01f226cef7c80a992048527b	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6ab3401ec112875087d7c78c8a607046	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-248	LSU: 249-280	Broken or partial sequence, only partial 5.8S! 
+fecd108fa2dc4c1dc19ccc8ee9244241	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6a033f4dcfde376b3ee547455317e952	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+92a4b62ecc18c4b80e2cc7a18f1cebaa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+540c48584f95c900a4272690da3fb6c8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2c2e30bac3f37465fc337eda4fc82b19	251 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-211	LSU: 212-251	Broken or partial sequence, only partial 5.8S! 
+a63791c4691140a38d9b2d2d692eb234	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+1a1d63e63939095ec9d1203161f914cc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+70e580571365cd2739393a07d3f6583f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eda0d96b297a3af4b2bc3a0f9dcc5bc3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 113-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bfdf8f8a98aefb4a7a773b05340b67f2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e21aac21e71ef4057203af7e4c575042	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9d61f6ae2b7562040d4ed3115cf9b596	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b6a42df74c1f95e410ebf0f9d52eff1a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+79b315a31afa4533fb5f2185106f6b38	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+afb3fa45b0acc46db44c4a5d902e9c64	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8369a1baeeb9301106db2cd98736c49b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a220e112e97fa2d5f5f66ca68804bde9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d8c9c1fab75ff9b0002a38254e2374b2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-246	LSU: 247-281	Broken or partial sequence, only partial 5.8S! 
+958a187937aa0a61a6c47ec7572a4dda	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+bd2707668656f45b28273ba7aa7c0226	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+51709bcd5a4b6c200efda4313600c366	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6bc1979b0120ef05f9c16c33aa2d143d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+37ce29ec21cc3582ac3f4a94e21f0165	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a1cf49b922758278411c583282bff58b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+41afbbf44fb232ce519bc48943f360dc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d19be9d9d3a359a6164c69addc966ba1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8d1c9d540c6d93c3ab3080e529a16d1d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+54284ba9292885541bbb5ebcdf4500f0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+98c0857b2fbe81b6f662f8afecd1055d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+db2ed04b5c1ebc021567e6e5f3bf4d2b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ecac88d62004b57639b1aa74aeb1537f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3049834fcdc0b4ad442f22fba741030f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7084c57545309d119cd76dd3fa0a5830	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-258	LSU: 259-281	Broken or partial sequence, only partial 5.8S! 
+689412b840c9f0db40ad087caaaa04a7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4990e5d970f00d393ad79ed105386b05	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d2f343637c17a56ddbc1fa35f81cc3f8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+549219d21e2b5de4729df7d8ab13701e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1320dcae16ee2999ef9f030b940ab649	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6080e19204f8941ca506c7cf97913a2c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+117e29c3fd66242cfeb9b9bb0c97bfd5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+e74fa342375046da112328e57ddea604	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d31787261e97b04bececa59eed0eded0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cfb56b282f55df9fa7c59015ad5d0415	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+083bc92f239a7a02354f6f4b0335e3d9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+739700c5bcca07c2ef27496ac8e50b3f	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a2ebaa743d3d264980e5a7d130ce5c47	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b648246b36bfac9529baec68ee5f3a77	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4a0df54c87d463ba0398779fdad9e2d8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff2c9348ed5e6ba9c249776ee4f5a134	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+38d5bd1896f368691060fdcce2ef7140	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2d7d518fc56cd5508f5f08051f26816d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c0757c9438f16dc0a958c124f56463d7	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+176de9e7149209759ad8382eaf65452e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a09f11cc6701fcf9c8feb6f8d8ecb83	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a90a11bac5c881c2d9c36fc5a0ff5044	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fea9f30f19973f77dc9cbb72c1ed534c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5c38b8929cdc08835ee7652ad4722b96	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+401315323b3056850f5dceff14f1a7d5	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62c8cf3964a5e53e9ac83d91a2ebc6cd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-247	LSU: 248-281	Broken or partial sequence, only partial 5.8S! 
+0a3edf48d6d527c12fa0f1061930a8b1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0cd2cfe2caa9bf21a88f0f39bf1ce0be	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3e6a49fd6251f6b767730a12936294da	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d540d6707496642298be76fbfc5a9b2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b7968537a10c92da572b735940a71e3c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+92d0fbba282b8d9c2a904925c9abee8a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d86b6fecb9acb48ebc6732e96ba5f3ec	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d22432c692bff6c599683d3dd3f1c087	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b3d13b4d370885d9704e362902fe76ba	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d828d0073403ea33ed025f4e41805b51	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+752938178e8a9f34538c13cae8c304a0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 113-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5ad75e4afac6b682e7a3e1681045dd2e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b71ba0d6c18599cd77c6d89590b9bf47	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+46204460d9bb8ad65556a7767a76f0c0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d51b31529ed7f25c67de9e55c24b4835	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+259b5b8c4bd46982c044a5bb8654ad22	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+261cff82cad02a89732e9228cd091a32	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f4014215a07ce7083964dcfcb1a5e477	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2add5954609918ebbd83d07964e3b3a5	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40e8036c279af953bf6991ed2f777cbd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+467673f203fd4e7f9d87c4d3bf59ad1f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6d8472ca1bd53ce96c524ec7467d8163	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8e0fd945eca87d660a31686e810d7978	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+009d2e3cfb3e428b7cfbcd4e2008bb3d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8d6e3d5b2bd880b8db11fbef171758d7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+88ca918162fb4711862708d6a097e986	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2a74ed38cec78e699ffba300660a4893	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+762e425b25469f58350bda6548a69416	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e8db55577a3199dd90f3e834f030dcd5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77f738132932a51bd5d64d1ad2b7669d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+0ba6c3ddbc8ec57abb44d1f29a787485	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9fe5a50919148c0cefebb23832c12474	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4e8f0e3caece1f808547f95db08e29b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eb5f6465847ffe1cad196364223eb4eb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3e9ad2f0e415f0667fc3e931e105c2dd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+43d8fa57bb197c1cf732d484f5a2c7d0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+36ee5a9daa4d171b3f9cba9ebed05666	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e68ea7f967aac05c41280fc4189b23f1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+99b55494c3a7cace3ede5eb22ce61066	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1f1835f678131eb0a5a256a2112c8092	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3ea1ad42d87bb2038aadadde7fcccf32	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+84f36532d0567ab308d16a9928051212	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2e0397c2d26142db22ad02560aee156f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62d95b7f1a80af41491983b80492055a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+a50c4f90485bdd3c1f3014c3874c6e9c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c223a343a53bb8b3fc304e51d93ae266	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c36f18db3e97ea0e8aa1f2ec636203aa	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+45a6e4b9de5eb2975b60ea5a0299f7fb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+707a3137db5b7082a6a6e4e9b162db33	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a0c4a0f3bad46bc70fe77670e196c47	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2eb6778ef74946f02a82a96f0b32f4ec	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cd27629828b3fd65a5ce0bf77a7aed93	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+722948bd82c5f3930eba2b585a8b36c8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+53676a394eb09701d7c51051482667b8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+db74c3647c1f2b5f7c16f85dd1bea93a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+886efb33915685d10594f42230751425	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+93cd45e79e1f79b41b63311848c43836	93 bp.	SSU: Not found	ITS1: Not found	5.8S: Not found	ITS2: 1-53	LSU: 54-93	Broken or partial sequence, no 5.8S! 
+2d3e377bdd71531c6c73f3e89dbcc201	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 111-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a833b0a16766a932c6d357ae1955d88c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9d015da6c272586ea45414a49d04ef28	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9e7dd08f51eb44d0740fcbc0980ea54e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+df8a99d52fe0f9b8e48d05725ab2e9e0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fe99374b02756c92925a8ed750654abc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2e91275a0e4028a25f747b22c64d76a6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+13b6438ec2419f80f9238f0653ae2635	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5fb85c11b4b3391d02dfa6a93ccb3cf9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+07152655e4ac906478db7e6261510fdd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+babf184b818e10525bbcc24a208aaa35	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+a2ddaf69f57ea290ae6253525d9ab5c4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e18b846c3ad7c94fc2148bcc71780264	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+76d46d68f549f3975ce7c8d860ff151a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5640de459b651adcaac8eea1fc64a30b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff2f79a45cc96eb97895d01988ec5a05	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6aaf35755a2184448c739797c45b7b71	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+505b2e6f6656decbbfa8de8eb0ee6397	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+acd3f1620a7a70f9511f5629499b3a86	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5fff8f302e81cc444cfdfacb119d28d3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a6618debcc82cf25ecb35682a8308282	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7dadad1de59f2b3e0015052accd86aa8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1fcb1c810fddf0defe9b9ea6fd42f874	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eb032f6a40240220b24d1897a2809e18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a50a78e2810507b05a2e02b1a85027d6	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-235	LSU: 236-275	Broken or partial sequence, only partial 5.8S! 
+5bc4ae87d9334b2188ef215ca1aba447	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+29d001b6c8d708fa800b6e4caebe4b89	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c9bdaa16fd0832c87f3af7bd246276ed	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5fe800d07e112775dccd21e488e0917f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1bb2a397dbae439c6a09fa28ca2574b0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+af9a5ae4d24dd49a86ad44d8d7c996e7	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1b11eb2c242ee32561037040fc573a9a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fc88833850985ef7359bb2981b2c6b66	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+85613572415a4c42eb01a8ab50017ce4	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+71332d2b80888336c9dd5a30a8cba30c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eb860f4b9f9bc882dbe45d3730a42be3	231 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 97-191	LSU: 192-231	Broken or partial sequence, only partial 5.8S! 
+81c48ffd26f90c1de05c3ce4914434d6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d6b0275c14e96a3008e6ecc18d196384	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+37dcb6297448140a1e9e966a72f82cc2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ce7ae0286121195bd4b83447cd0fac97	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9106208dfd887eee4096a045a14e1f2c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-248	LSU: 249-278	Broken or partial sequence, only partial 5.8S! 
+6038e71edce8664e971e96ec32b87f88	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+156bbff13492eafb6a984a98515476c4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+70031d43f07bac031dc4b19d136a8c36	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ed0e3b268c2e87b4cfb73a35bbe775ee	267 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-227	LSU: 228-267	Broken or partial sequence, only partial 5.8S! 
+380403646208d0e1e77b546d1c2fa02d	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f93f5f0536aaaa2b8e13fe717906b103	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+18290ca4b14704e98e656155affe2e03	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fde1bb60f6eeca9b14d5f5621c95634b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+245f1ad2e7a397f3c203e66db75c1138	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a9f2563378a97c7cf632219fd61f77bc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f46b04870895c5f59842927e4fe426bb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d26e3580a0f02e9950832db054e5efb3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a8714773729d340797d55755eb37a3ea	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b61b83f9e1801e9913ab36eef6af4205	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4b5ba7db898e59c6809fb77a4681978c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0e020b403f4aed78438272ddc2efca87	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+26f4ee8989545c452a7bf5a529d78d84	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ddfd5e3472567256ea2704a4c24bbebc	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47fd67f86eebce3e329fd3920264bd37	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f0dd5fbdea05706ee579209e15ab8777	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ef7266d5b9cce5a08100f7896801132b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+73d5eb34d3f4466c8eacf7e66e017d6b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+24ff9425a5dcfc73fe2ac25f4ab54414	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3cd039acc91e42ca45032f2837e9359b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f13a3ae4ee345c56bc57bb3d9a14ac04	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a116385b704a08d2c2a1fcb83338fb9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+19a9b75a90048e157b9f752b94369769	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5310987c8c5f4b2cc8fff03588d7be18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+adff61a38b0358a91e07d2664001e6a6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7f008332b816308c02dbad588d9d90f5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d0fd287ac9b47030d3ce07372fd6aae4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2977c8e7a010bd3edf25feef9831f5c1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+09c886cb4ba8eacd6ebe7adc0ecb9f3f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+856edcb9d23c27b60b65bb5ed8e3ff37	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f02b0131a7a985c61431a50e0e7d8e04	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b701feb43a2eaf65672d50f5ea5ab0ea	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f81eec26f7dae57e63c39f7e13e08063	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6934d723662dac9b58ec8f2e41234f7c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+810665129b6b8e64eb863c97a362105b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+2c2e8de3fed9d9082281bd9dec4e10c1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+57ef10cd0b79fb555a5e18df181ebad8	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2e15e51cb83f299c861b9ab6967bfa6b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fdb18034bf670b6920764f91cda86dbf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+0c2ac0df96d3f9227b6aa713b20baa1a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e9559d401ae8e33de27f427becd31a94	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9e9391ec3670994ae3ceaa98d678e76c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b1c5c4a0f0c3a951fa5fd2dd778dc4ca	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+44c05e5d435a2d4c84ccf3661c6f15f6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f16a046e68a202086aa767d6b8a399a1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fcc23645735865438db28dc6b45d0d89	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cf4e725dad5531288a8614f0f90c6602	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dc9432a4a07278e5c6afda60a3b9394f	199 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-199	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+53b789ec6eb3e1aaafbb42fbd602131e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a1977fd7daa8dfc5eef70d21eec9c186	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dfb12365db9216d3ed10936a6af858e7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f73352cb48975e80854fb72050f18cdb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+14828086bac97e85e22b2d7ceec3b44d	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e0cbc353e2868b1f4595ade47bf5842f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+03c1f256015d68db605449532e16cf1e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ebc914a3e6814534a387db063ac42663	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+90dac0d64e79b2dd86a9e6819f3dd97d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eb0451f212660059ad08b3516105e9ca	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e88dd0e2d0b78dd4f448e8e830841cb0	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eb71d18a1603a06686e2a8ba18765094	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+06b164c753d1845bd4dfe96d7a3f2fe1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4e98afd5f120aac79b79dcb6bef4d4e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-250	LSU: 251-281	Broken or partial sequence, only partial 5.8S! 
+377c0d439391aba75df5ac187d384565	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a59866431c2eb3d42187ff965a75156f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f5672f0b2da62c0b60d478bad1b49aec	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+09b4c9ecd34ceaf0640698155dfa4f81	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+117155e3fa16e068ae68e1ed11a5784c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d770232dace514f07171c4af8dbd59b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+317957d686dabaf21c25b4d519c869f0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fb1064242a0fda55a5e9e7660a40608c	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9e6b092304b0278b65ea20433f52f42a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff573a52f2449f2df41d3338969ac785	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+daa7578c2644417be2fc6a92e496511a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7c2be7ad30b5180d997489dfbe51dc45	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2fa8fe31ef78ff8b5262eae7909bec18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+99b9ef5a4e6e56a13dbcb695761226b2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+af4d008dd80f7d8a111924e958184db3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1f678f10f5c4237a7eb62729a90468bc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7b5db1706f27f772d837967e5c6b7c9d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40dd2e8402a4a199bc51a3a863a6d050	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3eb601e40afb98d2951666228178a51f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+656772d6a6f417510345ece61d5c9e28	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0de4312f2d7236bc7d264feef9221bd7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1e74b18c7d1086e755c46c9491d1ba80	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f8ff601475cc3126b2ebd946e85a1b63	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4db0a80d6d6687b561b8af7775c266db	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a83961a42904fee02673f585a13920a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+95479fc89743088e5ce329db7b050686	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+36988ef588c08ab604874d6ede727086	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d29ece016fb724bf40f9be9aa4e8c318	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-280	Broken or partial sequence, only partial 5.8S! 
+321755deb7d3c388329fe06a1a287e96	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6cfed3752a97e6d4e3840a94527343af	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4be79a0a6409ce14a1e8ce87ef86fc7d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cb6dca1ab8ad34a89a36eeca64e1136e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+57232fb237d198aca817346afe783cd5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a183f71f807d9605c8619e07956bccda	272 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-232	LSU: 233-272	Broken or partial sequence, only partial 5.8S! 
+254d177e06e09f0bddcbfaacca4cb4c7	274 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-274	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+74bc482793cc72cd6918ebda649745f7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+766f899518217650697b15992fdb2e10	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0fd557cba5b110d994c0d8174cfb3de0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+cff36cfe9b24d8a264872046554a2fb2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ab98964b973710d86bee4ff502ae3eb7	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+52af732b81761ad548824f0d70d7ca4c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4dc98165f231765abe2ddab5f2d86229	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e7bcf17d1eff1546237b762c4d70f458	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3f18636e5c1cf9fd3cecd6f8b5ab399e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eacf331d85f6913d0718cdb20799c36c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e35481b176a6e8f68ba1ab233c95e3ca	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+52ea6b512eb78f79b2f640be4524fd3c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ee4e9454ebfa519ddaf185579d4796bb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b67442098bfcdab84c2bbaf4ed73d74d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b9f9078790ef8ab35c956fb446b3b033	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+80ca091f442f77a45212dd781aa9c9d9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+634f95ff2b300698c4c8b0e6240cdf00	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2c2ee4a53e52da8b7ddcaa1e5fbb4b74	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+11682a3b1fabb779880cf2dc4ff6c065	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b1a56812ce3db479565b65e56bd11c43	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e3bcd5d6b20ec47506de544ae46fca6a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a31150561c610e29811d82b77427205d	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-277	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e10c99d3fa41a22c8a5fa41e87dc295a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bb7713601c1a1595ea32fdab7b6ab4b5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e3d1e206a82deb61bf82466e1169eaea	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+861004fb76eba9f5bb2e3d3429281f0c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+88d22a8a8c8e2e5aeaef15cd990c0df7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d5ea21d8dbdbf24b96c9f383bcff16aa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2417561f0f53f5c28360b7a8a85c4d79	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d6e085da874b36d68a2d47faf99660b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+00a8280360ddd5bd4121b31836eb568f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1ebca1db90a3a53746c4f3024b8a3a1f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c23717819b8b1dddb2c9f17d39e5c840	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+98b107d91c824cb374f06741ef53d96a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+60b4953cc1347605bc1b2df54218d19c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a5708c447b76f8c1a010e0035f818fd	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3e811744857733988840049384e0b220	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e0244104a720bb580cc2b35791d431df	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e0d7d6a96123100d07000aa867e1a1e6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+712a3427c60559390c42e15e38e0e180	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+8a1cd2055527cdd72c5fa9cf8312715a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+26130598987ff9d1e9ef0b1ac8f49445	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+13a58c8d4718c17aad6de40f796d73dd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c7da68d1317d6f6ba338713c60a63ed3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2446338658b34ca30f64cf00258c0122	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+81bb464408ab861f6ff6891f25174115	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+150ce7d80b20de684e8432c5bfc1396f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7a0fb6b9b16b1c47e9ecf96c43e372cc	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bae4a808ad606cc367f040951299b36c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+60bacb0428bd18af9fde008919bc6b26	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3fadae7aee0bd37f842769a3877adfcb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+26e35609f505b3c575fd56e71cfe4abb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b17fd9a80c9af4a1fc58d29ed4ce5c2d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fc4d2a5e6941fa8f681dffd14c1aeb3a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0221ec259d4428b4153dfda67bab3bc2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+47fad1923e01302174bb56aa7b9dfa91	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ebcea634346137f9a525ab394135d141	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d3b020a6a5d1b2c3ea4fb6f5f7ea99b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+70c685f3de8ee12662e6f9f7b1499356	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2d7f74e6d5df9f355b138b81a93a69d5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+df0e7ea553c025794ca1b3b288def963	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+135145a9b2aa792b8dc689611709b8fa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+08ebfea50753eee1ebe0f688c7dafb1c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4d9c01b9e3aa7ffc209c7375cefe2c96	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dda7037d4bbf0e353ca39b61de1caeec	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+be37a856e89de64c120a58fa66c40f95	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0e47aab6d2c0238ca2507d28f8a16bed	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2206cb4f82d4c8a55ef0a889099dc139	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0dae9c36fc0308831aa89dce6e6de82f	193 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 104-193	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+097090a4ddeca9029739c594106c2522	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9cd4ea6e313d4788b0b5410902581bd2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+58cd7cce699e0f328696efd1ab39d1f9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4b29888370f2f1108aa00fd72a72d47f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+4d0845b4f915be38a1421ed33cb1e6c8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8c0085f994117cb098f2a9a0108a4a60	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+afe84864a17a57b163dbeb7bf169781b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+db10509e4bc5cec4d695bde0abf7d9dd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fbeee202ab21cca93572bbd4cf30aaef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-244	LSU: 245-281	Broken or partial sequence, only partial 5.8S! 
+e3a49c6bd6a2eec75f1fe7d011be82c1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1eb86acc959b06a1356c8408f8621bfa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d33f1d6b1bb4b067ac61e6eb4809e8e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+92a558a1620ddafe05593a63a16d9b3d	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d01ab0af2e56f0f43945743a0fb267ee	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8364dd6ca1494e6bcf7eb7251e438b6c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cf91070d096ccac47d18597380eef8e7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b46d7a33019a4cb60ffcc9d3e65b7cd2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a2e21dbdc06f165fe923ffa9226fce19	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+863a90772bbb5c2786486c5857641b9b	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f6930fa91a4104f981a5f8c5cc408c10	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+65657100bd1dd445bdd7f76cad2148aa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f0a6fdfea2c7d9efdc90f61292d89930	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d71d05bf50aaaa213bf4b21240b71e0c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e5f03a8ed43f4177c7b5f1176d55cfd6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-255	LSU: 256-281	Broken or partial sequence, only partial 5.8S! 
+1990505fc20dcd4073296b6f05e8dd00	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a3c170afe28b581b6e889d5bee793f1f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+dde9c38d9d0533b6fd2d2398bb8b7d18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77714bc7f861817af54479676fa9e223	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+67d500dbea5ad0c02e630232b7bb715f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4945bd3add18d2c05c867b16745c30ff	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5eb3d6c36088a76685231328e1badcde	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+51e5c1c3ccb2179b649d9af7d73592ef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1479f23e6fcf80254cd91c47522aad6a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+3951ef39e51703b28f6e8621ba8e70a2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+0f8d0f089cbc4ddac752285809a8ff7b	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-277	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e1ddcccd54643fe63b6513395a703718	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+56db68c68416ee69df8eb1d5e933f4f1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8803b374f792a92ab53ca7bad97bba09	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+93e9bb76663818bb591d229d27867607	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6b5705bde16cb4c5d7040015984e35fc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4698b88109ece911b3ff8c69909b2c45	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-251	LSU: 252-281	Broken or partial sequence, only partial 5.8S! 
+ce69eab60a9dc117a3bc2bd9c48e4593	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ff287f583c637afbea2eba30073b12bb	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1cfd6f583476040598388e1c5a558739	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b7436457c7056335826d5ff345d701fa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cdc630e728a00a8ae9b3dc30c80d9670	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+94718f1ea9476894dc86f386d51d8e41	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+15c77bb96b7b324dfa925ca441d93202	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e7f1fa1a49016bbda3672b0e532363e2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1edb5f324537a851d00ff64f89bf6b00	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4d7d0115220ecde36f12e2256375d64a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1d422a4a1af34152a7b00ac06f9f3467	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+029b112902bb7edb915f3d766e0fcfcb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fe7c9dd8cc7f0cad17e8361ce30fdf19	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a21b1b54c58662b4e730e8c84a5d4ee9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+061d922083ea85a8d7143bb4be4442bb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+09b899fb532d5092148d9245faef80f6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e6a5b64e5549fecfd5454610011c409a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6008a97f7c2d3fc9760b7f1c0f1c9dcc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cf406a79dff353cbc72b4c2fac29529d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a9c0b0df15aebed1d5c3f08fbba84895	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+71f6f2aa5d25d69b79f1ae1636777e04	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d4c7b319a2e0d8dbc42951752d7841ed	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+393b88aa6e228cc6e701ada1c2d0d2e7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+5519d8594c2ee060d23d2da5df364832	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d3e1d977776ac5e4572989a86f66061	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8eec66ddc3d65e82759116c80c411c51	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2346235aebdc3706a815bc3166a97e88	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+13fd931167c3649242075242d7915422	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d4afca45498fe242f81ac246dcfaac23	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3cb1a8fefbfef10c966f2c15ec2344b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+718236985c2e85bbb6948ec5f2ea07b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7557962e44eadd061de7b6079fe78402	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+76dac757e72278ba6425155ba38967ae	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2974cb2acdf3a6a74e4e104f48039c58	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+aec4aa4fc0c32995cfe51b3dd039e66f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd6e62604e5e87bd55ffdb467b95fc9f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+35ece4fe51c9e9e229746cff24dcee75	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+ce70048bf10d0a895d58e48551cfbb0a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1a59ab99a62f9141ff55d5f0e82999cf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fbebecd5ab7acd004ad1c3c06e293588	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+998564a4f17dfcb0beedb116b079ab7c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b120ad09e338ac06b633cce2141b5da0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62be063565f2468a37ca9816f306774e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6c01bf123e24b6178f5058082489263e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0618b3ce041809a9420f0d347e4f46eb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5707f902df673c38755916ab18f8dc07	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dbd28c2b0b570cb45a9a3759fadf83c7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+40f0ed320480d359cc07ca362635d532	220 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-180	LSU: 181-220	Broken or partial sequence, only partial 5.8S! 
+9dd8706ceb25afc64825fdea0d54045a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f12feb23d6867d100d8eeced0247198f	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5280b6cba2a0f2ac998d2070001cf2b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7ee6dc8b857c7a23f008c913d9f07427	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 113-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0ad0edc0014f1075dd90fc0da22c59f6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4da2228df02468a602aa39ac5c3183e4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+52d8cad13ec5e077a9650eb8598c4cef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4366dc67340db5e1f38883f1fcba8ac4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f7e6955ed5b0f7953c3104c6362dddd8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fcab90ef3d8d557a054219cd26a0d92c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a6873c9c48f7833dab6db489e7839854	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+883d12d2fe3c07b2835152f3f07d48c3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6dbae6b8c428fb2a047030249d5cab89	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3f2db7d629140e40a8ccdb18df988dd9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+910e51ceed7da1b30b0caee1ce2c71f6	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c25b26e93f311b6f231827a88264cd3c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6efedae2fe682dd2dfc57f15693bc95b	276 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-236	LSU: 237-276	Broken or partial sequence, only partial 5.8S! 
+2e03f7bb6be294d651a3adf25a142f09	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c4c9a25723619c1f80e9f86c15d4949	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d77dfca25e5f0a4aa91062ae1acb46c4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8ffa6967c7d9370f946273ec1ce02939	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fe94f83dae8f5c536a2fbe0b0e911882	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+7009ab306e59b42f30be4b0796ea20f1	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-275	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+60abfb8ad90f0f9a1dc792dd8e6e8bab	276 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 96-237	LSU: 238-276	Broken or partial sequence, only partial 5.8S! 
+74820bcfd4fcf4da7709e6b823809bb2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a6406a33d1f0dcf1e75549f109080650	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+769165568d2de0eb5d9aefb43c950a4e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+455d581ba7fac76b39fd72c6ef592436	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1cbbf07dd58138677a93cad0e4170943	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c026c7ce0b0a689cf43cdd255f3a1f1f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b86708351e40b7223b912bd691c7d2b4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+73e410d90ee5f4a26aaf1076353d1adc	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3e138dc3637894f868cc3eb17c17a94e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1487e42a507ee2625c39996cab931aa7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bb87022b4d1261df47b7309673f2671e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b8b8bc369e68580af8c5fcfabde22b07	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0b6049bc562e4dc67ba96009a799107c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b80ede4fe2d9c5625a801d1cb8f3e7e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7ba59c2040c18be2fa3923bc5fb8b73d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2214b4be3b23a69f3733903c851bde99	247 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-207	LSU: 208-247	Broken or partial sequence, only partial 5.8S! 
+9847ead5e7c615ea6da2036fbb478035	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+60272e88aa4a951bc2344719c0310073	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87ef546321f1efdb331a786d3c2352a3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5b506e6466c512d8c78f98cea75adbb2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+081c70646dc3931d4df8d1bb7fd2cde7	220 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 105-180	LSU: 181-220	Broken or partial sequence, only partial 5.8S! 
+a8aed0807a5c22023626eeeb91f9881c	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cb7a04fe92bf90af36f1e3e5135e534b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b9a9795c63f8eff2ec3310f01498d6a7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+30769b567372fe4514c045e95e60b6f3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4f9b17d9e3f29483a661c0ab2835080d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+abb0449fe6d96d12fc098ac2ba263901	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0902151407daab0c86e6d8df3cc5fc1d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b269dec065bb4fdb4735c020ef915e05	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dd311efa7af0c3a9d741a45c0449c2ab	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5363c583320d89c97db7c8079ca7429c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5e8370617abcf7e4866d6329b97e18e6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2da809e2f8c5a58b2f4f2789a1619d64	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b63e706ce5130640f5b37a89dfb3aa77	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+26ac9bd214544e9e2e31659187e514f5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9a1922e53d8dcebd378d437e9194771d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+682a08034884dd94263e482c87677584	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+81c4ff2cd8de2db79bbb09a1dddab7b5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+584a8685f317ea26302aa1e458da9bd6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eeff15d3b5eecb95636b518531729053	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b5c97a2932f875b29bee1108bf820fb2	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9464cab8052af6140d5b452a8c6e5ea5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77f22b02b0a7b0b3462515f066f1c98b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+07ca68696111f86c012668cfd8aaf6a5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9d7598a81203fa21a2a4d0f0d2d09f0a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cab1299b769a86fbf446fc55a5951a26	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c75fa37cc4db2dca636fb0a9512c102a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f541b6c93623ca4da0d3fa7758bee4ca	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4f6a4d9da1b73c80585b21f44df7e2d0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5f306455d2d461dbd9a23b49c37c7c41	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+024bf2b5492f3b54893108c5b7d37e1c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5709331d1273142b9f2367d9ef607d21	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6e3df4f03cbde3be56ecf01029768317	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3c1e141c7962ec2b4150c847b5a4156a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-252	LSU: 253-281	Broken or partial sequence, only partial 5.8S! 
+2eb44c9043435a48ca9d97cbcee32e89	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e8b60fcb230e446cbf06d64bc30adc53	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9a0fc78dc7f431ec5188eb12d454f22b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c8fce01c940297d5f1b1fdc05de7193d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 107-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2a1838c6d6a254d45663dcaf534cf644	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a51e29c404376caaabf14280cf404f98	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a06b7feaa532fdd8b53c76e3778400b5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ce4cf751d83847a5fd739aeb52d78ab4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8cbb4d5d8ae4351fcc62be091bb04563	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+527d418f16bb6e81bf2719adba286db3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+49ed80dd3dc317f2de8c05e7600e5863	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+67398cd29bd96bf6f81be387c6239eef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-255	LSU: 256-281	Broken or partial sequence, only partial 5.8S! 
+56b683c2871f09dfff91532698af280d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+af6338a0c60a6f93df88d7095ba9eaff	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a95d67fc2b560bde81eb3b9e50f0233f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+e0fdb7528cf9d7ee4f292762e0c4a6ce	231 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 102-191	LSU: 192-231	Broken or partial sequence, only partial 5.8S! 
+04db09e7b07b54ffc8036855cf6118df	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1f671943939b30f5a986341781ba07c0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+776a37fc226a26c63da0d7eecbe7da86	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f96cbe6e7f7757eaaec38ae86a37bae8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b82d80b0b19348d824bc780d0a175df2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+30ba47ae027b2415761dbc49455ad7f4	271 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-231	LSU: 232-271	Broken or partial sequence, only partial 5.8S! 
+146786ec83d81b4ad185740952d50613	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3b0d40c436fb5cc9ab4717b6c6526d51	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1454aef5a8790e51cbac84b8806a707f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fa179361130c8dd1d588d43eb3f5cde7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d5d1dc3167e150aaa88da1e2a43684bb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8cff1c8be1c2ebf2d9c84b1a9579286e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b7cd08581426b25e7b0048bf18344c8e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d32340162b4e20fea8f2d6bb65d67844	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5bef9423bd5ca0bb43e49851f23be891	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dba00de25c37d1ec94d24804caf6a8e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+277f4d5357f28d34bb62932b2f3b8014	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+65a28e3b92a751e86a3c5076546f7f20	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+745e4337559a01bd226a380b3a338cbb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+534195788f00943deea51b6c98eb96c1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4f00f8a49ba4927c35f15d5652adcdf8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+21d1b74672d57d2a8ece76c0363e57a0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0b6cb10f1efd3da9249c9e258c5a24cd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dbf2dbb4ae1deadd74106a3d9d170d14	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e34d1ef8f80ad50d0bc0e563ce472f71	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7994bb1f8a01ce7f270b0bab501f7916	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3fa35a85666747f44e19b7870a518b2e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+08ba2c969569f0e576803450fc51aca1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+e0ca34cd2182a2bb2f8795a9140528d6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9d16c35c9bb541de8f1d747814039bb0	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d94beffc47b55507702e88486ce317b2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a56799320727345f8ef9470163bf7807	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ad5cd188bbda81fef07209b04e55e25f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8f49cdd75d384856372f49c0aaf13987	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2066bcd7fa92a82cfc6fd42e9af1ac87	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+af53ee2b1aedcf22db238063d57baa00	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+5bd4977260710fab8bfe2d3cffeaf416	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bf62729999799080cbfad49ebb507fc8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a2000d677c8fbc79c999222b4b49dbcd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5533bd37584eb3593b32ebc22e748d25	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9c6e93d2255ccd7c21c4ac06a6b28a83	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-256	LSU: 257-281	Broken or partial sequence, only partial 5.8S! 
+c88a364a7aca243d3c999c7747d72c99	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+6654887a4eec9101c40749e6c49204e9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+89d6b05e6a2b806d436a1081de17a5c3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3a3c987e406d5036e797149a3eb49542	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+613467d25fbbb082ed5ce0b44500e80f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+91c92b174fce8f3c86f259c255ee8f16	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+13982607f8b2f44a71debd5e57e58cf2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d1780d38871aeb84eb4eefd95a2b63f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+223ae6bef54459efda30ab3103babbef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bf13bbf1ce4b6ba1019e60584bac801f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b29327f5fb201ae23059a824f3c41516	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+12f4fc67cfcd604f8612e8ebd18fd4e5	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4754e7c4f27e8987f3d8537118f4cb2d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+de193bc9dee661a58d51a458049a9ba1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d6b13ff07953ba14114e133327870378	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d61b4b4deaef64316f5294083637ec83	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+82ee439303ace23b63e169f44fc7bc5a	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9625e2f75af0e40a3864ae5399613ff0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-253	LSU: 254-281	Broken or partial sequence, only partial 5.8S! 
+356c9691b6a0a4e13b44c4d15b8f0420	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+11c7e772772ec69f623810fa6aa0e904	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b220e6af1fb04320bd866b7cba5e02a7	218 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-218	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dd20464bf9edcddfb2dfc54d7e471fdd	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+8170ad22db2eed543f60905430bd6103	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+76ea4eaf78a788fd23ced2b3f7379729	264 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-224	LSU: 225-264	Broken or partial sequence, only partial 5.8S! 
+ffcbde51a057d39ba98539259144df68	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3831238dfd325b21edad0b7d29192e76	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f983d2c0f467c5a082125017c2c97e4b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+29842e62e474951e0c18f20290aaa4cb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a05667b381203adb65a5f91c8e60f84a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f4e55e4f9f5c2c39d8b4aa9c80944c9d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f6dd40ae0e5b0f2b7c0070b6a19e30c0	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3c2bd1b0be8dd77b7b9a561e67483eee	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3663b628021625c6358b559889a79bf8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+87438caf5758c5552d670b5f2157460d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+193f649f451a6c001b07a3022be306a0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2ef3bd8a80d2edda74f75bb84854eadb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ddb5d706ea127b4caed9dd0b901b1efa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77a0f0b7592b05d32ecc7bbc1f7a76ae	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8a59fc4c71e617bcd3a47eaf789aae7d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+be69b6a07d9459edd5af54432d92953c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e577dbca1d4e71ca8ae9bbaaecd8fb2e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7a4733053ce0275445db44f0e59869d0	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+62ca5728e006dd1b98400496e2d81b0a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f13adbb3dc579237a1ea1edd4ef78f0a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ae54d8c746d515186bc721269112104f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3a14d3114d56a4b97318eca520587850	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8a2ca7bbf894271b3580a303f0b4f7ee	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1014e5bc8ad6e5bf4b2d3644a138aee6	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8dcf5a6d07c873aaaedb0aeb87153b2b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd356d77fc5fbfe7b8228418229bded6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+043a0f9f00c10671fd84fcea21b05578	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a3a4cd345a492bcd0ae8a9af1532b558	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+297bbb26ec9ebc875e4a91595d19db65	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cdaaaf4f545ecad9f847e255cad524ef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b2e890fbf20a2e275ba12eb5ba111609	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+53daaf2fc9406f860273664003c86233	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4922bd42f4d6d0044579d2d91942ed78	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 48-254	LSU: 255-281	Broken or partial sequence, only partial 5.8S! 
+7808822954d949a7bb41c0a61b1f5040	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+77dad7f29a878d68ceadc2fa6f8a69d6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d236c881c57001729e41d43b64e21497	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d786abbfde10f892915612666755fb4d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5a09311cef6c3e36eb39cd6afae57a9b	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+f31bb305f612f5d03aa39822237b5c18	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bd5158a7ad60e352d003ec7ef54d2dc1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+a9e8d8ddcef76792fc5bfcd7d9d89ac6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+90f164f01a324b271468ce6d5d5d4cbb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+384f78a9942916cba976865d83aab5ae	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a08b742fb2d99a5872062354a18df4b3	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+490fd7ed52eea15080f540ed84dff302	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9252c8193642414a729657b8efe82e0f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c1a33e85c82ac21cbecae903834ba04b	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d1134e654dd5bb90d37a6b55cc74743c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eac42561ed83c5f81b95e41a1f9319d2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b97aa8a701b5efd6a027bd36d4241175	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+70d95991cb919e4d8c1cc55feea43a75	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c1b4b55c4aa0b545adc8d9212b2eeb7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+263b09c64809c796c066839da3166fcb	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+bb5532c9f4a5d7383ec2b23c7e62793a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7042991622e38537b611f14045457306	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9321a6d5602c5fa647fc17cd568787be	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5dccd5e497de6d6cee9d11f72db1aed7	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+35c59f1b0bab2799b8b0e49c7a8cabe7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5d23704b6624a4642ef8d898ef15b536	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+071d54a1dbd4de120f062331c2423ea6	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7b052649713dd37cc03e235b51b1d9a2	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+af4cf6925965a311808cddcf5e448195	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d1924c7fee05d4b5e07758707aeb869d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d94b6adebe42285bf486286e4dfa0955	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1f8e607760e89c8953326e19906310e1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e1fd56960481e7c55f8b2f1367d9bb88	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a31cf3583c463d9051f5d5e7bc9b6f30	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cd56ed32a437fece4b0be3e5acf4cea8	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+dea23ee84580d70c29f5ee4bdb0df36c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7c6823d74910b8ceb9a7b9086bbc2a62	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+30362f3980735dfcfffd2e94e0081333	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+034b6df97fd073626d495a0e578e04b7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+839a7b8e5a20a1693a8d5c8e8cd12716	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0f7bda1ac97a7fd7417ea6dad0c378a0	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+faad45e81fbfece42af977ebc2e01296	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7e45cb69a04e15b2f3117d7b85a6be32	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1bbb8607944099c441bbca8fa3119393	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1a7e92d9fa2f160bcbac2c6fb68ec7ea	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+676c3313159038d36e080cba43e3d78d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d871f66a0ddfdc76593968cb162037ab	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+573b82c0b69ce6e2c905b88d8d04c150	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+68d9b1acefc88e0f53675176242e1505	282 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-282	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+5576b79178cbb3bf5147f0f2cf143b9d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7107744b9069899c5f0ee23120eb3d14	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ae921f517576ea4e28380bf1d7a4be6d	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c9574e53e30b82672a26fd35b3624083	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cc1158666abdefbc8158caad1dbffe6a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3795b01748d353b110bb1fbe5b168e59	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+04b9fe95f8b2cd85b67dc87300dcea37	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+256cb108fdd511936ef0315b4afcbfe9	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-257	LSU: 258-281	Broken or partial sequence, only partial 5.8S! 
+73d219d068936e4a5b27e86d44dbd9e4	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cdf93d1eac5296d3b49626a41dff9af6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9fbb3e5ea2c59a98ca49aa212d0f3562	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d8fbac8e4333ecccfce7047e694a577c	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3bedaa7f001809b2b7cc240776256b3b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1724a2ada88da2925865d1f4b7bd2515	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a7260c468b3e3978d9f34d6405b58894	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+419e6741e185d0b6018794f0b1218055	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ee9109264671e9140ffb9873a0a8b2cf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b6252d7f9dd6674590c23fbf5e4b1dbf	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+fcc83e47d88ef3ca6a92cd837da9f9e0	275 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-235	LSU: 236-275	Broken or partial sequence, only partial 5.8S! 
+3612ba7c1c73abdd9b5851d0499691ed	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ad64396a48b4eaecfc481de69a1d5b14	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7e0a3e304ca11aff615860cfd43e1838	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+3061c3a2c9eb5cac5438ccfa92cad35c	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+776cda5375d482af7bc5e55c73c9b692	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+155df6a14ae70107bea3a00b5d98fd42	209 bp.	SSU: Not found	ITS1: Not found	5.8S: Not found	ITS2: 1-169	LSU: 170-209	Broken or partial sequence, no 5.8S! 
+1cae51ed40926d3e946c10e7e2cca844	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4abeeaba4c99caf20d56872270c31c08	280 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-280	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+21fd90cf680e528ad2467b0d3140219f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+c43e47240435546dd0cd34dc3848f8aa	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1bea619f41c4599961ef9e72a67ef56a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+eab7fe1830d792aea7ab32843fe880a3	278 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-278	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+29ee5cbe453c44bd2f06213586bfaae7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+04cebbc08a8acab751f5f688657492b1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+7ebea8ae9b0c94c0e690547008132373	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b005038ea05cd872a4c803f4f6603358	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+8ca1b5cc8f1ec7639dda70724c193732	257 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 48-217	LSU: 218-257	Broken or partial sequence, only partial 5.8S! 
+3848d6e4efc048afb6643f0040e9aeb7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d65800ba038a80ac09c38954ff465e6e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d3cfe1696d0eced460b66ad950c4465b	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+017b677c3c5009de60ded3861361c604	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e5aa286e5baf9a2e2a2372d8a1db29ef	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+a3d23137a84562a59f04c591bddd94fe	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-244	LSU: 245-281	Broken or partial sequence, only partial 5.8S! 
+f2a74451becdf1e167814d047050803e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 110-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+2a69e822017c8f4e21eff41b938963a6	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 49-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
+2893b55f2aeac608de1551fa09229b02	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+039b0716ffdba23913e340fbadb1ba6d	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+e38afb2f51a1c25a5e6044633752657a	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+0c6e25863542ff538282af17870c3f2e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+b2b5b049a8f14786cd62cabc96ec0437	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+27308b5a71f89312c25d6bc1c4539564	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+d21858a7b517e06c5221e1564ad08c78	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 108-277	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9aa989348269ce0d088f3a1aa7b13163	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+cb36852619847cba94e902216a791a46	117 bp.	SSU: Not found	ITS1: Not found	5.8S: Not found	ITS2: 1-78	LSU: 79-117	Broken or partial sequence, no 5.8S! 
+5f7d62feae498f8d17fb07165431a44f	277 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-277	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+976bf529f54b9e8e473c40482203b4b1	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+ba54df94d51ea251642d329f93b30262	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+9f6b2a52d29c90b18a053bf5807e8e5f	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+1125992b922e1baf08d2c3d3a167107e	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-281	LSU: Not found	Broken or partial sequence, only partial 5.8S! 
+4996071f1ff849516d2cfd93710bc1e7	281 bp.	SSU: Not found	ITS1: Not found	5.8S: No start	ITS2: 109-249	LSU: 250-281	Broken or partial sequence, only partial 5.8S! 
