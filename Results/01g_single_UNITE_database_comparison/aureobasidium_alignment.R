@@ -145,3 +145,108 @@ au_blast_related <- au_blast_evidence |> dplyr::filter(Exact_query_match | Conta
 readr::write_csv(au_confidence, file.path(au_dir, 'Cutadapt_ITSx_confidence_by_DB.csv'))
 readr::write_csv(au_blast_evidence, file.path(au_dir, 'BLAST_query_sequence_verification.csv'))
 readr::write_csv(au_blast_related, file.path(au_dir, 'BLAST_related_query_hits_NOT_direct_ASV_hits.csv'))
+
+# Batch-BLAST evidence available in blast_results. The external ITSx 173-bp
+# sequences are not present there, so they remain explicitly missing.
+au_read_blast <- function(path) readr::read_tsv(path, show_col_types = FALSE,
+  col_types = readr::cols(.default = readr::col_character())) |>
+  dplyr::mutate(dplyr::across(dplyr::any_of(c('QIIME_Confidence','QIIME_ConfidenceNumeric',
+    'BLAST_Top1_Pident','BLAST_Top1_Qcovus','BLAST_Top1_Bitscore',
+    'BLAST_Top1_AlignmentLength')), as.numeric))
+au_blast_cut <- au_read_blast(file.path('blast_results',
+  'q20_ee22_cutadapt_forward_single_species_rescue', 'taxonomy_blast_evidence.tsv')) |>
+  dplyr::filter(ASV %in% au_ids)
+stopifnot(nrow(au_blast_cut) == length(au_ids))
+au_blast_ixp_all <- au_read_blast(file.path('blast_results',
+  'q20_ee22_itsxpress_forward_single_species_rescue', 'taxonomy_blast_evidence.tsv'))
+au_blast_ixp <- au_blast_ixp_all |>
+  dplyr::filter(grepl('Aureobasidium', dplyr::coalesce(QIIME_Genus, '')) |
+    grepl('Aureobasidium', dplyr::coalesce(BLAST_Top1_Genus, '')))
+au_ixp_ids <- au_blast_ixp$ASV
+au_ixp_reads <- as.numeric(rowSums(res[['ITSxpress Single']]$counts)[au_ixp_ids])
+stopifnot(!anyNA(au_ixp_reads))
+au_blast_status <- function(x) dplyr::case_when(
+  grepl('blast_species_rescued', x) ~ 'BLAST species rescued',
+  grepl('resolved_species', x) ~ 'QIIME species retained',
+  grepl('genus_mismatch', x) ~ 'Genus discordant',
+  grepl('ambiguous|cutoff_fail|no_blast', x) ~ 'BLAST inconclusive',
+  TRUE ~ 'Other')
+au_rank <- function(x) dplyr::case_when(
+  grepl('^[A-Za-z]+ [a-z-]+$', x) & !grepl(' sp\\.$', x) ~ 'Species label',
+  grepl('Aureobasidium', x) ~ 'Genus', TRUE ~ 'Below genus')
+au_blast_metrics <- function(x, processing, reads) x |>
+  dplyr::transmute(FeatureID = ASV, Processing = processing, Total_Reads = reads,
+    BLAST_Identity = BLAST_Top1_Pident, BLAST_Query_Coverage = BLAST_Top1_Qcovus,
+    BLAST_Composite = BLAST_Top1_Pident * BLAST_Top1_Qcovus / 100,
+    BLAST_Bitscore = BLAST_Top1_Bitscore, BLAST_Alignment_Length = BLAST_Top1_AlignmentLength,
+    BLAST_Top1_Species, BLAST_Ambiguous = BLAST_AmbiguousTopHit,
+    BLAST_Genus_Match = BLAST_GenusMatch, Replacement_Status,
+    Evidence = au_blast_status(Replacement_Status))
+au_cut_metrics <- au_blast_metrics(au_blast_cut, 'Cutadapt original',
+  au_seq$Total_Reads[match(au_blast_cut$ASV, au_seq$FeatureID)])
+au_ixp_metrics <- au_blast_metrics(au_blast_ixp, 'ITSxpress', au_ixp_reads)
+au_classifier_cut <- au_confidence |>
+  dplyr::transmute(FeatureID, DB, Processing = 'Cutadapt original',
+    QIIME_Label = Cutadapt_label, QIIME_Confidence = Cutadapt_confidence)
+au_classifier_itsx <- au_confidence |>
+  dplyr::transmute(FeatureID, DB, Processing = 'Cutadapt -> ITSx',
+    QIIME_Label = ITSx_label, QIIME_Confidence = ITSx_confidence)
+au_classifier_ixp <- taxonomy_long |>
+  dplyr::filter(Method == 'ITSxpress Single', FeatureID %in% au_ixp_ids) |>
+  dplyr::transmute(FeatureID, DB, Processing = 'ITSxpress',
+    QIIME_Label = Display_Taxon, QIIME_Confidence = Confidence)
+au_blast_plot_data <- dplyr::bind_rows(au_classifier_cut, au_classifier_itsx, au_classifier_ixp) |>
+  dplyr::left_join(dplyr::bind_rows(au_cut_metrics, au_ixp_metrics),
+    by = c('FeatureID','Processing')) |>
+  dplyr::mutate(Total_Reads = dplyr::case_when(
+      Processing == 'Cutadapt -> ITSx' ~ au_seq$Total_Reads[match(FeatureID, au_seq$FeatureID)],
+      TRUE ~ Total_Reads),
+    QIIME_Rank = au_rank(QIIME_Label),
+    Processing = factor(Processing,
+      levels = c('Cutadapt original','Cutadapt -> ITSx','ITSxpress')),
+    DB = factor(DB, levels = db_levels),
+    Evidence = factor(Evidence, levels = c('QIIME species retained','BLAST species rescued',
+      'BLAST inconclusive','Genus discordant','Other')))
+stopifnot(nrow(au_blast_plot_data) == 2*(length(au_ids)+length(au_ids)+length(au_ixp_ids)))
+readr::write_csv(au_blast_plot_data, file.path(au_dir,
+  'Aureobasidium_BLAST_classifier_scatter_data.csv'))
+au_itsx_fasta <- Biostrings::DNAStringSet(au_seq$Default_Sequence)
+names(au_itsx_fasta) <- paste0(au_seq$FeatureID, '|ITSx_default|', au_seq$Default_Length, 'bp')
+Biostrings::writeXStringSet(au_itsx_fasta, file.path(au_dir,
+  'Aureobasidium_ITSx_default_10_queries.fasta'))
+au_blast_plot_ready <- au_blast_plot_data |>
+  dplyr::filter(!is.na(BLAST_Composite), Processing != 'Cutadapt -> ITSx') |>
+  dplyr::mutate(Processing = droplevels(Processing))
+au_scatter <- au_blast_plot_ready |>
+  ggplot2::ggplot(ggplot2::aes(BLAST_Composite, QIIME_Confidence,
+    colour = Evidence, shape = QIIME_Rank, size = log10(Total_Reads + 1))) +
+  ggplot2::geom_point(alpha = .8, stroke = .9) +
+  ggrepel::geom_text_repel(data = function(x) x |>
+      dplyr::filter(Total_Reads >= 100 | Evidence %in% c('BLAST species rescued','Genus discordant')),
+    ggplot2::aes(label = substr(FeatureID, 1, 10)), size = 3.5,
+    min.segment.length = 0, max.overlaps = Inf, direction = 'y',
+    xlim = c(96.8, 100.05), ylim = c(.71, .995), show.legend = FALSE) +
+  ggplot2::facet_grid(DB ~ Processing, drop = FALSE) +
+  ggplot2::scale_colour_brewer(palette = 'Dark2', drop = TRUE) +
+  ggplot2::scale_shape_manual(values = c('Species label' = 16, 'Genus' = 15, 'Below genus' = 17)) +
+  ggplot2::scale_size_continuous(range = c(2.5, 9),
+    breaks = log10(c(10,100,1000,10000,100000)+1),
+    labels = scales::comma(c(10,100,1000,10000,100000)), name = 'Original reads') +
+  ggplot2::coord_cartesian(xlim = c(96.7,100.1), ylim = c(.7,1.005)) +
+  soyeon_theme +
+  ggplot2::guides(colour = ggplot2::guide_legend(order = 1, nrow = 1),
+    shape = ggplot2::guide_legend(order = 2, nrow = 1),
+    size = ggplot2::guide_legend(order = 3, nrow = 1)) +
+  ggplot2::theme(text = ggplot2::element_text(size = 15),
+    axis.title = ggplot2::element_text(size = 16),
+    axis.text = ggplot2::element_text(size = 13),
+    strip.text = ggplot2::element_text(size = 14, face = 'bold'),
+    legend.position = 'bottom', legend.box = 'vertical',
+    legend.text = ggplot2::element_text(size = 12),
+    legend.title = ggplot2::element_text(size = 13),
+    legend.key.height = grid::unit(.55, 'cm')) +
+  ggplot2::labs(x = 'BLAST coverage-weighted identity = identity x query coverage / 100 (%)',
+    y = 'QIIME classifier confidence', colour = 'QIIME-BLAST outcome', shape = 'QIIME rank',
+    subtitle = 'Aureobasidium-related ASVs; shared axes are zoomed to the observed high-score range')
+ggplot2::ggsave(file.path(au_dir, 'Aureobasidium_BLAST_classifier_scatter.png'),
+  au_scatter, width = 12, height = 9, dpi = 180)
