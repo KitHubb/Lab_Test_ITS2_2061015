@@ -88,11 +88,29 @@
 - *Aureobasidium*-like family: Cutadapt paired·single과 ITSxpress single에서 회수; ITSxpress paired에서 주로 소실. ITSxpress 후 한 mate가 짧아져 paired DADA2 처리에서 탈락할 가능성과 일치함.
 - 분석 단위: 동일 library의 기술적 재처리 결과이며 독립 표본이 아님. [네 pipeline 비교 및 BLAST 보고서](01d_single_paired_BLAST_comparison.Rmd) 참조.
 
+![Cutadapt와 ITSxpress의 single·paired Aitchison PCoA](Results/01g_single_UNITE_database_comparison/figures/24_four_pipeline_aitchison_pcoa.png)
+
+*그림 3.3-1. 동일 83개 library를 Cutadapt/ITSxpress × single/paired로 처리한 Aitchison PCoA. 색은 pipeline, shape은 control source 또는 대상자를 나타냄. 네 pipeline에서 큰 sample 배치 구조는 유지되지만 trimming과 read mode에 따른 이동이 함께 관찰됨.*
+
+| Cutadapt Single | Cutadapt Paired |
+| --- | --- |
+| ![Cutadapt single의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/25_cutadapt_single_species_composition.png) | ![Cutadapt paired의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/26_cutadapt_paired_species_composition.png) |
+
+| ITSxpress Single | ITSxpress Paired |
+| --- | --- |
+| ![ITSxpress single의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/27_itsxpress_single_species_composition.png) | ![ITSxpress paired의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/28_itsxpress_paired_species_composition.png) |
+
+*그림 3.3-2. 네 pipeline의 sample별 species-level relative composition. 같은 색은 같은 taxon이며, ITSxpress paired에서 우점 sequence family가 소실되는 현상을 PCoA와 함께 확인할 수 있음.*
+
 ### 3.4 시험용 single과 complete forward-only의 비교
 
 - 비교: **시험용 Cutadapt single** 대 **complete forward-only Cutadapt**. Sample별 read depth, 최종 ASV 수, exact-ASV 공유율 및 taxonomy 해상도 점검.
 - Complete forward-only: forward read만 입력해 전체 workflow 재처리; single-end `maxEE 2` 사용. 이전 파일명 `ee22`는 paired workflow 표기에서 유래함.
 - 해석 범위: 시험용 결과와 complete workflow의 일치도를 확인하는 QC. 생물학적 다양성의 집단 간 검정 결과가 아님. [complete single-end QC 보고서](01e_complete_single_end_preprocessing.Rmd) 참조.
+
+![시험용 single과 complete forward-only의 sample별 read depth](Results/01g_single_UNITE_database_comparison/figures/29_previous_vs_complete_read_depth.png)
+
+*그림 3.4-1. 시험용 Cutadapt single과 complete forward-only의 sample별 read depth 비교. Spearman rho=0.991로 library 간 깊이 순서는 강하게 재현되지만, exact ASV 및 총 read 수가 완전히 동일하다는 의미는 아님.*
 
 ### 3.5 Complete forward-only에서 Cutadapt와 ITSxpress의 비교
 
@@ -100,6 +118,20 @@
 - 보존량: Cutadapt 약 **1,186,913 reads·1,855 ASV**; ITSxpress 약 **115,907 reads·211 ASV**. Sample별 ITSxpress/Cutadapt read-depth 비율 중앙값 약 **6%**.
 - Taxon 변화: 식물 유래 ASV뿐 아니라 *Malassezia restricta*, *M. globosa*, *Aureobasidium* 계열 신호도 ITSxpress에서 크게 감소함.
 - 해석: ITSxpress 통과 여부만으로 진균 여부를 판정할 수 없음. Cutadapt의 높은 read·ASV 수를 생물학적 다양성 증가로 해석할 수 없음. [complete forward 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.Rmd) 참조.
+
+![Complete forward-only Cutadapt와 ITSxpress의 Aitchison PCoA](Results/01g_single_UNITE_database_comparison/figures/30_complete_forward_method_pcoa.png)
+
+*그림 3.5-1. 동일 SampleID를 연결한 complete-forward Cutadapt–ITSxpress Aitchison PCoA. 방법 간 이동이 커서 ITSxpress의 read 손실이 단순한 depth 감소가 아니라 조성 변화로 이어짐을 보여줌.*
+
+![Complete forward-only에서 Cutadapt와 ITSxpress의 species 평균 abundance](Results/01g_single_UNITE_database_comparison/figures/31_complete_forward_species_abundance.png)
+
+*그림 3.5-2. 각 점은 83개 sample에서 평균한 species fallback taxon. 대각선 아래쪽일수록 Cutadapt 대비 ITSxpress에서 감소한 taxon이며, `Malassezia g`, `M. globosa`, `M. restricta`와 `Aureobasidium tremulum` label이 ITSxpress에서 거의 0에 가까워짐.*
+
+| Cutadapt complete-forward | ITSxpress complete-forward |
+| --- | --- |
+| ![Cutadapt complete-forward의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/32_complete_forward_cutadapt_composition.png) | ![ITSxpress complete-forward의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/33_complete_forward_itsxpress_composition.png) |
+
+*그림 3.5-3. 동일한 taxon 색을 사용한 sample별 species relative composition. Cutadapt에서 KSY·PYH 피부 sample의 큰 비중을 차지하던 Malassezia 계열 색이 ITSxpress 결과에서 크게 축소되거나 다른 상위 taxon 조성으로 대체됨.*
 
 - 분류 DB 비교: 두 처리 방법에 fungi-only DB와 all-eukaryote DB를 각각 적용함. All-eukaryote DB에서 Cutadapt의 비진균 off-target 탐지 가능. ITSxpress 단계에서 소실된 read의 복구는 불가.
 
