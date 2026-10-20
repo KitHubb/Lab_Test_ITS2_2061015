@@ -17,6 +17,7 @@ Results/**
 !Results/**/
 !Results/**/*.R
 Phyloseq/
+blast_results/
 *.rds
 261014_ITS2_Test_list_modi.csv
 
