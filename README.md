@@ -60,6 +60,10 @@
 
 ### 3.1 Cutadapt와 ITSxpress의 paired-end 결과
 
+![ITS rDNA 영역과 대표 primer 위치](Results/01g_single_UNITE_database_comparison/figures/40_ITS_rDNA_primer_map.jpg)
+
+*그림 3.1-1. SSU–ITS1–5.8S–ITS2–LSU 구조와 ITS3·ITS4를 포함한 대표 fungal ITS primer의 위치 및 서열. 본 ITS2 amplicon의 경계와 trimming 결과를 해석하기 위한 배경도임(사용자 제공 이미지; 논문·발표 사용 시 원출처 확인 필요).*
+
 - 초기 가설: ITSxpress가 rRNA flank를 제거하고 ITS2 core를 제공해 종 수준 분류를 개선할 가능성.
 - 서열 관계: 일부 짧은 ITSxpress ASV가 긴 Cutadapt ASV 내부에 정확히 포함됨(**exact containment**).
 - 주요 관찰: *Aureobasidium*-like sequence family가 Cutadapt paired에서 회수되었으나 ITSxpress paired에서 주로 소실됨.
@@ -72,21 +76,21 @@
 
 ![Paired-end Cutadapt와 ITSxpress의 ASV exact-containment overlap](Results/01g_single_UNITE_database_comparison/figures/39_paired_asv_exact_containment_overlap.png)
 
-*그림 3.1-1. 740개 exact-containment 관계 중 abundance와 taxonomy를 고려해 선정한 대표 24쌍. 회색은 Cutadapt의 전체 ASV이고 주황색은 그 내부와 100% 일치하는 ITSxpress ASV 구간임. 전체 관계의 read-frequency 결과가 아니라 실제 서열 overlap 위치를 보여줌.*
+*그림 3.1-2. 740개 exact-containment 관계 중 abundance와 taxonomy를 고려해 선정한 대표 24쌍. 회색은 Cutadapt의 전체 ASV이고 주황색은 그 내부와 100% 일치하는 ITSxpress ASV 구간임. 전체 관계의 read-frequency 결과가 아니라 실제 서열 overlap 위치를 보여줌.*
 
 ![Paired-end Cutadapt와 ITSxpress의 Aitchison PCoA](Results/01g_single_UNITE_database_comparison/figures/34_paired_cutadapt_itsxpress_pcoa.png)
 
-*그림 3.1-2. 동일 SampleID를 연결한 paired-end Cutadapt–ITSxpress Aitchison PCoA. 색은 처리 방법, shape은 control source 또는 대상자이며, 회색 선은 같은 library의 방법 간 이동을 연결함.*
+*그림 3.1-3. 동일 SampleID를 연결한 paired-end Cutadapt–ITSxpress Aitchison PCoA. 색은 처리 방법, shape은 control source 또는 대상자이며, 회색 선은 같은 library의 방법 간 이동을 연결함.*
 
 ![Paired-end Cutadapt와 ITSxpress의 species 평균 abundance](Results/01g_single_UNITE_database_comparison/figures/35_paired_species_abundance_scatter.png)
 
-*그림 3.1-3. 각 점은 sample이나 ASV가 아니라 83개 sample에서 평균한 species fallback taxon. 대각선에서 멀수록 두 paired-end 전처리 결과의 abundance 차이가 크며, `Aureobasidium tremulum` label은 Cutadapt 쪽에, 일부 Malassezia label은 방법별로 서로 다른 방향의 차이를 보임.*
+*그림 3.1-4. 각 점은 sample이나 ASV가 아니라 83개 sample에서 평균한 species fallback taxon. 대각선에서 멀수록 두 paired-end 전처리 결과의 abundance 차이가 크며, `Aureobasidium tremulum` label은 Cutadapt 쪽에, 일부 Malassezia label은 방법별로 서로 다른 방향의 차이를 보임.*
 
 | Cutadapt paired-end | ITSxpress paired-end |
 | --- | --- |
 | ![Cutadapt paired-end의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/36_paired_cutadapt_species_composition.png) | ![ITSxpress paired-end의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/37_paired_itsxpress_species_composition.png) |
 
-*그림 3.1-4. 동일한 taxon 색을 사용한 sample별 paired-end species relative composition. Scatter에서 확인한 taxon 차이가 어느 대상자·control과 PCR 조건에서 발생했는지 보여줌.*
+*그림 3.1-5. 동일한 taxon 색을 사용한 sample별 paired-end species relative composition. Scatter에서 확인한 taxon 차이가 어느 대상자·control과 PCR 조건에서 발생했는지 보여줌.*
 
 ### 3.2 maxEE 2/2와 8/8의 비교
 
