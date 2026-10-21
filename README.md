@@ -66,8 +66,9 @@
 
 - 초기 가설: ITSxpress가 rRNA flank를 제거하고 ITS2 core를 제공해 종 수준 분류를 개선할 가능성.
 - 서열 관계: 일부 짧은 ITSxpress ASV가 긴 Cutadapt ASV 내부에 정확히 포함됨(**exact containment**).
-- 주요 관찰: *Aureobasidium*-like sequence family가 Cutadapt paired에서 회수되었으나 ITSxpress paired에서 주로 소실됨.
-- 해석: 다른 read mode에서 같은 family가 확인됨. ITSxpress paired의 미검출을 생물학적 부재로 해석할 수 없음.
+- 주요 관찰: 우점 *Aureobasidium*-like `ASVfam_0001`은 Cutadapt single 398,919 reads, Cutadapt paired 389,448 reads 및 ITSxpress single 403,343 reads로 강하게 회수됐지만 ITSxpress paired에서는 검출되지 않음.
+- 가장 가능성 높은 원인: ITSxpress가 ITS2 경계로 양쪽 read를 trimming한 뒤 한쪽 mate가 지나치게 짧아지거나 forward–reverse overlap이 부족해지면, 두 mate의 filtering과 merge가 모두 필요한 paired-end DADA2 단계에서 해당 read pair가 탈락할 수 있음. ITSxpress single에서는 같은 sequence family가 보존됐으므로, ITSx HMM이 이 family를 보편적으로 인식하지 못했거나 시료에 생물학적으로 존재하지 않았다는 설명과는 맞지 않음.
+- 해석 한계: 위 원인은 네 pipeline의 회수 패턴과 일치하는 **가장 유력한 기술적 설명**이지만, 원시 read pair를 단계별로 추적하여 탈락 지점을 직접 계수한 결과는 아님.
 
 - 추가 관찰: `Fungi_k` 또는 `Ascomycota_p`로만 분류된 Cutadapt ASV와 ITSxpress ASV에서 동일한 내부 서열 확인.
 - 미해결: Cutadapt에만 남은 구간의 정체(5.8S/28S flank, primer 잔존, 비표적 amplicon 등)는 서열 구조만으로 확정 불가. [paired 전처리 분석](01_Preprocessing.Rmd) 및 [ASV 정렬](01c_Fungi_k_Ascomycota_p_sequence_alignment.Rmd) 참조.
