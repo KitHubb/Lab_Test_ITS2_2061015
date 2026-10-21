@@ -190,7 +190,32 @@
 
 *그림 8. PCR 조건·sample type별 fungal fraction. DB 전후 차이는 read의 kingdom 재분류에 해당함.*
 
-#### 3.6.1 *Aureobasidium*의 방법·DB별 검출·조성
+### 3.7 Complete forward-only에서 ITSx와 ITSxpress의 비교
+
+#### 3.7.1 ITSx 기본·partial 50 비교
+
+- ITSx 1.1.3 적용 대상: **Cutadapt–DADA2로 이미 생성된 1,855개 ASV**. ITS2 경계와 추출 서열 감사.
+- 기본 설정 대 `--partial 50`: ASV ID·추출 서열·taxonomy를 대조함. 이번 실행에서 추가 회수 또는 재분류 효과 없음.
+- Count 정의: ITSx의 ‘회수 read’는 추출된 ASV에 연결된 **기존 count**. DADA2 이전 raw FASTQ를 처리하는 ITSxpress의 통과 read 수와 동일 단계의 생존율로 비교할 수 없음.
+
+- 경계 판정: ITSx 출력 FASTA의 서열 존재만으로 완전한 LSU 경계 검출을 보장할 수 없음.
+- 추가 확인: ASV별 경계 상태와 제거 구간을 점검하고 reference alignment·BLAST로 구간의 성격 확인 필요. [ITSx ASV audit](01g_single_UNITE_database_comparison.Rmd) 참조.
+
+![ITSx의 ASV 및 원래 read count 연결 회수율](Results/01g_single_UNITE_database_comparison/figures/18_itsx_asv_recovery.png)
+
+*그림 9. Cutadapt–DADA2 ASV에 ITSx를 사후 적용한 뒤의 ASV 및 기존 count 연결 회수율.*
+
+![ITSx 경계 상태와 ASV 길이 변화](Results/01g_single_UNITE_database_comparison/figures/19_itsx_boundary_length.png)
+
+*그림 10. ITSx 추출 전후 길이·경계 상태. ITS2 출력만으로 LSU anchor 완전성 판정 불가.*
+
+| UNITE 99% fungi-only에서 ITSx 전후 | UNITE dynamic all-euk에서 ITSx 전후 |
+| --- | --- |
+| ![Fungi-only DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/20_itsx_genus_composition_a.png) | ![All-euk DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/21_itsx_genus_composition_b.png) |
+
+*그림 11. 원래 Cutadapt·ITSx 기본·partial50의 sample별 genus 조성. 분모는 원래 Cutadapt read 수로 고정; 미추출 부분은 `No ITS2 output`으로 표시함.*
+
+#### 3.7.2 *Aureobasidium*의 방법·DB별 검출·조성
 
 - 초기 네 pipeline에서는 우점 *Aureobasidium*-like family가 Cutadapt single·paired와 ITSxpress single에서 비슷한 규모로 회수됐지만 ITSxpress paired에서 주로 소실됨.
 - Complete forward-only에서도 ITSxpress에서 해당 신호가 크게 감소하여, single-end 사용만으로 안정적인 회수가 보장되지는 않았음.
@@ -202,34 +227,11 @@
 | Cutadapt complete-forward | ![Cutadapt fungi-only의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/07_cutadapt_fungi_genus.png) | ![Cutadapt all-euk의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/08_cutadapt_all_euk_genus.png) |
 | ITSxpress complete-forward | ![ITSxpress fungi-only의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/09_itsxpress_fungi_genus.png) | ![ITSxpress all-euk의 fungal genus 조성](Results/01g_single_UNITE_database_comparison/figures/10_itsxpress_all_euk_genus.png) |
 
-*그림 9. 방법·DB별 전체 fungal genus 조성. DB 범위와 clustering scheme이 동시에 달라 분류명 변경의 원인을 단일 요인으로 분리할 수 없음.*
+*그림 12. 방법·DB별 전체 fungal genus 조성. DB 범위와 clustering scheme이 동시에 달라 분류명 변경의 원인을 단일 요인으로 분리할 수 없음.*
 
 ![DB별 QIIME classifier confidence 분포](Results/01g_single_UNITE_database_comparison/figures/13_classifier_confidence.png)
 
-*그림 10. 전체 ASV의 DB별 classifier confidence. 서로 다른 rank의 confidence를 종 동정 정확도로 직접 비교할 수 없음.*
-
-### 3.7 Complete forward-only에서 ITSx와 ITSxpress의 비교
-
-- ITSx 1.1.3 적용 대상: **Cutadapt–DADA2로 이미 생성된 1,855개 ASV**. ITS2 경계와 추출 서열 감사.
-- 기본 설정 대 `--partial 50`: ASV ID·추출 서열·taxonomy를 대조함. 이번 실행에서 추가 회수 또는 재분류 효과 없음.
-- Count 정의: ITSx의 ‘회수 read’는 추출된 ASV에 연결된 **기존 count**. DADA2 이전 raw FASTQ를 처리하는 ITSxpress의 통과 read 수와 동일 단계의 생존율로 비교할 수 없음.
-
-- 경계 판정: ITSx 출력 FASTA의 서열 존재만으로 완전한 LSU 경계 검출을 보장할 수 없음.
-- 추가 확인: ASV별 경계 상태와 제거 구간을 점검하고 reference alignment·BLAST로 구간의 성격 확인 필요. [ITSx ASV audit](01g_single_UNITE_database_comparison.Rmd) 참조.
-
-![ITSx의 ASV 및 원래 read count 연결 회수율](Results/01g_single_UNITE_database_comparison/figures/18_itsx_asv_recovery.png)
-
-*그림 11. Cutadapt–DADA2 ASV에 ITSx를 사후 적용한 뒤의 ASV 및 기존 count 연결 회수율.*
-
-![ITSx 경계 상태와 ASV 길이 변화](Results/01g_single_UNITE_database_comparison/figures/19_itsx_boundary_length.png)
-
-*그림 12. ITSx 추출 전후 길이·경계 상태. ITS2 출력만으로 LSU anchor 완전성 판정 불가.*
-
-| UNITE 99% fungi-only에서 ITSx 전후 | UNITE dynamic all-euk에서 ITSx 전후 |
-| --- | --- |
-| ![Fungi-only DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/20_itsx_genus_composition_a.png) | ![All-euk DB에서 ITSx 전후 genus 조성](Results/01g_single_UNITE_database_comparison/figures/21_itsx_genus_composition_b.png) |
-
-*그림 13. 원래 Cutadapt·ITSx 기본·partial50의 sample별 genus 조성. 분모는 원래 Cutadapt read 수로 고정; 미추출 부분은 `No ITS2 output`으로 표시함.*
+*그림 13. 전체 ASV의 DB별 classifier confidence. 서로 다른 rank의 confidence를 종 동정 정확도로 직접 비교할 수 없음.*
 
 ### 3.8 *Aureobasidium* 추가 분석
 
@@ -251,6 +253,16 @@
 - Human genomic+transcript BLAST에서는 10개 ASV 모두 유의한 hit가 없었음. 따라서 사람 rDNA 유래 가설은 지지되지 않음.
 - 현재 권장 표기는 `Aureobasidium sp.` 또는 `Aureobasidium`-associated ASV이며, *A. tremulum*·*A. pullulans* 종명은 확정하지 않음.
 - NCBI 검색: [Fungal ITS type/reference RID DEKG9RX4016](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&RID=DEKG9RX4016), [Human G+T RID DEKN3YNM016](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&RID=DEKN3YNM016). RID는 NCBI 정책에 따라 만료될 수 있음.
+
+#### 3.8.2 QIIME confidence와 BLAST 복합점수
+
+- 각 점은 *Aureobasidium* 후보 ASV이며, x축은 BLAST `percent identity × query coverage / 100`, y축은 QIIME 최종 분류 confidence임.
+- Cutadapt와 ITSxpress는 서로 다른 ASV pool이므로 점을 1:1 대응시키지 않음. 또한 서로 다른 taxonomic rank의 QIIME confidence를 종 수준 정확도로 직접 비교하지 않음.
+- BLAST 점수와 classifier confidence가 모두 높더라도 species label이 일치하지 않을 수 있으므로, 위 주요 ASV 표의 top hit와 함께 보수적으로 해석함.
+
+![Aureobasidium 후보의 QIIME confidence와 BLAST 일치도](Results/01g_single_UNITE_database_comparison/figures/22_aureobasidium_qiime_blast.png)
+
+*그림 14. 후보 ASV의 QIIME 최종 분류 confidence와 BLAST coverage-weighted identity. [원본 HTML](01g_single_UNITE_database_comparison.html)에서 추출함.*
 
 ## 4. 현재 결론과 남은 검증
 
