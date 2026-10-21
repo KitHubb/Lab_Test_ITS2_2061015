@@ -12,8 +12,9 @@
    - [3.3 Paired-end와 single-end](#33-paired-end와-single-end의-비교)
    - [3.4 시험용 single과 complete forward-only](#34-시험용-single과-complete-forward-only의-비교)
    - [3.5 Complete forward-only에서 Cutadapt와 ITSxpress](#35-complete-forward-only에서-cutadapt와-itsxpress의-비교)
-   - [3.6 Complete forward-only에서 ITSx와 ITSxpress](#36-complete-forward-only에서-itsx와-itsxpress의-비교)
-   - [3.7 *Aureobasidium* 상세 결과](#37-aureobasidium-상세-결과)
+   - [3.6 Fungi-only DB와 All-eukaryote DB](#36-fungi-only-db와-all-eukaryote-db의-비교)
+   - [3.7 Complete forward-only에서 ITSx와 ITSxpress](#37-complete-forward-only에서-itsx와-itsxpress의-비교)
+   - [3.8 *Aureobasidium* 상세 결과](#38-aureobasidium-상세-결과)
 4. [현재 결론과 남은 검증](#4-현재-결론과-남은-검증)
 5. [참고문헌과 분석 파일](#5-참고문헌과-분석-파일)
 
@@ -147,7 +148,9 @@
 
 *그림 3.5-3. 동일한 taxon 색을 사용한 sample별 species relative composition. Cutadapt에서 KSY·PYH 피부 sample의 큰 비중을 차지하던 Malassezia 계열 색이 ITSxpress 결과에서 크게 축소되거나 다른 상위 taxon 조성으로 대체됨.*
 
-- 분류 DB 비교: 두 처리 방법에 fungi-only DB와 all-eukaryote DB를 각각 적용함. All-eukaryote DB에서 Cutadapt의 비진균 off-target 탐지 가능. ITSxpress 단계에서 소실된 read의 복구는 불가.
+### 3.6 Fungi-only DB와 All-eukaryote DB의 비교
+
+- 비교: Cutadapt와 ITSxpress complete-forward 결과에 fungi-only DB와 all-eukaryote DB를 각각 적용함. All-eukaryote DB에서 Cutadapt의 비진균 off-target 탐지 가능. ITSxpress 단계에서 소실된 read의 복구는 불가.
 
 - 그림 출처: [01g 렌더된 HTML](01g_single_UNITE_database_comparison.html)에 내장된 분석 그림을 개별 파일로 추출함.
 - DB 변경의 의미: 같은 ASV count의 kingdom·rank·taxon label 변화. Raw-read 전처리 단계의 read 제거와 구분 필요.
@@ -187,7 +190,7 @@
 
 *그림 8. PCR 조건·sample type별 fungal fraction. DB 전후 차이는 read의 kingdom 재분류에 해당함.*
 
-### 3.6 Complete forward-only에서 ITSx와 ITSxpress의 비교
+### 3.7 Complete forward-only에서 ITSx와 ITSxpress의 비교
 
 - ITSx 1.1.3 적용 대상: **Cutadapt–DADA2로 이미 생성된 1,855개 ASV**. ITS2 경계와 추출 서열 감사.
 - 기본 설정 대 `--partial 50`: ASV ID·추출 서열·taxonomy를 대조함. 이번 실행에서 추가 회수 또는 재분류 효과 없음.
@@ -210,9 +213,9 @@
 
 *그림 11. 원래 Cutadapt·ITSx 기본·partial50의 sample별 genus 조성. 분모는 원래 Cutadapt read 수로 고정; 미추출 부분은 `No ITS2 output`으로 표시함.*
 
-### 3.7 *Aureobasidium* 상세 결과
+### 3.8 *Aureobasidium* 상세 결과
 
-#### 3.7.1 전처리 방법과 DB별 검출·조성
+#### 3.8.1 전처리 방법과 DB별 검출·조성
 - 초기 네 pipeline: 우점 *Aureobasidium*-like family가 Cutadapt single·paired와 ITSxpress single에서 비슷한 규모로 회수됨; ITSxpress paired에서 주로 소실됨.
 - Complete forward-only: ITSxpress에서 해당 신호가 다시 크게 감소함. Single-end 사용만으로 안정적인 회수가 보장되지는 않음.
 - 생물학적 해석: 특정 대상자의 피부 시료에서 높은 풍부도와 DNA 농도의 양의 관계가 탐색적으로 관찰됨. Biomass·PCR 증폭·전처리 편향의 기여는 미확정.
@@ -233,7 +236,7 @@
 
 *그림 13. 전체 ASV의 DB별 classifier confidence. 서로 다른 rank의 confidence를 종 동정 정확도로 직접 비교할 수 없음.*
 
-#### 3.7.2 BLAST 및 서열 정렬
+#### 3.8.2 BLAST 및 서열 정렬
 
 - BLAST 대상: 대표 Cutadapt full ASV **303 bp**와 같은 read pattern의 ITSxpress core **155 bp**. 두 서열 모두 *Aureobasidium* 속을 지지함.
 - 종 수준: *A. pullulans*와 *A. melanogenum*이 각각 query coverage **100%**, identity **100%**로 동률. Classifier의 `A. tremulum` 종명 확정 불가.
@@ -246,7 +249,7 @@
 
 *그림 14. 후보 ASV의 원서열·제거된 5′ 구간·남은 ITS2 구간 비교. [원본 HTML](01g_single_UNITE_database_comparison.html)에서 추출함. Reference 기반 종 동정 또는 계통수 분석은 아님.*
 
-#### 3.7.3 QIIME Naive Bayes와 BLAST 근거의 대조
+#### 3.8.3 QIIME Naive Bayes와 BLAST 근거의 대조
 
 - 비교 자료: complete-forward Cutadapt **1,855 ASV**, ITSxpress **211 ASV**의 batch BLAST와 QIIME Naive Bayes(NB) classifier 결과.
 - 후보 구성: Cutadapt *Aureobasidium* 후보 10개, ITSxpress 후보 9개. **서로 다른 ASV pool**이며 1:1 대응 불가.
