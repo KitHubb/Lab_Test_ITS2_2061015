@@ -68,19 +68,25 @@
 - 추가 관찰: `Fungi_k` 또는 `Ascomycota_p`로만 분류된 Cutadapt ASV와 ITSxpress ASV에서 동일한 내부 서열 확인.
 - 미해결: Cutadapt에만 남은 구간의 정체(5.8S/28S flank, primer 잔존, 비표적 amplicon 등)는 서열 구조만으로 확정 불가. [paired 전처리 분석](01_Preprocessing.Rmd) 및 [ASV 정렬](01c_Fungi_k_Ascomycota_p_sequence_alignment.Rmd) 참조.
 
+이 결과는 **QC20·maxEE 2/2의 paired-end 자료**에서 계산했다. Cutadapt fungal ASV 1,301개와 ITSxpress fungal ASV 1,215개 사이에 full-length가 완전히 동일한 ASV pair는 없었다. 대신 ITSxpress ASV 740개(60.9%)가 100 bp 이상의 전 구간에 걸쳐 더 긴 Cutadapt ASV 내부와 100% 일치했으며, 이 ASV들이 ITSxpress fungal read의 95.3%를 차지했다. 대응 pair의 전체 read frequency 순위상관은 Spearman rho 0.931이었다. 따라서 이는 **동일한 biological sequence family의 내부 ITS 구간 회수**를 지지하지만, 두 방법이 동일한 길이의 ASV를 생성했다는 뜻은 아니다.
+
+![Paired-end Cutadapt와 ITSxpress의 exact-containment ASV frequency](Results/01g_single_UNITE_database_comparison/figures/38_paired_exact_containment_frequency.png)
+
+*그림 3.1-1. 100 bp 이상 exact-containment로 연결된 740개 paired-end ASV pair의 전체 read frequency. 각 점의 ITSxpress 서열은 대응 Cutadapt ASV 내부의 100% 동일한 substring이며, 점선은 두 방법의 frequency가 같은 지점임.*
+
 ![Paired-end Cutadapt와 ITSxpress의 Aitchison PCoA](Results/01g_single_UNITE_database_comparison/figures/34_paired_cutadapt_itsxpress_pcoa.png)
 
-*그림 3.1-1. 동일 SampleID를 연결한 paired-end Cutadapt–ITSxpress Aitchison PCoA. 색은 처리 방법, shape은 control source 또는 대상자이며, 회색 선은 같은 library의 방법 간 이동을 연결함.*
+*그림 3.1-2. 동일 SampleID를 연결한 paired-end Cutadapt–ITSxpress Aitchison PCoA. 색은 처리 방법, shape은 control source 또는 대상자이며, 회색 선은 같은 library의 방법 간 이동을 연결함.*
 
 ![Paired-end Cutadapt와 ITSxpress의 species 평균 abundance](Results/01g_single_UNITE_database_comparison/figures/35_paired_species_abundance_scatter.png)
 
-*그림 3.1-2. 각 점은 sample이나 ASV가 아니라 83개 sample에서 평균한 species fallback taxon. 대각선에서 멀수록 두 paired-end 전처리 결과의 abundance 차이가 크며, `Aureobasidium tremulum` label은 Cutadapt 쪽에, 일부 Malassezia label은 방법별로 서로 다른 방향의 차이를 보임.*
+*그림 3.1-3. 각 점은 sample이나 ASV가 아니라 83개 sample에서 평균한 species fallback taxon. 대각선에서 멀수록 두 paired-end 전처리 결과의 abundance 차이가 크며, `Aureobasidium tremulum` label은 Cutadapt 쪽에, 일부 Malassezia label은 방법별로 서로 다른 방향의 차이를 보임.*
 
 | Cutadapt paired-end | ITSxpress paired-end |
 | --- | --- |
 | ![Cutadapt paired-end의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/36_paired_cutadapt_species_composition.png) | ![ITSxpress paired-end의 sample별 species 조성](Results/01g_single_UNITE_database_comparison/figures/37_paired_itsxpress_species_composition.png) |
 
-*그림 3.1-3. 동일한 taxon 색을 사용한 sample별 paired-end species relative composition. Scatter에서 확인한 taxon 차이가 어느 대상자·control과 PCR 조건에서 발생했는지 보여줌.*
+*그림 3.1-4. 동일한 taxon 색을 사용한 sample별 paired-end species relative composition. Scatter에서 확인한 taxon 차이가 어느 대상자·control과 PCR 조건에서 발생했는지 보여줌.*
 
 ### 3.2 maxEE 2/2와 8/8의 비교
 
