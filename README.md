@@ -62,7 +62,7 @@
 
 ![ITS rDNA 영역과 대표 primer 위치](Results/01g_single_UNITE_database_comparison/figures/40_ITS_rDNA_primer_map.jpg)
 
-*그림 3.1-1. SSU–ITS1–5.8S–ITS2–LSU 구조와 ITS3·ITS4를 포함한 대표 fungal ITS primer의 위치 및 서열. 본 ITS2 amplicon의 경계와 trimming 결과를 해석하기 위한 배경도임(사용자 제공 이미지; 논문·발표 사용 시 원출처 확인 필요).*
+*그림 3.1-1. SSU–ITS1–5.8S–ITS2–LSU 구조와 ITS3·ITS4를 포함한 대표 fungal ITS primer의 위치 및 서열.*
 
 - 초기 가설: ITSxpress가 rRNA flank를 제거하고 ITS2 core를 제공해 종 수준 분류를 개선할 가능성.
 - 서열 관계: 일부 짧은 ITSxpress ASV가 긴 Cutadapt ASV 내부에 정확히 포함됨(**exact containment**).
