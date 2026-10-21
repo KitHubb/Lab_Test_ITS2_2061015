@@ -70,9 +70,9 @@
 
 이 결과는 **QC20·maxEE 2/2의 paired-end 자료**에서 계산했다. Cutadapt fungal ASV 1,301개와 ITSxpress fungal ASV 1,215개 사이에 full-length가 완전히 동일한 ASV pair는 없었다. 대신 ITSxpress ASV 740개(60.9%)가 100 bp 이상의 전 구간에 걸쳐 더 긴 Cutadapt ASV 내부와 100% 일치했으며, 이 ASV들이 ITSxpress fungal read의 95.3%를 차지했다. 대응 pair의 전체 read frequency 순위상관은 Spearman rho 0.931이었다. 따라서 이는 **동일한 biological sequence family의 내부 ITS 구간 회수**를 지지하지만, 두 방법이 동일한 길이의 ASV를 생성했다는 뜻은 아니다.
 
-![Paired-end Cutadapt와 ITSxpress의 exact-containment ASV frequency](Results/01g_single_UNITE_database_comparison/figures/38_paired_exact_containment_frequency.png)
+![Paired-end Cutadapt와 ITSxpress의 ASV exact-containment overlap](Results/01g_single_UNITE_database_comparison/figures/39_paired_asv_exact_containment_overlap.png)
 
-*그림 3.1-1. 100 bp 이상 exact-containment로 연결된 740개 paired-end ASV pair의 전체 read frequency. 각 점의 ITSxpress 서열은 대응 Cutadapt ASV 내부의 100% 동일한 substring이며, 점선은 두 방법의 frequency가 같은 지점임.*
+*그림 3.1-1. 740개 exact-containment 관계 중 abundance와 taxonomy를 고려해 선정한 대표 24쌍. 회색은 Cutadapt의 전체 ASV이고 주황색은 그 내부와 100% 일치하는 ITSxpress ASV 구간임. 전체 관계의 read-frequency 결과가 아니라 실제 서열 overlap 위치를 보여줌.*
 
 ![Paired-end Cutadapt와 ITSxpress의 Aitchison PCoA](Results/01g_single_UNITE_database_comparison/figures/34_paired_cutadapt_itsxpress_pcoa.png)
 
@@ -281,5 +281,7 @@
 ## 5. 참고문헌과 분석 파일
 
 - Nayman EI, Schwartz BA, Polanco FC, et al. *Microbiome depiction through user-adapted bioinformatic pipelines and parameters.* Journal of Medical Microbiology. 2023;72:001756. [doi:10.1099/jmm.0.001756](https://doi.org/10.1099/jmm.0.001756). **16S V4 mock community**의 Fig. 5a를 3.2절에서 비교 목적으로 재도식화함. 원문은 [CC BY](https://www.microbiologyresearch.org/content/journal/jmm/10.1099/jmm.0.001756) 공개 논문.
-- [maxEE 비교](01_ITSxpress_maxEE22_vs_maxEE88.Rmd) · [single/paired 및 BLAST](01d_single_paired_BLAST_comparison.Rmd) · [시험용/complete single](01e_complete_single_end_preprocessing.Rmd) · [complete forward 방법 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.Rmd) · [DB·ITSx 감사와 렌더된 HTML](01g_single_UNITE_database_comparison.html).
+- 코드: [maxEE 비교](01_ITSxpress_maxEE22_vs_maxEE88.Rmd) · [single/paired 및 BLAST](01d_single_paired_BLAST_comparison.Rmd) · [시험용/complete single](01e_complete_single_end_preprocessing.Rmd) · [complete forward 방법 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.Rmd).
+- 렌더된 전처리 보고서: [paired QC20·maxEE2/2](01_Preprocessing.html) · [paired maxEE8/8](01_Preprocessing_maxEE88.html) · [maxEE2/2–8/8](01_ITSxpress_maxEE22_vs_maxEE88.html) · [네 pipeline 비교](01_Preprocessing_2.html) · [대표 ASV overlap](01b_Cutadapt_ITSxpress_ASV_phylogeny.html) · [미분류 ASV 정렬](01c_Fungi_k_Ascomycota_p_sequence_alignment.html) · [single/paired 및 BLAST](01d_single_paired_BLAST_comparison.html) · [complete single QC](01e_complete_single_end_preprocessing.html) · [complete forward 방법 비교](01f_complete_forward_Cutadapt_vs_ITSxpress.html) · [DB·ITSx 감사](01g_single_UNITE_database_comparison.html).
+- 렌더된 기초 분석 보고서: [초기 paired 분석](02_basic_analysis.html) · [ITSxpress paired](02_b_basic_analysis_itsxpress_ITS2.html) · [ITSxpress single](02_c_basic_analysis_itsxpress_single_ITS2.html) · [complete forward Cutadapt](02_d_basic_analysis_complete_forward_ITS2.html).
 - 저장소에 분석 코드, 일부 처리 객체 및 산출물 포함. Raw FASTQ와 sample-level metadata의 포함 여부·공개 범위는 별도 확인 필요. 사람 유래 시료와 중간 해석의 공유 범위는 연구팀 기준에 따라 결정.
